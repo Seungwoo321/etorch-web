@@ -1,17 +1,18 @@
-import { Outlet } from 'react-router-dom'
-import { ModeToggle } from "@/components/ModeToggle"
+import { Outlet } from "react-router-dom"
+import Topbar from "@/components/layout/LayoutHeader"
+
 const RootLayout = () => {
   return (
-    <div>
-      <div>
-        Tobpbar
-        <ModeToggle />
+    <>
+      <Topbar />
+      <div className="container relative">
+        <div className="hidden flex-col md:flex">
+          <section>
+            <Outlet />
+          </section>
       </div>
-
-      <section>
-        <Outlet />
-      </section>
     </div>
+  </>
 
   )
 }

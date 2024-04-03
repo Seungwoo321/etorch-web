@@ -1,13 +1,13 @@
-import { Routes, Route } from 'react-router-dom';
-import '@/globals.css';
+import { Routes, Route } from "react-router-dom";
+import "@/styles/globals.css";
 // import { ThemeProvider } from "@/components/theme-provider"
 // import { ModeToggle } from "@/components/ModeToggle"
-import RootLayout from './_root/RootLayout';
-import Dashboard from './_root/pages/Dashboard';
+import RootLayout from "./_root/RootLayout";
+import Dashboard from "./_root/pages/Dashboard";
 
 function App() {
   return (
-    <main className='flex h-screen'>
+    <div className="relative flex min-h-screen flex-col bg-background">
       <Routes>
         {/* auth routes */}
 
@@ -16,7 +16,7 @@ function App() {
           <Route index element={<Dashboard/>}/>
         </Route>
       </Routes>
-    </main>
+    </div>
   );
 }
 
