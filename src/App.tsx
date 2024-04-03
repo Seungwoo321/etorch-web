@@ -1,12 +1,22 @@
-import './globals.css';
-import { ThemeProvider } from "@/components/theme-provider"
-import { Button } from "@/components/ui/button"
+import { Routes, Route } from 'react-router-dom';
+import '@/globals.css';
+// import { ThemeProvider } from "@/components/theme-provider"
+// import { ModeToggle } from "@/components/ModeToggle"
+import RootLayout from './_root/RootLayout';
+import Dashboard from './_root/pages/Dashboard';
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <Button>Click me</Button>
-    </ThemeProvider>
+    <main className='flex h-screen'>
+      <Routes>
+        {/* auth routes */}
+
+        {/* private routes */}
+        <Route element={<RootLayout />}>
+          <Route index element={<Dashboard/>}/>
+        </Route>
+      </Routes>
+    </main>
   );
 }
 
