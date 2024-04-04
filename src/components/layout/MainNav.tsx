@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 
 import { cn } from "@/lib/utils"
-import { Icons } from "./icons"
+import { Icons } from "@/components/shared/Icons"
 
 export function MainNav({
   className,
@@ -12,7 +12,7 @@ export function MainNav({
       <Link to="/" className="mr-6 flex items-center space-x-2">
         <Icons.logo className="h-6 w-6" />
         <span className="hidden font-bold sm:inline-block">
-          E-Torch
+          e-torch
         </span>
       </Link>
       <nav
