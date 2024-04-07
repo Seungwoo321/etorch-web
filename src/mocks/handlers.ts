@@ -7,7 +7,7 @@ import {
   HttpResponse,
   JsonBodyType,
 } from 'msw'
-import { indicators } from './data'
+import { indicators, origins } from './data'
 
 function withDelay<
   Params extends PathParams,
@@ -22,11 +22,19 @@ function withDelay<
 
 export const handlers = [
   http.get<never, never, JsonBodyType>(
-    '/indicators',
+    '/v1/indicators/kosis',
     withDelay(250, () => {
       return HttpResponse.json({
         indicators
       })
     })
   ),
+  http.get<never, never, JsonBodyType>(
+    '/v1/origins',
+    withDelay(100, () => {
+      return HttpResponse.json({
+        origins
+      })
+    })
+  )
 ]

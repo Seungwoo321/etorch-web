@@ -1,4 +1,4 @@
-type Origin = 'kosis' | 'ecos' | 'oecd';
+export type Origin = 'kosis' | 'ecos' | 'oecd';
 
 export interface Indicator {
   origin: Origin;

@@ -1,3 +1,9 @@
+export const origins = [
+  'kosis',
+  'ecos',
+  'oecd'
+]
+
 export const indicators = [
   {
     origin: 'kosis',
