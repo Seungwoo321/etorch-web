@@ -1,4 +1,4 @@
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 // import { useForm } from "react-hook-form"
 
@@ -38,22 +38,23 @@ const data = [
 
 
 const renderLineChart = (
-  <LineChart width={600} height={300} data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-    <Line type="monotone" dataKey="uv" stroke="#000" />
-    <Line type="monotone" dataKey="pv" stroke="#000" />
-    <Line type="monotone" dataKey="amt" stroke="#000" />
-    <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-    <XAxis dataKey="name" />
-    <YAxis />
-    {/* <YAxis orientation="right" allowDataOverflow domain={[bottom2, top2]} type="number" yAxisId="2" /> */}
-    <Tooltip />
-  </LineChart>
+  
+    <LineChart width={600} height={300} data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+      <Line type="monotone" dataKey="uv" stroke="#000" />
+      <Line type="monotone" dataKey="pv" stroke="#000" />
+      <Line type="monotone" dataKey="amt" stroke="#000" />
+      <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+      <XAxis dataKey="name" />
+      <YAxis />
+      {/* <YAxis orientation="right" allowDataOverflow domain={[bottom2, top2]} type="number" yAxisId="2" /> */}
+      <Tooltip />
+    </LineChart>
 );
 
 const ChartPreview = () => {
   return (
     <div className="md:order-1">
-      <Card>
+      <Card className="h-full">
         <CardHeader>
           <CardTitle>
             Preview
@@ -62,8 +63,10 @@ const ChartPreview = () => {
             대시보드를 구성할 지표를 선택하세요. 최대 2개 선택할 수 있습니다.
           </CardDescription> */}
         </CardHeader>
-        <CardContent>
-          {renderLineChart}
+        <CardContent className="h-[400px]">
+          <ResponsiveContainer width="100%" height="100%">
+            {renderLineChart}
+          </ResponsiveContainer>
         </CardContent>
       </Card>
     </div>

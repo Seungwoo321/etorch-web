@@ -36,7 +36,7 @@ export const kosisList = [
     unit_ko: '지수',
     unit_en: '인덱스',
     code: 'LCI',
-    hasMonth: false,
+    hasMonth: true,
     hasQuarter: false,
     hasYear: false,
     hasDay: false
@@ -48,7 +48,7 @@ export const kosisList = [
     unit_ko: '지수',
     unit_en: '인덱스',
     code: 'KOSPI',
-    hasMonth: false,
+    hasMonth: true,
     hasQuarter: false,
     hasYear: false,
     hasDay: false

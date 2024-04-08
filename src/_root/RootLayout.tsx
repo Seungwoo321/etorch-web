@@ -6,7 +6,7 @@ const RootLayout = () => {
     <>
       <Topbar />
       <div className="container relative">
-        <div className="hidden flex-col md:flex">
+        <div className="flex-col md:flex">
           <section>
             <Outlet />
           </section>

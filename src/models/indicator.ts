@@ -1,7 +1,7 @@
 export type Origin = 'kosis' | 'ecos' | 'oecd';
 
 export interface Indicator {
-  origin: Origin;
+  origin: Origin | '';
   name: string;
   description: string;
   unit_ko: string;

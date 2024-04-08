@@ -6,8 +6,8 @@ const Dashboard = () => {
   return (
     <div className="container py-6">
       <div className="gap-6 grid h-full items-stretch md:grid-cols-[1fr_250px]">
-          <ChartPreview />
         <ChartControl />
+        <ChartPreview />
       </div>
     </div>
   )
