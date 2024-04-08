@@ -7,8 +7,8 @@ export interface Indicator {
   unit_ko: string;
   unit_en: string;
   code: string;
-  has_month: boolean
-  has_quarter: boolean
-  has_year: boolean
-  has_day: boolean
+  hasMonth: boolean
+  hasQuarter: boolean
+  hasYear: boolean
+  hasDay: boolean
 }

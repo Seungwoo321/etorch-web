@@ -5,6 +5,6 @@ export function getOrigins (): Promise<{ origins: Origin[]}> {
   return http.get('/v1/origins')
 }
 
-export function getIndicatorsFromKosis (): Promise<{ indicators: Indicator[] }> {
-  return http.get('/v1/indicators/kosis')
+export function getIndicators (origin: string): Promise<{ indicators: Indicator[] }> {
+  return http.get(`/v1/indicators/${origin}`)
 }

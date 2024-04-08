@@ -4,7 +4,7 @@ export const origins = [
   'oecd'
 ]
 
-export const indicators = [
+export const kosisList = [
   {
     origin: 'kosis',
     name: '동행지수 순환변동치',
@@ -12,10 +12,10 @@ export const indicators = [
     unit_ko: '2020=100',
     unit_en: '2020=100',
     code: 'CCI',
-    has_month: true,
-    has_quarter: false,
-    has_year: false,
-    has_day: false
+    hasMonth: true,
+    hasQuarter: false,
+    hasYear: false,
+    hasDay: false
   },
   {
     origin: 'kosis',
@@ -24,10 +24,10 @@ export const indicators = [
     unit_ko: '2020=100',
     unit_en: '2020=100',
     code: 'CLI',
-    has_month: true,
-    has_quarter: false,
-    has_year: false,
-    has_day: false
+    hasMonth: true,
+    hasQuarter: false,
+    hasYear: false,
+    hasDay: false
   },
   {
     origin: 'kosis',
@@ -36,10 +36,10 @@ export const indicators = [
     unit_ko: '지수',
     unit_en: '인덱스',
     code: 'LCI',
-    has_month: false,
-    has_quarter: false,
-    has_year: false,
-    has_day: false
+    hasMonth: false,
+    hasQuarter: false,
+    hasYear: false,
+    hasDay: false
   },
   {
     origin: 'kosis',
@@ -48,10 +48,10 @@ export const indicators = [
     unit_ko: '지수',
     unit_en: '인덱스',
     code: 'KOSPI',
-    has_month: false,
-    has_quarter: false,
-    has_year: false,
-    has_day: false
+    hasMonth: false,
+    hasQuarter: false,
+    hasYear: false,
+    hasDay: false
   },
   {
     origin: 'kosis',
@@ -60,10 +60,10 @@ export const indicators = [
     unit_ko: '전년동월비 (%)',
     unit_en: 'YoY (%)',
     code: 'CPI_CR_YoY',
-    has_month: true,
-    has_quarter: false,
-    has_year: false,
-    has_day: false
+    hasMonth: true,
+    hasQuarter: false,
+    hasYear: false,
+    hasDay: false
   },
   {
     origin: 'kosis',
@@ -72,10 +72,10 @@ export const indicators = [
     unit_ko: '천원',
     unit_en: 'Thousand Won',
     code: 'KOSPI_MARKET_CAP',
-    has_month: true,
-    has_quarter: false,
-    has_year: false,
-    has_day: false
+    hasMonth: true,
+    hasQuarter: false,
+    hasYear: false,
+    hasDay: false
   },
   {
     origin: 'kosis',
@@ -84,10 +84,10 @@ export const indicators = [
     unit_ko: '전기비 (%)',
     unit_en: 'QoQ (%)',
     code: 'RGDP_QoQ_SA',
-    has_month: false,
-    has_quarter: true,
-    has_year: false,
-    has_day: false
+    hasMonth: false,
+    hasQuarter: true,
+    hasYear: false,
+    hasDay: false
   },
   {
     origin: 'kosis',
@@ -96,10 +96,10 @@ export const indicators = [
     unit_ko: '전년동기비 (%)',
     unit_en: 'YoY (%)',
     code: 'RGDP_YoY_V',
-    has_month: false,
-    has_quarter: true,
-    has_year: false,
-    has_day: false
+    hasMonth: false,
+    hasQuarter: true,
+    hasYear: false,
+    hasDay: false
   },
   {
     origin: 'kosis',
@@ -108,10 +108,10 @@ export const indicators = [
     unit_ko: '전년동기비 (%)',
     unit_en: 'YoY (%)',
     code: 'GDPD_CR_YoY_V',
-    has_month: false,
-    has_quarter: true,
-    has_year: false,
-    has_day: false
+    hasMonth: false,
+    hasQuarter: true,
+    hasYear: false,
+    hasDay: false
   },
   {
     origin: 'kosis',
@@ -120,10 +120,10 @@ export const indicators = [
     unit_ko: '십억원',
     unit_en: 'Bil.Won',
     code: 'NGDP_KRW',
-    has_month: false,
-    has_quarter: false,
-    has_year: true,
-    has_day: false
+    hasMonth: false,
+    hasQuarter: false,
+    hasYear: true,
+    hasDay: false
   },
   {
     origin: 'kosis',
@@ -132,10 +132,10 @@ export const indicators = [
     unit_ko: '억달러',
     unit_en: 'Hund.M U$',
     code: 'NGDP_USD',
-    has_month: false,
-    has_quarter: false,
-    has_year: true,
-    has_day: false
+    hasMonth: false,
+    hasQuarter: false,
+    hasYear: true,
+    hasDay: false
   },
   {
     origin: 'kosis',
@@ -144,10 +144,10 @@ export const indicators = [
     unit_ko: '%',
     unit_en: '%',
     code: 'GDP_RGR',
-    has_month: false,
-    has_quarter: false,
-    has_year: true,
-    has_day: false
+    hasMonth: false,
+    hasQuarter: false,
+    hasYear: true,
+    hasDay: false
   },
   {
     origin: 'kosis',
@@ -156,10 +156,10 @@ export const indicators = [
     unit_ko: '2015=100',
     unit_en: '2015=100',
     code: 'GDPD_B2015',
-    has_month: false,
-    has_quarter: false,
-    has_year: true,
-    has_day: false
+    hasMonth: false,
+    hasQuarter: false,
+    hasYear: true,
+    hasDay: false
   },
   {
     origin: 'kosis',
@@ -168,9 +168,39 @@ export const indicators = [
     unit_ko: '등락률 (%)',
     unit_en: '등락률 (%)',
     code: 'GDPD_B2015_CR',
-    has_month: false,
-    has_quarter: false,
-    has_year: true,
-    has_day: false
+    hasMonth: false,
+    hasQuarter: false,
+    hasYear: true,
+    hasDay: false
   }
+]
+
+export const ecosList = [
+  {
+    origin: 'ecos',
+    name: '시장금리 국고채 (1년)',
+    description: 'Govt. Bonds 1Y Rate',
+    unit_ko: '연%',
+    unit_en: 'Annual Percentage Rate (APR)',
+    code: 'Govt. Bonds 1Y Rate',
+    hasMonth: true,
+    hasQuarter: true,
+    hasYear: true,
+    hasDay: true
+  },
+]
+
+export const oecdList = [
+  {
+    origin: 'oecd',
+    name: '선행지수 순환변동치 (OECD)',
+    description: 'OECD에서 발표하는 선행지수 순환변동치입니다.',
+    unit_ko: '2020=100',
+    unit_en: '2020=100',
+    code: 'CLI_OECD',
+    hasMonth: true,
+    hasQuarter: false,
+    hasYear: false,
+    hasDay: false
+  },
 ]

@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom"
-import Topbar from "@/components/layout/LayoutHeader"
+import Topbar from "@/_root/layout/LayoutHeader"
 
 const RootLayout = () => {
   return (

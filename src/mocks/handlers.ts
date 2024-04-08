@@ -7,7 +7,7 @@ import {
   HttpResponse,
   JsonBodyType,
 } from 'msw'
-import { indicators, origins } from './data'
+import { kosisList, ecosList, oecdList, origins } from './data'
 
 function withDelay<
   Params extends PathParams,
@@ -25,7 +25,23 @@ export const handlers = [
     '/v1/indicators/kosis',
     withDelay(250, () => {
       return HttpResponse.json({
-        indicators
+        indicators: kosisList
+      })
+    })
+  ),
+  http.get<never, never, JsonBodyType>(
+    '/v1/indicators/ecos',
+    withDelay(250, () => {
+      return HttpResponse.json({
+        indicators: ecosList
+      })
+    })
+  ),
+  http.get<never, never, JsonBodyType>(
+    '/v1/indicators/oecd',
+    withDelay(250, () => {
+      return HttpResponse.json({
+        indicators: oecdList
       })
     })
   ),

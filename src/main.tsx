@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom';
 import App from './App.tsx'
-import { ThemeProvider } from "@/components/ThemeProvider.tsx"
+import { ThemeProvider } from "@/components/shared/ThemeProvider.tsx"
 
 async function enableMocking() {
   if (process.env.NODE_ENV !== 'development') {
