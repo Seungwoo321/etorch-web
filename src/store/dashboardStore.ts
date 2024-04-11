@@ -4,3 +4,12 @@ interface DashboardStae {
 
 }
 
+  // chartSetting: {
+  //   line: [],
+  //   xAxisLine: {
+  //     type: '',
+  //     dataKey: '',
+  //     stroke: ''
+  //   },
+  //   yAxisLine: []
+  // },

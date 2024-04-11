@@ -9,7 +9,7 @@ interface DataSettingStore {
   secondList: Indicator[]
   secondOrigin: string
   secondCode: string
-  // chartSetting: LineChart
+  
   updateFirstList: (indicators: Indicator[]) => void
   updateFirstOrigin: (firstOrigin: string) => void
   updateSecondList: (indicators: Indicator[]) => void
@@ -41,15 +41,7 @@ const useDataSettingStore = create<DataSettingStore>((set) => ({
   secondList: [],
   secondOrigin: '',
   secondCode: '',
-  // chartSetting: {
-  //   line: [],
-  //   xAxisLine: {
-  //     type: '',
-  //     dataKey: '',
-  //     stroke: ''
-  //   },
-  //   yAxisLine: []
-  // },
+
   updateFirstList: (indicators: Indicator[]) => set(() => ({ firstList: indicators })),
   updateFirstOrigin: (firstOrigin: string) => set(() => ({ firstOrigin })),
   updateFirstCode: (firstCode: string) => set(() => ({ firstCode })),

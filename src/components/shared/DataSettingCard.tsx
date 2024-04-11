@@ -37,12 +37,12 @@ const renderSelectGroupIndicatorList = (list: Indicator[]) => (
 
 const ChartSettingCard = () => {
   const {
+    firstList,
     firstOrigin,
     firstItem,
-    firstList,
+    updateFirstList,
     updateFirstOrigin,
     updateFirstItem,
-    updateFirstList
     // secondOrigin,
     // updateSecondOrigin
   } = useDataSettingStore()
@@ -94,7 +94,7 @@ const ChartSettingCard = () => {
           </Select>
         </div>
 
-        {/* <div className="space-y-1">
+        <div className="space-y-1">
           <Label>기간 선택</Label>
           <Select
             value={selectPeriod}
@@ -111,7 +111,7 @@ const ChartSettingCard = () => {
                 <SelectItem value="D" disabled={!selectFirstItem.hasDay}> 일간 </SelectItem>
             </SelectContent>
           </Select>
-        </div> */}
+        </div>
       </CardContent>
       {/* <CardFooter>
 

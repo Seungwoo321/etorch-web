@@ -4,7 +4,7 @@ import ChartControl from "@/_dashboard/card/ChartControl"
 const Dashboard = () => {
   return (
     <div className="container py-6">
-      <div className="gap-6 grid h-full items-stretch md:grid-cols-[1fr_250px]">
+      <div className="gap-6 grid h-full items-stretch md:grid-cols-[1fr_300px]">
         <ChartControl/>
         <ChartPreview />
       </div>
