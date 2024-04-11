@@ -1,3 +1,3 @@
-import useIndicatorStore from './indicatorStore'
+import useDataSettingStore from './dataSettingtStore'
 
-export { useIndicatorStore }
+export { useDataSettingStore }

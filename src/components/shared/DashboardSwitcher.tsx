@@ -44,15 +44,15 @@ const dashboardGroups = [
     label: '기본그룹',
     panels: [
       {
-        label: '경제지표와 주가 평가',
+        label: '대시보드 1', // '경제지표와 주가 평가',
         value: 'economic_stock_evaluation'
       },
       {
-        label: '경제지표와 주가 상관관계',
+        label: '대시보드 2', //'경제지표와 주가 상관관계',
         value: 'economic_stock_association'
       },
       {
-        label: '경제지표 분석',
+        label: '대시보드 3', // '경제지표 분석',
         value: 'economic_indicators_analysis'
       }
     ]

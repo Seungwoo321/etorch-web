@@ -1,4 +1,12 @@
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import {
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer
+} from 'recharts';
 
 // import { useForm } from "react-hook-form"
 
@@ -30,23 +38,23 @@ import {
 // })
 
 const data = [
-  {name: 'Page A', uv: 400, pv: 2400, amt: 2400},
-  {name: 'Page B', uv: 100, pv: 2400, amt: 2400},
-  {name: 'Page C', uv: 200, pv: 2400, amt: 100},
-  {name: 'Page D', uv: 300, pv: 2400, amt: 1200}
+  {name: '2020. 01', uv: 1400, pv: 10, amt: 1200},
+  {name: '2020. 02', uv: 1100, pv: 20, amt: 1200},
+  {name: '2020. 03', uv: 1200, pv: 50, amt: 1200},
+  {name: '2020. 04', uv: 2300, pv: 100, amt: 1200}
 ];
 
 
 const renderLineChart = (
   
     <LineChart width={600} height={300} data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-      <Line type="monotone" dataKey="uv" stroke="#000" />
-      <Line type="monotone" dataKey="pv" stroke="#000" />
-      <Line type="monotone" dataKey="amt" stroke="#000" />
-      <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-      <XAxis dataKey="name" />
-      <YAxis />
-      {/* <YAxis orientation="right" allowDataOverflow domain={[bottom2, top2]} type="number" yAxisId="2" /> */}
+      <Line type="monotone" dataKey="uv" stroke="#eb4034" yAxisId="1" />
+      <Line type="monotone" dataKey="pv" stroke="#002fff" yAxisId="2" />
+      <Line type="monotone" dataKey="amt" stroke="#000" yAxisId="1" />
+      <CartesianGrid stroke="#ddd" strokeDasharray="0" />
+      <XAxis dataKey="name" stroke='#777474' />
+      <YAxis stroke='#777474' yAxisId="1" domain={[100, 2000]} />
+      <YAxis stroke="#777474" orientation="right" allowDataOverflow domain={[0, 100]} type="number" yAxisId="2" />
       <Tooltip />
     </LineChart>
 );
