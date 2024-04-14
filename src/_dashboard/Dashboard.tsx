@@ -1,12 +1,11 @@
-import ChartPreview from "@/_dashboard/card/ChartPreview"
-import ChartControl from "@/_dashboard/card/ChartControl"
-// import { Separator } from "@/components/ui/separator"
+import CardPreview from "@/_dashboard/card/CardPreview"
+import CardControl from "@/_dashboard/card/CardControl"
 const Dashboard = () => {
   return (
     <div className="container py-6">
       <div className="gap-6 grid h-full items-stretch md:grid-cols-[1fr_300px]">
-        <ChartControl/>
-        <ChartPreview />
+        <CardControl/>
+        <CardPreview />
       </div>
     </div>
   )

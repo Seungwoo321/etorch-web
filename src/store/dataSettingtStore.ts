@@ -2,22 +2,28 @@ import { Indicator } from '@/models/dashboard'
 import { create } from 'zustand'
 
 interface DataSettingStore {
-  firstList: Indicator[]
-  firstOrigin: string
-  firstCode: string
-  firstItem: Indicator
-  secondList: Indicator[]
-  secondOrigin: string
-  secondCode: string
-  
-  updateFirstList: (indicators: Indicator[]) => void
-  updateFirstOrigin: (firstOrigin: string) => void
-  updateSecondList: (indicators: Indicator[]) => void
-  updateFirstCode: (firstCode: string) => void
-  updateFirstItem: (firstCode: string) => void
+  firstOption: {
+    list: Indicator[],
+    origin: string,
+    item: Indicator,
+    period: string
+  },
+  secondOption: {
+    list: Indicator[],
+    origin: string,
+    item: Indicator,
+    period: string
+  }
 
-  updateSecondOrigin: (secondOrigin: string) => void
-  updateSecondCode: (secondCode: string) => void
+  updateFirstList: (indicators: Indicator[]) => void 
+  updateFirstOrigin: (origni: string) => void
+  updateFirstItem: (code: string) => void
+  updateFirstPeriod: (period: string) => void
+
+  updateSecondList: (indicators: Indicator[]) => void
+  updateSecondOrigin: (origni: string) => void
+  updateSecondItem: (code: string) => void
+  updateSecondPeriod: (period: string) => void
 }
 
 const defaultItem = {
@@ -34,22 +40,29 @@ const defaultItem = {
   }
 
 const useDataSettingStore = create<DataSettingStore>((set) => ({
-  firstList: [],
-  firstOrigin: '',
-  firstItem: defaultItem,
-  firstCode: '',
-  secondList: [],
-  secondOrigin: '',
-  secondCode: '',
+  firstOption: {
+    list: [],
+    origin: '',
+    item: defaultItem,
+    period: ''
+  },
+  secondOption: {
+    list: [],
+    origin: '',
+    item: defaultItem,
+    period: ''
+  },
 
-  updateFirstList: (indicators: Indicator[]) => set(() => ({ firstList: indicators })),
-  updateFirstOrigin: (firstOrigin: string) => set(() => ({ firstOrigin })),
-  updateFirstCode: (firstCode: string) => set(() => ({ firstCode })),
-  updateFirstItem: (firstCode: string) => set(({ firstList }) => ({ firstItem: firstList.find(value => value.code === firstCode) || defaultItem })),
+  updateFirstList: (list: Indicator[]) => set(({ firstOption }) => ({ firstOption: { ...firstOption, list } })),
+  updateFirstOrigin: (origin: string) => set(({ firstOption }) => ({ firstOption: { ...firstOption, origin } })),
+  updateFirstItem: (code: string) => set(({ firstOption }) => ({ firstOption: { ...firstOption, item: firstOption.list.find(value => value.code === code) || defaultItem} })),
+  updateFirstPeriod: (period: string) => set(({ firstOption }) => ({ firstOption: { ...firstOption, period }})),
 
-  updateSecondList: (indicators: Indicator[]) => set(() => ({ secondList: indicators })),
-  updateSecondOrigin: (secondOrigin: string) => set(() => ({ secondOrigin })),
-  updateSecondCode: (secondCode: string) => set(() => ({ secondCode }))
+
+  updateSecondList: (list: Indicator[]) => set(({ secondOption }) => ({ secondOption: { ...secondOption, list } })),
+  updateSecondOrigin: (origin: string) => set(({ secondOption }) => ({ secondOption: { ...secondOption, origin } })),
+  updateSecondItem: (code: string) => set(({ secondOption }) => ({ secondOption: { ...secondOption, item: secondOption.list.find(value => value.code === code) || defaultItem }})),
+  updateSecondPeriod: (period: string) => set(({ secondOption }) => ({ secondOption: { ...secondOption, period }}))
 }))
 
 export default useDataSettingStore

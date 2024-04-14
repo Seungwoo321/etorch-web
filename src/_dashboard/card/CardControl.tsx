@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getIndicators } from "@/pages/remotes";
+import { getIndicators } from "@/lib/api";
 import { Indicator } from "@/models/dashboard";
 import {
   Tabs,
@@ -10,12 +10,12 @@ import {
 import { useDataSettingStore } from "@/store";
 // import { Label } from "../../components/ui/label";
 // import { GradientPicker } from "@/components/shared/GradientPicker";
-import DataSettingCard from '@/components/shared/DataSettingCard'
+import DataSettingCard from '@/components/card/DataSettingCard'
 
 
 const getPeriodValue = (item: Indicator) => (item.hasYear && "Y") || (item.hasQuarter && "Q") || (item.hasMonth && "M") || (item.hasDay && "D") || ''
 
-const ChartControl = () => {
+const CardControl = () => {
   // const { updateFirstList, updateSecondList, firstList, secondList } = useDataSettingStore()
   // const [selectFirstOrigin, setSelectFirstOrigin] = useState<string>('')
   // const [selectFirstItem, setSelectFirstItem] = useState<Indicator>({
@@ -131,4 +131,4 @@ const ChartControl = () => {
   )
 }
 
-export default ChartControl
+export default CardControl

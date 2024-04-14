@@ -14,7 +14,7 @@ import {
 import {
   Card,
   CardContent,
-  CardDescription,
+  // CardDescription,
   // CardFooter,
   CardHeader,
   CardTitle,
@@ -59,7 +59,7 @@ const renderLineChart = (
     </LineChart>
 );
 
-const ChartPreview = () => {
+const CardPreview = () => {
   return (
     <div className="md:order-1">
       <Card className="h-full">
@@ -81,5 +81,5 @@ const ChartPreview = () => {
   )
 }
 
-export default ChartPreview
+export default CardPreview
 1

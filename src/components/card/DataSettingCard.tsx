@@ -1,9 +1,9 @@
-import { Indicator } from "@/models/indicator";
+import { Indicator } from "@/models/dashboard";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
+  // CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -15,8 +15,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Switch } from "@/components/ui/switch";
-import { Label } from "../../components/ui/label";
+// import { Switch } from "@/components/ui/switch";
+import { Label } from "../ui/label";
+import useDataSettingStore from "@/store/dataSettingtStore";
+import { useEffect } from "react";
+import { getIndicators } from "@/lib/api";
 
 const renderSelectGroupIndicatorList = (list: Indicator[]) => (
   <SelectGroup>
@@ -32,7 +35,27 @@ const renderSelectGroupIndicatorList = (list: Indicator[]) => (
   </SelectGroup>
 )
 
-const ChartSettingCard = () => {
+const DataSettingCard = () => {
+  const {
+    firstList,
+    firstOrigin,
+    firstItem,
+    updateFirstList,
+    updateFirstOrigin,
+    updateFirstItem,
+    // secondOrigin,
+    // updateSecondOrigin
+  } = useDataSettingStore()
+
+  useEffect(() => {
+    if (!firstOrigin) return
+    getIndicators(firstOrigin).then(({ indicators }) => {
+      updateFirstList(indicators)
+      updateFirstItem('')
+      // setSelectPeriod('')
+    })
+  }, [firstOrigin, updateFirstItem, updateFirstList])
+
   return (
     <Card>
       <CardHeader>
@@ -44,7 +67,7 @@ const ChartSettingCard = () => {
       <CardContent className="space-y-4">
         <div className="space-y-1">
           <Label>데이터 제공처</Label>
-          <Select value={selectFirstOrigin} onValueChange={setSelectFirstOrigin}>
+          <Select value={firstOrigin} onValueChange={updateFirstOrigin}>
             <SelectTrigger>
               <SelectValue placeholder="데이터 제공처를 선택하세요"/>
             </SelectTrigger>
@@ -59,14 +82,14 @@ const ChartSettingCard = () => {
         <div className="space-y-1">
           <Label>데이터 선택</Label>
           <Select
-            value={selectFirstItem?.code} onValueChange={onChangeFirstItem}
-            disabled={!selectFirstOrigin}
+            value={firstItem?.code} onValueChange={updateFirstItem}
+            disabled={!firstOrigin}
           >
             <SelectTrigger>
               <SelectValue placeholder="지표를 선택하세요"/>
             </SelectTrigger>
             <SelectContent>
-              {selectFirstOrigin ? renderSelectGroupIndicatorList(firstList) : null}
+              {firstOrigin ? renderSelectGroupIndicatorList(firstList) : null}
             </SelectContent>
           </Select>
         </div>
@@ -90,15 +113,12 @@ const ChartSettingCard = () => {
           </Select>
         </div>
       </CardContent>
-      <CardFooter>
-          <div className="flex items-center space-x-2">
-            <Switch id="add-data" />
-            <Label htmlFor="add-data">두 번째 데이터 추가하기</Label>
-          </div>
-      </CardFooter>
+      {/* <CardFooter>
+
+      </CardFooter> */}
 
     </Card>
   )
 }
 
-export default ChartSettingCard
+export default DataSettingCard
