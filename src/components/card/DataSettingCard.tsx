@@ -1,73 +1,60 @@
-import { Indicator } from "@/models/dashboard";
 import {
   Card,
   CardContent,
   CardDescription,
-  // CardFooter,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
 import {
   Select,
-  SelectGroup,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-// import { Switch } from "@/components/ui/switch";
+import { GradientPicker } from "@/components/shared/GradientPicker";
 import { Label } from "../ui/label";
-import useDataSettingStore from "@/store/dataSettingtStore";
-import { useEffect } from "react";
-import { getIndicators } from "@/lib/api";
+import { DataSettingOption, DataKey } from "@/store/dataSettingtStore";
+import { Button } from "@/components/ui/button";
+import { ReactNode } from "react";
 
-const renderSelectGroupIndicatorList = (list: Indicator[]) => (
-  <SelectGroup>
-    {/* <SelectLabel>{label.toLocaleUpperCase()}</SelectLabel> */}
-    {list?.map(indicator => (
-      <SelectItem
-        key={indicator.code}
-        value={indicator.code}
-      >
-        {indicator.name}
-      </SelectItem>
-    ))}
-  </SelectGroup>
-)
+type DataSettingCardProps = {
+  dataKey: DataKey
+  title: string
+  description: string
+  selectedOption: DataSettingOption
+  onUpdateOrigin: (dataKey: DataKey, origin: string) => void
+  onUpdateItem: (dataKey: DataKey, code: string) => void
+  onUpdatePeriod: (dataKey: DataKey, period: string) => void
+  onUpdateColor: (dataKey: DataKey, color: string) => void,
+  children?: ReactNode
+}
 
-const DataSettingCard = () => {
-  const {
-    firstList,
-    firstOrigin,
-    firstItem,
-    updateFirstList,
-    updateFirstOrigin,
-    updateFirstItem,
-    // secondOrigin,
-    // updateSecondOrigin
-  } = useDataSettingStore()
-
-  useEffect(() => {
-    if (!firstOrigin) return
-    getIndicators(firstOrigin).then(({ indicators }) => {
-      updateFirstList(indicators)
-      updateFirstItem('')
-      // setSelectPeriod('')
-    })
-  }, [firstOrigin, updateFirstItem, updateFirstList])
+const DataSettingCard = ({
+  dataKey,
+  title,
+  description,
+  selectedOption,
+  onUpdateOrigin,
+  onUpdateItem,
+  onUpdatePeriod,
+  onUpdateColor,
+  children
+}: DataSettingCardProps) => {
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Data 1 Settings</CardTitle>
+        <CardTitle>{ title }</CardTitle>
         <CardDescription>
-          첫 번째 데이터를 선택하세요. 이 데이터는 Y축에 표시됩니다.
+          {description}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-1">
           <Label>데이터 제공처</Label>
-          <Select value={firstOrigin} onValueChange={updateFirstOrigin}>
+          <Select value={selectedOption.origin} onValueChange={(value) => onUpdateOrigin(dataKey, value)}>
             <SelectTrigger>
               <SelectValue placeholder="데이터 제공처를 선택하세요"/>
             </SelectTrigger>
@@ -82,14 +69,21 @@ const DataSettingCard = () => {
         <div className="space-y-1">
           <Label>데이터 선택</Label>
           <Select
-            value={firstItem?.code} onValueChange={updateFirstItem}
-            disabled={!firstOrigin}
+            value={selectedOption.item?.code} onValueChange={(value) => onUpdateItem(dataKey, value)}
+            disabled={!selectedOption.origin}
           >
             <SelectTrigger>
               <SelectValue placeholder="지표를 선택하세요"/>
             </SelectTrigger>
             <SelectContent>
-              {firstOrigin ? renderSelectGroupIndicatorList(firstList) : null}
+              {selectedOption.list?.map(indicator => (
+                <SelectItem
+                  key={indicator.code}
+                  value={indicator.code}
+                >
+                  {indicator.name}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
@@ -97,25 +91,37 @@ const DataSettingCard = () => {
         <div className="space-y-1">
           <Label>기간 선택</Label>
           <Select
-            value={selectPeriod}
-            onValueChange={setSelectPeriod}
-            disabled={!selectFirstItem?.code}
+            value={selectedOption.period}
+            onValueChange={(value) => onUpdatePeriod(dataKey, value)}
+            disabled={!selectedOption.item?.code}
           >
             <SelectTrigger>
               <SelectValue placeholder="기간을 선택하세요" />
             </SelectTrigger>
             <SelectContent>
-                <SelectItem value="Y" disabled={!selectFirstItem.hasYear}> 연간 </SelectItem>
-                <SelectItem value="Q" disabled={!selectFirstItem.hasQuarter}> 분기별 </SelectItem>
-                <SelectItem value="M" disabled={!selectFirstItem.hasMonth}> 월간 </SelectItem>
-                <SelectItem value="D" disabled={!selectFirstItem.hasDay}> 일간 </SelectItem>
+                <SelectItem value="Y" disabled={!selectedOption.item.hasYear}> 연간 </SelectItem>
+                <SelectItem value="Q" disabled={!selectedOption.item.hasQuarter}> 분기 </SelectItem>
+                <SelectItem value="M" disabled={!selectedOption.item.hasMonth}> 월간 </SelectItem>
+                <SelectItem value="D" disabled={!selectedOption.item.hasDay}> 일간 </SelectItem>
             </SelectContent>
           </Select>
         </div>
-      </CardContent>
-      {/* <CardFooter>
 
-      </CardFooter> */}
+        <div className="space-y-1">
+          <Label>
+            라인 색상
+          </Label>
+          <GradientPicker
+            className="w-full truncate"
+            background={selectedOption.color}
+            setBackground={(value) => onUpdateColor(dataKey, value)}
+          />
+        </div>
+        {children}
+      </CardContent>
+      <CardFooter>
+        <Button>데이터 적용하기</Button>
+      </CardFooter>
 
     </Card>
   )
