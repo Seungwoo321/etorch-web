@@ -15,9 +15,10 @@ import {
 } from "@/components/ui/select"
 import { GradientPicker } from "@/components/shared/GradientPicker";
 import { Label } from "../ui/label";
-import { DataSettingOption, DataKey } from "@/store/dataSettingtStore";
 import { Button } from "@/components/ui/button";
 import { ReactNode } from "react";
+import { DataKey, DataSettingOption } from "@/models/dataSetting";
+import React from "react";
 
 type DataSettingCardProps = {
   dataKey: DataKey
@@ -28,10 +29,11 @@ type DataSettingCardProps = {
   onUpdateItem: (dataKey: DataKey, code: string) => void
   onUpdatePeriod: (dataKey: DataKey, period: string) => void
   onUpdateColor: (dataKey: DataKey, color: string) => void,
+  onReloadData: (dataKey: DataKey) => void,
   children?: ReactNode
 }
 
-const DataSettingCard = ({
+const DataSettingCard = React.memo(({
   dataKey,
   title,
   description,
@@ -40,9 +42,9 @@ const DataSettingCard = ({
   onUpdateItem,
   onUpdatePeriod,
   onUpdateColor,
+  onReloadData,
   children
 }: DataSettingCardProps) => {
-
   return (
     <Card>
       <CardHeader>
@@ -120,11 +122,16 @@ const DataSettingCard = ({
         {children}
       </CardContent>
       <CardFooter>
-        <Button>데이터 적용하기</Button>
+        <Button
+          disabled={!(selectedOption.origin && selectedOption.item.code && selectedOption.period)}
+          onClick={() => onReloadData(dataKey)}
+        >
+          데이터 적용하기
+        </Button>
       </CardFooter>
 
     </Card>
   )
-}
+})
 
 export default DataSettingCard

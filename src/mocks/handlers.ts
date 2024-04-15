@@ -8,6 +8,7 @@ import {
   JsonBodyType,
 } from 'msw'
 import { kosisList, ecosList, oecdList, origins } from './data'
+import { generateMockData } from './utils/generateMockData'
 
 function withDelay<
   Params extends PathParams,
@@ -19,6 +20,11 @@ function withDelay<
     return resolver(...args)
   }
 }
+type IndicatorParamsType = {
+  origin: string;
+  code: string;
+  period: 'Y' | 'M' | 'D';
+};
 
 export const handlers = [
   http.get<never, never, JsonBodyType>(
@@ -52,5 +58,14 @@ export const handlers = [
         origins
       })
     })
-  )
+  ),
+  http.get<IndicatorParamsType, never, JsonBodyType>(
+    '/v1/indicators/:origin/:code/:period',
+    withDelay(300, ({ params }) => {
+      const data = generateMockData(params.period)
+      return HttpResponse.json({
+        data
+      })
+    })
+  ) 
 ]

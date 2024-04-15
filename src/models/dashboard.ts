@@ -1,19 +1,4 @@
 
-export type Origin = 'kosis' | 'ecos' | 'oecd' | string;
-
-export interface Indicator {
-  origin: Origin | '';
-  name: string;
-  description: string;
-  unit_ko: string;
-  unit_en: string;
-  code: string;
-  hasMonth: boolean
-  hasQuarter: boolean
-  hasYear: boolean
-  hasDay: boolean
-}
-
 export interface WidgetGrid {
   x: number
   y: number
@@ -74,7 +59,6 @@ export type ChartType = LineChart | BarChart;
 export type DashboardItem<T extends ChartType> = {
   chart: T
 }
-
 
 const lineChart: DashboardItem<LineChart> = {
   chart: {

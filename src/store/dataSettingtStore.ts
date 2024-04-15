@@ -1,27 +1,23 @@
-import { Indicator } from '@/models/dashboard'
+import { ChartData, DataKey, DataSettingOption, Indicator } from '@/models/dataSetting'
 import { create } from 'zustand'
+import { produce, Draft } from 'immer'
 
-export interface DataSettingOption {
-  list: Indicator[],
-  origin: string,
-  item: Indicator,
-  period: string
-  color: string
-}
-
-export type DataKey = 'first' | 'second';
 
 interface DataSettingStore {
   options: {
     first: DataSettingOption,
     second: DataSettingOption
   },
-
+  results: {
+    first: ChartData,
+    second: ChartData
+  },
   updateList: (dataKey: DataKey, indicators: Indicator[]) => void
   updateOrigin: (dataKey: DataKey, origin: string) => void
   updateItem: (dataKey: DataKey, code: string) => void
   updatePeriod: (dataKey: DataKey, period: string) => void
   updateColor: (dataKey: DataKey, color: string) => void
+  updateChartData: (dataKey: DataKey, chartData: ChartData) => void
 }
 
 const defaultItem = {
@@ -54,52 +50,16 @@ const useDataSettingStore = create<DataSettingStore>((set) => ({
       color: '#000'
     }
   },
-
-  updateList: (dataKey, list) => set(({ options }) => ({
-    options: {
-      ...options,
-      [dataKey]: {
-        ...options[dataKey],
-        list
-      }
-    }
-  })),
-  updateOrigin: (dataKey, origin) => set(({ options }) => ({
-    options: {
-      ...options,
-      [dataKey]: {
-        ...options[dataKey],
-        origin
-      }
-    }
-  })),
-  updateItem: (dataKey, code) => set(({ options }) => ({
-    options: {
-      ...options,
-      [dataKey]: {
-        ...options[dataKey],
-        item: options[dataKey].list.find(value => value.code === code) || defaultItem
-      }
-    }
-  })),
-  updatePeriod: (dataKey, period) => set(({ options }) => ({
-    options: {
-      ...options,
-      [dataKey]: {
-        ...options[dataKey],
-        period
-      }
-    }
-  })),
-  updateColor: (dataKey, color) => set(({ options }) => ({
-    options: {
-      ...options,
-      [dataKey]: {
-        ...options[dataKey],
-        color
-      }
-    }
-  })),
+  results: {
+    first: [],
+    second: []
+  },
+  updateList: (dataKey, list) => set(produce(({ options }: Draft<DataSettingStore>) => { options[dataKey].list = list })),
+  updateOrigin: (dataKey, origin) => set(produce(({ options }: Draft<DataSettingStore>) => { options[dataKey].origin = origin })),
+  updateItem: (dataKey, code) => set(produce(({ options }: Draft<DataSettingStore>) => { options[dataKey].item = options[dataKey].list.find(value => value.code === code) || defaultItem })),
+  updatePeriod: (dataKey, period) => set(produce(({ options }: Draft<DataSettingStore>) => { options[dataKey].period = period })),
+  updateColor: (dataKey, color) => set(produce(({ options }: Draft<DataSettingStore>) => { options[dataKey].color = color })),
+  updateChartData: (dataKey, chartData) => set(produce(({ results }: Draft<DataSettingStore>) => { results[dataKey] = chartData }))
 }))
 
 export default useDataSettingStore
