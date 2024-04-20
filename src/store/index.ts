@@ -1,3 +1,3 @@
-import useDataSettingStore from './dataSettingtStore'
+import useChartDataStore from './chartDataStore'
 
-export { useDataSettingStore }
+export { useChartDataStore }

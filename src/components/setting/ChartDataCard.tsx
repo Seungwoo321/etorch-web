@@ -17,14 +17,14 @@ import { GradientPicker } from "@/components/shared/GradientPicker";
 import { Label } from "../ui/label";
 import { Button } from "@/components/ui/button";
 import { ReactNode } from "react";
-import { DataKey, DataSettingOption } from "@/models/dataSetting";
+import { DataKey, ChartDataOption } from "@/models/chartData";
 import React from "react";
 
 type DataSettingCardProps = {
   dataKey: DataKey
   title: string
   description: string
-  selectedOption: DataSettingOption
+  selectedOption: ChartDataOption
   onUpdateOrigin: (dataKey: DataKey, origin: string) => void
   onUpdateItem: (dataKey: DataKey, code: string) => void
   onUpdatePeriod: (dataKey: DataKey, period: string) => void
@@ -69,7 +69,7 @@ const DataSettingCard = React.memo(({
         </div>
 
         <div className="space-y-1">
-          <Label>데이터 선택</Label>
+          <Label>지표</Label>
           <Select
             value={selectedOption.item?.code} onValueChange={(value) => onUpdateItem(dataKey, value)}
             disabled={!selectedOption.origin}
@@ -91,14 +91,14 @@ const DataSettingCard = React.memo(({
         </div>
 
         <div className="space-y-1">
-          <Label>기간 선택</Label>
+          <Label>데이터 조회 주기</Label>
           <Select
             value={selectedOption.period}
             onValueChange={(value) => onUpdatePeriod(dataKey, value)}
             disabled={!selectedOption.item?.code}
           >
             <SelectTrigger>
-              <SelectValue placeholder="기간을 선택하세요" />
+              <SelectValue placeholder="데이터 조회 주기를 선택하세요" />
             </SelectTrigger>
             <SelectContent>
                 <SelectItem value="Y" disabled={!selectedOption.item.hasYear}> 연간 </SelectItem>
@@ -111,7 +111,7 @@ const DataSettingCard = React.memo(({
 
         <div className="space-y-1">
           <Label>
-            라인 색상
+            선 색상
           </Label>
           <GradientPicker
             className="w-full truncate"

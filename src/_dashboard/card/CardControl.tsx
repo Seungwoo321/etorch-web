@@ -6,11 +6,11 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
-import { useDataSettingStore } from "@/store";
-import DataSettingCard from '@/components/card/DataSettingCard'
+import { useChartDataStore } from "@/store";
+import ChartDataCard from '@/components/setting/ChartDataCard'
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { DataKey } from "@/models/dataSetting";
+import { DataKey } from "@/models/chartData";
 
 const CardControl = () => {
   const [merge, setMerge] = useState(false)
@@ -23,26 +23,23 @@ const CardControl = () => {
     updatePeriod,
     updateColor,
     updateChartData,
-  } = useDataSettingStore()
+  } = useChartDataStore()
   
   const handleUpdateOrigin = useCallback(async (dataKey: DataKey, origin: string) => {
     updateOrigin(dataKey, origin);
     try {
       const { indicators } = await getIndicators(origin);
       updateList(dataKey, indicators);
-      updateItem(dataKey, '');
-      updatePeriod(dataKey, '');
     } catch (error) {
       console.log(error);
     } finally {
       console.log('finally');
     }
-  }, [updateOrigin, updateList, updateItem, updatePeriod]);
+  }, [updateOrigin, updateList]);
 
   const handleUpdateItem = useCallback((dataKey: DataKey, code: string) => {
     updateItem(dataKey, code)
-    updatePeriod(dataKey, '')
-  }, [updateItem, updatePeriod])
+  }, [updateItem])
   
   const handleReloadData = useCallback(async (dataKey: DataKey) => {
     try {
@@ -51,12 +48,9 @@ const CardControl = () => {
         code: options[dataKey].item.code,
         period: options[dataKey].period
       });
-      console.log(response);
-      console.log(updateChartData);
+      updateChartData(dataKey, response.data)
     } catch (error) {
       console.log(error);
-    } finally {
-      console.log('finally');
     }
   }, [options, updateChartData]);
 
@@ -71,7 +65,7 @@ const CardControl = () => {
       </TabsList>
 
       <TabsContent value="data-1" className="space-y-2">
-        <DataSettingCard
+        <ChartDataCard
           dataKey="first"
           title="Data 1"
           description="첫 번째 데이터를 선택하세요. 이 데이터는 Y축에 표시됩니다."
@@ -82,12 +76,12 @@ const CardControl = () => {
           onUpdateColor={updateColor}
           onReloadData={handleReloadData}
         >
-        </DataSettingCard>
+        </ChartDataCard>
 
       </TabsContent>
 
       <TabsContent value="data-2">
-        <DataSettingCard
+        <ChartDataCard
           dataKey="second"
           title="Data 2"
           description="두 번째 데이터를 선택하세요. 이 데이터는 Y축 또는 Y1축에 표시됩니다."
@@ -109,7 +103,7 @@ const CardControl = () => {
             { merge ? 'Y축 합치기' : 'Y축 분리하기'}
             </Label>
           </div>
-        </DataSettingCard>
+        </ChartDataCard>
       </TabsContent>
     </Tabs>
   )

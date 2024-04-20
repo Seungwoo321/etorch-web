@@ -14,7 +14,7 @@ export interface Indicator {
   hasDay: boolean
 }
 
-export interface DataSettingOption {
+export interface ChartDataOption {
   list: Indicator[],
   origin: string,
   item: Indicator,
