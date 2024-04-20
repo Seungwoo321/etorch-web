@@ -1,4 +1,4 @@
-import { ModeToggle } from "@/components/ModeToggle"
+import { ModeToggle } from "@/components/shared/ModeToggle"
 import { MainNav } from "./MainNav"
 import { UserNav } from "./UserNav"
 import DashboardSwitcher from "@/components/shared/DashboardSwitcher"
