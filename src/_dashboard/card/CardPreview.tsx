@@ -60,6 +60,8 @@ const renderLineChart = (
 );
 
 const CardPreview = () => {
+  
+
   return (
     <div className="md:order-1">
       <Card className="h-full">
