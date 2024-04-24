@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { GradientPicker } from "@/components/shared/GradientPicker";
+import { ColorPicker } from "@/components/shared/ColorPicker";
 import { Label } from "../ui/label";
 import { Button } from "@/components/ui/button";
 import { ReactNode } from "react";
@@ -113,7 +113,7 @@ const DataSettingCard = React.memo(({
           <Label>
             선 색상
           </Label>
-          <GradientPicker
+          <ColorPicker
             className="w-full truncate"
             background={selectedOption.color}
             setBackground={(value) => onUpdateColor(dataKey, value)}
