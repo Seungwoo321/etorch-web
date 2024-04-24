@@ -58,11 +58,24 @@ const CardPreview = () => {
     results,
     updateKey
   } = useChartDataStore()
+
+  const y1AxisLabel = {
+    value: options.first.item.unit_ko,
+    angle: 90,
+    position: 'insideTopLeft'
+  }
+  const y2AxisLabel = {
+    value: options.second.item.unit_ko,
+    angle: -90,
+    position: 'insideTopRight'
+  }
+
   useEffect(() => {
     if (updateKey) {
       setLineChart(lineChart => addLineData(lineChart, results, options, updateKey))
     }
   }, [options, results, updateKey]);
+
   return (
     <div className="md:order-1">
       <Card className="h-full">
@@ -73,13 +86,13 @@ const CardPreview = () => {
         </CardHeader>
         <CardContent className="h-[400px]">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart width={600} height={300} data={lineChart} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+            <LineChart width={600} height={300} data={lineChart} margin={{ top: 5, right: 20, bottom: 5, left: 20 }}>
               <Line type="monotone" dataKey={options.first.item.name} stroke={options.first.color} yAxisId="1" />
               <Line type="monotone" dataKey={options.second.item.name} stroke={options.second.color} yAxisId={mergedYAxis ? "1" : "2"} />
               <CartesianGrid stroke="#ddd" strokeDasharray="0" />
               <XAxis dataKey="date" stroke='#777474' />
-              <YAxis stroke='#777474' yAxisId="1" />
-              <YAxis stroke="#777474" orientation="right" allowDataOverflow type="number" yAxisId="2" />
+              <YAxis label={y1AxisLabel} stroke='#777474' yAxisId="1" />
+              <YAxis label={y2AxisLabel} stroke="#777474" orientation="right" allowDataOverflow type="number" yAxisId="2" />
               <Tooltip />
             </LineChart>
           </ResponsiveContainer>
