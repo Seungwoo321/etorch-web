@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
 import { getIndicatorData, getIndicators } from "@/lib/api";
 import {
   Tabs,
@@ -13,10 +13,13 @@ import { Label } from "@/components/ui/label";
 import { DataKey } from "@/models/chartData";
 
 const CardControl = () => {
-  const [merge, setMerge] = useState(false)
+  // const [merge, setMerge] = useState(false)
+  
 
   const {
+    mergedYAxis,
     options,
+    updateMergedYAxis,
     updateList,
     updateOrigin,
     updateItem,
@@ -53,8 +56,8 @@ const CardControl = () => {
     }
   }, [options, updateChartData]);
   const handleYaxisMerge = useCallback(() => {
-    setMerge((prevMerge) => !prevMerge);
-  }, []);
+    updateMergedYAxis(!mergedYAxis);
+  }, [mergedYAxis, updateMergedYAxis]);
   return (
     <Tabs defaultValue="data-1" className="flex-col sm:flex md:order-2 w-[300px]">
       <TabsList className="grid w-full grid-cols-2">
@@ -93,13 +96,13 @@ const CardControl = () => {
           <div className="flex items-center space-x-2">
             <Switch
               id="Combined"
-              checked={merge}
+              checked={options.first.item.unit_en !== options.second.item.unit_en ? false : mergedYAxis}
               disabled={options.first.item.unit_en !== options.second.item.unit_en}
               onCheckedChange={handleYaxisMerge}
-            />
+              />
             <Label htmlFor="Combined">
-            {/* {merge ? 'Combined Y-axis' : 'Separated Y-axes'}*/}
-            { merge ? 'Y축 합치기' : 'Y축 분리하기'}
+            {/* {mergedYAxis ? 'Combined Y-axis' : 'Separated Y-axes'}*/}
+            { mergedYAxis ? 'Y축 합치기' : 'Y축 분리하기'}
             </Label>
           </div>
         </ChartDataCard>

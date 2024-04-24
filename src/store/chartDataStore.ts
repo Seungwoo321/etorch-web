@@ -4,6 +4,7 @@ import { produce, Draft } from 'immer'
 
 
 interface ChartDataStore {
+  mergedYAxis: boolean
   updateKey: DataKey | null,
   options: {
     first: ChartDataOption,
@@ -13,6 +14,7 @@ interface ChartDataStore {
     first: ChartData,
     second: ChartData
   },
+  updateMergedYAxis: (isMerged: boolean) => void
   updateList: (dataKey: DataKey, indicators: Indicator[]) => void
   updateOrigin: (dataKey: DataKey, origin: string) => void
   updateItem: (dataKey: DataKey, code: string) => void
@@ -35,6 +37,7 @@ const INITIAL_ITEM = {
   }
 
 const useChartDataStore = create<ChartDataStore>((set) => ({
+  mergedYAxis: false,
   updateKey: null,
   options: {
     first: {
@@ -57,6 +60,7 @@ const useChartDataStore = create<ChartDataStore>((set) => ({
     first: [],
     second: []
   },
+  updateMergedYAxis: (isMerged) => set(() => ({ mergedYAxis: isMerged })),
   updateList: (dataKey, list) => set(produce((state: Draft<ChartDataStore>) => {
     state.updateKey = dataKey
     state.options[dataKey].list = list

@@ -52,7 +52,12 @@ const addLineData = (
 
 const CardPreview = () => {
   const [lineChart, setLineChart] = useState<LineItem[]>([])
-  const { options, results, updateKey } = useChartDataStore()
+  const {
+    mergedYAxis,
+    options,
+    results,
+    updateKey
+  } = useChartDataStore()
   useEffect(() => {
     if (updateKey) {
       setLineChart(lineChart => addLineData(lineChart, results, options, updateKey))
@@ -70,7 +75,7 @@ const CardPreview = () => {
           <ResponsiveContainer width="100%" height="100%">
             <LineChart width={600} height={300} data={lineChart} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
               <Line type="monotone" dataKey={options.first.item.name} stroke={options.first.color} yAxisId="1" />
-              <Line type="monotone" dataKey={options.second.item.name} stroke={options.second.color} yAxisId="2" />
+              <Line type="monotone" dataKey={options.second.item.name} stroke={options.second.color} yAxisId={mergedYAxis ? "1" : "2"} />
               <CartesianGrid stroke="#ddd" strokeDasharray="0" />
               <XAxis dataKey="date" stroke='#777474' />
               <YAxis stroke='#777474' yAxisId="1" />
