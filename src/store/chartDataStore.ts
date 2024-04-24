@@ -4,6 +4,7 @@ import { produce, Draft } from 'immer'
 
 
 interface ChartDataStore {
+  updateKey: DataKey | null,
   options: {
     first: ChartDataOption,
     second: ChartDataOption
@@ -34,6 +35,7 @@ const INITIAL_ITEM = {
   }
 
 const useChartDataStore = create<ChartDataStore>((set) => ({
+  updateKey: null,
   options: {
     first: {
       list: [],
@@ -50,34 +52,41 @@ const useChartDataStore = create<ChartDataStore>((set) => ({
       color: '#000'
     }
   },
+
   results: {
     first: [],
     second: []
   },
-  updateList: (dataKey, list) => set(produce(({ options }: Draft<ChartDataStore>) => {
-    options[dataKey].list = list
+  updateList: (dataKey, list) => set(produce((state: Draft<ChartDataStore>) => {
+    state.updateKey = dataKey
+    state.options[dataKey].list = list
 
   })),
-  updateOrigin: (dataKey, origin) => set(produce(({ options, results }: Draft<ChartDataStore>) => {
-    options[dataKey].origin = origin
-    options[dataKey].item = INITIAL_ITEM
-    options[dataKey].period = ''
-    results[dataKey] = []
+  updateOrigin: (dataKey, origin) => set(produce((state: Draft<ChartDataStore>) => {
+    state.updateKey = dataKey
+    state.options[dataKey].origin = origin
+    state.options[dataKey].item = INITIAL_ITEM
+    state.options[dataKey].period = ''
+    state.results[dataKey] = []
   })),
-  updateItem: (dataKey, code) => set(produce(({ options, results }: Draft<ChartDataStore>) => {
-    options[dataKey].item = options[dataKey].list.find(value => value.code === code) || INITIAL_ITEM
-    options[dataKey].period = ''
-    results[dataKey] = []
+  updateItem: (dataKey, code) => set(produce((state: Draft<ChartDataStore>) => {
+    state.updateKey = dataKey
+    state.options[dataKey].item = state.options[dataKey].list.find(value => value.code === code) || INITIAL_ITEM
+    state.options[dataKey].period = ''
+    state.results[dataKey] = []
   })),
-  updatePeriod: (dataKey, period) => set(produce(({ options, results }: Draft<ChartDataStore>) => {
-    options[dataKey].period = period
-    results[dataKey] = []
+  updatePeriod: (dataKey, period) => set(produce((state: Draft<ChartDataStore>) => {
+    state.updateKey = dataKey
+    state.options[dataKey].period = period
+    state.results[dataKey] = []
   })),
-  updateColor: (dataKey, color) => set(produce(({ options }: Draft<ChartDataStore>) => {
-    options[dataKey].color = color
+  updateColor: (dataKey, color) => set(produce((state: Draft<ChartDataStore>) => {
+    state.updateKey = dataKey
+    state.options[dataKey].color = color
   })),
-  updateChartData: (dataKey, chartData) => set(produce(({ results }: Draft<ChartDataStore>) => {
-    results[dataKey] = chartData
+  updateChartData: (dataKey, chartData) => set(produce((state: Draft<ChartDataStore>) => {
+    state.updateKey = dataKey
+    state.results[dataKey] = chartData
   }))
 }))
 

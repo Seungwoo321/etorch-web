@@ -39,6 +39,7 @@ const addLineData = (
     })
   }
   if (lineData[0]?.date !== result[0]?.date) {
+    console.log(keyName)
     return result.map(item => ({ date: item.date, [keyName]: item.value }))
   }
   return lineData.map((item, index) => {
@@ -51,15 +52,12 @@ const addLineData = (
 
 const CardPreview = () => {
   const [lineChart, setLineChart] = useState<LineItem[]>([])
-  const { options, results } = useChartDataStore()
+  const { options, results, updateKey } = useChartDataStore()
   useEffect(() => {
-    setLineChart(lineChart => addLineData(lineChart, results, options, 'first'))
-  }, [options, results, results.first]);
-
-  useEffect(() => {
-    setLineChart(lineChart => addLineData(lineChart, results, options, 'second'))
-  }, [options, results, results.second]);
-
+    if (updateKey) {
+      setLineChart(lineChart => addLineData(lineChart, results, options, updateKey))
+    }
+  }, [options, results, updateKey]);
   return (
     <div className="md:order-1">
       <Card className="h-full">

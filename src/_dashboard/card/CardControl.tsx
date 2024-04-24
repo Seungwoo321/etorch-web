@@ -24,7 +24,6 @@ const CardControl = () => {
     updateColor,
     updateChartData,
   } = useChartDataStore()
-  
   const handleUpdateOrigin = useCallback(async (dataKey: DataKey, origin: string) => {
     updateOrigin(dataKey, origin);
     try {
@@ -53,7 +52,6 @@ const CardControl = () => {
       console.log(error);
     }
   }, [options, updateChartData]);
-
   const handleYaxisMerge = useCallback(() => {
     setMerge((prevMerge) => !prevMerge);
   }, []);
@@ -96,6 +94,7 @@ const CardControl = () => {
             <Switch
               id="Combined"
               checked={merge}
+              disabled={options.first.item.unit_en !== options.second.item.unit_en}
               onCheckedChange={handleYaxisMerge}
             />
             <Label htmlFor="Combined">
