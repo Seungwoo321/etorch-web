@@ -5,6 +5,7 @@ import {
   XAxis,
   YAxis,
   Tooltip,
+  ReferenceLine,
   ResponsiveContainer
 } from 'recharts';
 import {
@@ -93,6 +94,8 @@ const CardPreview = () => {
               <XAxis dataKey="date" stroke='#777474' />
               <YAxis label={y1AxisLabel} stroke='#777474' yAxisId="1" />
               <YAxis label={y2AxisLabel} stroke="#777474" orientation="right" allowDataOverflow type="number" yAxisId="2" />
+              {options.first.referenceValue ? <ReferenceLine y={options.first.referenceValue} label="y1" stroke="red" strokeDasharray="3 3" yAxisId="1" ifOverflow="extendDomain"/> : null}
+              {options.second.referenceValue ? <ReferenceLine y={options.second.referenceValue} label="y2" stroke="blue" strokeDasharray="3 3" yAxisId="2" ifOverflow="extendDomain" /> : null}
               <Tooltip />
             </LineChart>
           </ResponsiveContainer>

@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useState, useCallback } from "react";
 import { getIndicatorData, getIndicators } from "@/lib/api";
 import {
   Tabs,
@@ -11,9 +11,17 @@ import ChartDataCard from '@/components/setting/ChartDataCard'
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { DataKey } from "@/models/chartData";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 const CardControl = () => {
-  // const [merge, setMerge] = useState(false)
+  const [referenceLine, setReferenceLine] = useState<string>('')
   
 
   const {
@@ -25,6 +33,7 @@ const CardControl = () => {
     updateItem,
     updatePeriod,
     updateColor,
+    updateReferenceValue,
     updateChartData,
   } = useChartDataStore()
   const handleUpdateOrigin = useCallback(async (dataKey: DataKey, origin: string) => {
@@ -43,6 +52,10 @@ const CardControl = () => {
     updateItem(dataKey, code)
   }, [updateItem])
   
+  const onUpdateReferenceValue = useCallback((dataKey: DataKey, e: React.ChangeEvent<HTMLInputElement>) => {
+    updateReferenceValue(dataKey, Number(e.target.value))
+  }, [updateReferenceValue])
+
   const handleReloadData = useCallback(async (dataKey: DataKey) => {
     try {
       const response = await getIndicatorData({
@@ -55,6 +68,7 @@ const CardControl = () => {
       console.log(error);
     }
   }, [options, updateChartData]);
+
   const handleYaxisMerge = useCallback(() => {
     updateMergedYAxis(!mergedYAxis);
   }, [mergedYAxis, updateMergedYAxis]);
@@ -77,6 +91,32 @@ const CardControl = () => {
           onUpdateColor={updateColor}
           onReloadData={handleReloadData}
         >
+          <div className="space-y-1">
+            <label htmlFor="reference-line">참조 선</label>
+            <div className="flex space-x-1">
+              <Select
+                full-width
+                value={referenceLine}
+                onValueChange={setReferenceLine}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="참조 데이터 형식을 선택하세요"/>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="manual">직접입력</SelectItem>
+                  <SelectItem value="avg">평균</SelectItem>
+                  <SelectItem value="ma">이동평균</SelectItem>
+                </SelectContent>
+              </Select>
+              {referenceLine === 'manual' 
+                ? <Input type="number" onChange={(e) => onUpdateReferenceValue('first', e)}></Input>
+                : null
+              }
+            </div>
+          </div>
+
+      
+          
         </ChartDataCard>
 
       </TabsContent>
@@ -104,6 +144,30 @@ const CardControl = () => {
             {/* {mergedYAxis ? 'Combined Y-axis' : 'Separated Y-axes'}*/}
             { mergedYAxis ? 'Y축 합치기' : 'Y축 분리하기'}
             </Label>
+          </div>
+
+          <div className="space-y-1">
+            <label htmlFor="reference-line">참조 선</label>
+            <div className="flex space-x-1">
+              <Select
+                full-width
+                value={referenceLine}
+                onValueChange={setReferenceLine}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="참조 데이터 형식을 선택하세요"/>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="manual">직접입력</SelectItem>
+                  <SelectItem value="avg">평균</SelectItem>
+                  <SelectItem value="ma">이동평균</SelectItem>
+                </SelectContent>
+              </Select>
+              {referenceLine === 'manual' 
+                ? <Input type="number" onChange={(e) => onUpdateReferenceValue('second', e)}></Input>
+                : null
+              }
+            </div>
           </div>
         </ChartDataCard>
       </TabsContent>

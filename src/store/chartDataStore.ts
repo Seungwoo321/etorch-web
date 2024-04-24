@@ -21,6 +21,7 @@ interface ChartDataStore {
   updatePeriod: (dataKey: DataKey, period: string) => void
   updateColor: (dataKey: DataKey, color: string) => void
   updateChartData: (dataKey: DataKey, chartData: ChartData) => void
+  updateReferenceValue: (dataKey: DataKey, referenceValue: number) => void
 }
 
 const INITIAL_ITEM = {
@@ -45,14 +46,14 @@ const useChartDataStore = create<ChartDataStore>((set) => ({
       origin: '',
       item: INITIAL_ITEM,
       period: '',
-      color: '#bbb'
+      color: '#bbb',
     },
     second: {
       list: [],
       origin: '',
       item: INITIAL_ITEM,
       period: '',
-      color: '#000'
+      color: '#000',
     }
   },
 
@@ -64,7 +65,7 @@ const useChartDataStore = create<ChartDataStore>((set) => ({
   updateList: (dataKey, list) => set(produce((state: Draft<ChartDataStore>) => {
     state.updateKey = dataKey
     state.options[dataKey].list = list
-
+    
   })),
   updateOrigin: (dataKey, origin) => set(produce((state: Draft<ChartDataStore>) => {
     state.updateKey = dataKey
@@ -91,7 +92,11 @@ const useChartDataStore = create<ChartDataStore>((set) => ({
   updateChartData: (dataKey, chartData) => set(produce((state: Draft<ChartDataStore>) => {
     state.updateKey = dataKey
     state.results[dataKey] = chartData
-  }))
+  })),
+  updateReferenceValue: (dataKey, referenceValue) => set(produce((state: Draft<ChartDataStore>) => {
+    state.updateKey = dataKey
+    state.options[dataKey].referenceValue = referenceValue
+  })),
 }))
 
 export default useChartDataStore
