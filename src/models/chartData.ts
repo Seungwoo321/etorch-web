@@ -15,11 +15,14 @@ export interface Indicator {
 }
 
 export interface ChartDataOption {
-  list: Indicator[],
-  origin: string,
-  item: Indicator,
+  list: Indicator[]
+  origin: string
+  item: Indicator
   period: string
-  color: string
+  lineColor: string
+  referenceLineType: string
+  referenceLineValue?: number
+  referenceLineColor: string
 }
 
 export type DataKey = 'first' | 'second';

@@ -13,9 +13,6 @@ import { Label } from "@/components/ui/label";
 import { DataKey } from "@/models/chartData";
 
 const CardControl = () => {
-  // const [merge, setMerge] = useState(false)
-  
-
   const {
     mergedYAxis,
     options,
@@ -24,7 +21,10 @@ const CardControl = () => {
     updateOrigin,
     updateItem,
     updatePeriod,
-    updateColor,
+    updateLineColor,
+    updateReferenceLineType,
+    updateReferenceLineValue,
+    updateReferenceLineColor,
     updateChartData,
   } = useChartDataStore()
   const handleUpdateOrigin = useCallback(async (dataKey: DataKey, origin: string) => {
@@ -43,6 +43,10 @@ const CardControl = () => {
     updateItem(dataKey, code)
   }, [updateItem])
   
+  const handleUpdateReferenceLineValue = useCallback((dataKey: DataKey, value: number) => {
+    updateReferenceLineValue(dataKey, value)
+  }, [updateReferenceLineValue])
+
   const handleReloadData = useCallback(async (dataKey: DataKey) => {
     try {
       const response = await getIndicatorData({
@@ -55,6 +59,7 @@ const CardControl = () => {
       console.log(error);
     }
   }, [options, updateChartData]);
+
   const handleYaxisMerge = useCallback(() => {
     updateMergedYAxis(!mergedYAxis);
   }, [mergedYAxis, updateMergedYAxis]);
@@ -69,14 +74,17 @@ const CardControl = () => {
         <ChartDataCard
           dataKey="first"
           title="Data 1"
-          description="첫 번째 데이터를 선택하세요. 이 데이터는 Y축에 표시됩니다."
+          description="첫 번째 데이터를 선택하세요. 이 데이터는 항상 Y축에 표시됩니다."
           selectedOption={options.first}
           onUpdateOrigin={handleUpdateOrigin}
           onUpdateItem={handleUpdateItem}
           onUpdatePeriod={updatePeriod}
-          onUpdateColor={updateColor}
+          onUpdateLineColor={updateLineColor}
+          onUpdateReferenceLineType={updateReferenceLineType}
+          onUpdateReferenceLineValue={handleUpdateReferenceLineValue}
+          onUpdateReferenceLineColor={updateReferenceLineColor}
           onReloadData={handleReloadData}
-        >
+        >          
         </ChartDataCard>
 
       </TabsContent>
@@ -90,7 +98,10 @@ const CardControl = () => {
           onUpdateOrigin={handleUpdateOrigin}
           onUpdateItem={handleUpdateItem}
           onUpdatePeriod={updatePeriod}
-          onUpdateColor={updateColor}
+          onUpdateLineColor={updateLineColor}
+          onUpdateReferenceLineType={updateReferenceLineType}
+          onUpdateReferenceLineValue={handleUpdateReferenceLineValue}
+          onUpdateReferenceLineColor={updateReferenceLineColor}
           onReloadData={handleReloadData}
         >
           <div className="flex items-center space-x-2">

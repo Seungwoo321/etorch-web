@@ -19,8 +19,12 @@ interface ChartDataStore {
   updateOrigin: (dataKey: DataKey, origin: string) => void
   updateItem: (dataKey: DataKey, code: string) => void
   updatePeriod: (dataKey: DataKey, period: string) => void
-  updateColor: (dataKey: DataKey, color: string) => void
+  updateLineColor: (dataKey: DataKey, lineColor: string) => void
   updateChartData: (dataKey: DataKey, chartData: ChartData) => void
+  updateReferenceLineType: (dataKey: DataKey, referenceLineType: string) => void 
+  updateReferenceLineValue: (dataKey: DataKey, referenceLineValue: number) => void
+  updateReferenceLineColor: (dataKey: DataKey, referenceLineColor: string) => void
+  getLineAverage: (dataKey: DataKey) => number
 }
 
 const INITIAL_ITEM = {
@@ -36,7 +40,7 @@ const INITIAL_ITEM = {
     hasDay: false
   }
 
-const useChartDataStore = create<ChartDataStore>((set) => ({
+const useChartDataStore = create<ChartDataStore>((set, get) => ({
   mergedYAxis: false,
   updateKey: null,
   options: {
@@ -45,14 +49,18 @@ const useChartDataStore = create<ChartDataStore>((set) => ({
       origin: '',
       item: INITIAL_ITEM,
       period: '',
-      color: '#bbb'
+      lineColor: '#000000',
+      referenceLineColor: '#f00000',
+      referenceLineType: 'N/A'
     },
     second: {
       list: [],
       origin: '',
       item: INITIAL_ITEM,
       period: '',
-      color: '#000'
+      lineColor: '#eeeeee',
+      referenceLineColor: '#0000f0',
+      referenceLineType: 'N/A'
     }
   },
 
@@ -64,7 +72,7 @@ const useChartDataStore = create<ChartDataStore>((set) => ({
   updateList: (dataKey, list) => set(produce((state: Draft<ChartDataStore>) => {
     state.updateKey = dataKey
     state.options[dataKey].list = list
-
+    
   })),
   updateOrigin: (dataKey, origin) => set(produce((state: Draft<ChartDataStore>) => {
     state.updateKey = dataKey
@@ -84,14 +92,31 @@ const useChartDataStore = create<ChartDataStore>((set) => ({
     state.options[dataKey].period = period
     state.results[dataKey] = []
   })),
-  updateColor: (dataKey, color) => set(produce((state: Draft<ChartDataStore>) => {
+  updateLineColor: (dataKey, lineColor) => set(produce((state: Draft<ChartDataStore>) => {
     state.updateKey = dataKey
-    state.options[dataKey].color = color
+    state.options[dataKey].lineColor = lineColor
   })),
   updateChartData: (dataKey, chartData) => set(produce((state: Draft<ChartDataStore>) => {
     state.updateKey = dataKey
     state.results[dataKey] = chartData
-  }))
+  })),
+  updateReferenceLineType: (dataKey, referenceLineType) => set(produce((state: Draft<ChartDataStore>) => {
+    // state.updateKey = dataKey
+    state.options[dataKey].referenceLineType = referenceLineType
+
+  })),
+  updateReferenceLineValue: (dataKey, referenceLineValue) => set(produce((state: Draft<ChartDataStore>) => {
+    // state.updateKey = dataKey
+    state.options[dataKey].referenceLineValue = referenceLineValue
+  })),
+  updateReferenceLineColor: (dataKey, referenceLineColor) => set(produce((state: Draft<ChartDataStore>) => {
+    // state.updateKey = dataKey
+    state.options[dataKey].referenceLineColor = referenceLineColor
+  })),
+  getLineAverage: (dataKey) => {
+    const lines = get().results[dataKey]
+    return lines.reduce((acc, cur) => acc + cur.value, 0) / lines.length
+  }
 }))
 
 export default useChartDataStore
