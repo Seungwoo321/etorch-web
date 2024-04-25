@@ -19,8 +19,10 @@ export interface ChartDataOption {
   origin: string
   item: Indicator
   period: string
-  color: string
-  referenceValue?: number
+  lineColor: string
+  referenceLineType: string
+  referenceLineValue?: number
+  referenceLineColor: string
 }
 
 export type DataKey = 'first' | 'second';

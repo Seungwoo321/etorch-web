@@ -40,7 +40,6 @@ const addLineData = (
     })
   }
   if (lineData[0]?.date !== result[0]?.date) {
-    console.log(keyName)
     return result.map(item => ({ date: item.date, [keyName]: item.value }))
   }
   return lineData.map((item, index) => {
@@ -54,6 +53,7 @@ const addLineData = (
 const CardPreview = () => {
   const [lineChart, setLineChart] = useState<LineItem[]>([])
   const {
+    getLineAverage,
     mergedYAxis,
     options,
     results,
@@ -65,6 +65,8 @@ const CardPreview = () => {
     angle: 90,
     position: 'insideTopLeft'
   }
+  const referenceLineY1Value = options.first.referenceLineType === 'avg' ? getLineAverage('first') : options.first.referenceLineValue
+  const referenceLineY2Value = options.second.referenceLineType === 'avg' ? getLineAverage('second') : options.second.referenceLineValue
   const y2AxisLabel = {
     value: options.second.item.unit_ko,
     angle: -90,
@@ -88,14 +90,33 @@ const CardPreview = () => {
         <CardContent className="h-[400px]">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart width={600} height={300} data={lineChart} margin={{ top: 5, right: 20, bottom: 5, left: 20 }}>
-              <Line type="monotone" dataKey={options.first.item.name} stroke={options.first.color} yAxisId="1" />
-              <Line type="monotone" dataKey={options.second.item.name} stroke={options.second.color} yAxisId={mergedYAxis ? "1" : "2"} />
+              <Line type="monotone" dataKey={options.first.item.name} stroke={options.first.lineColor} yAxisId="1" />
+              <Line type="monotone" dataKey={options.second.item.name} stroke={options.second.lineColor} yAxisId={mergedYAxis ? "1" : "2"} />
               <CartesianGrid stroke="#ddd" strokeDasharray="0" />
               <XAxis dataKey="date" stroke='#777474' />
-              <YAxis label={y1AxisLabel} stroke='#777474' yAxisId="1" />
+              <YAxis label={y1AxisLabel} stroke='#777474' yAxisId="1" type="number" />
               <YAxis label={y2AxisLabel} stroke="#777474" orientation="right" allowDataOverflow type="number" yAxisId="2" />
-              {options.first.referenceValue ? <ReferenceLine y={options.first.referenceValue} label="y1" stroke="red" strokeDasharray="3 3" yAxisId="1" ifOverflow="extendDomain"/> : null}
-              {options.second.referenceValue ? <ReferenceLine y={options.second.referenceValue} label="y2" stroke="blue" strokeDasharray="3 3" yAxisId="2" ifOverflow="extendDomain" /> : null}
+              {
+                options.first.referenceLineType !== 'N/A'
+                  ? <ReferenceLine
+                      y={referenceLineY1Value}
+                      stroke={options.first.referenceLineColor}
+                      strokeDasharray="3 3"
+                      yAxisId="1"
+                      ifOverflow="extendDomain"
+                    />
+                  : null
+              }
+              {
+                options.second.referenceLineType !== 'N/A'
+                  ? <ReferenceLine
+                      y={referenceLineY2Value}
+                      stroke={options.second.referenceLineColor}
+                      strokeDasharray="3 3"
+                      yAxisId={mergedYAxis ? "1" : "2"}
+                      ifOverflow="extendDomain"
+                    />
+                  : null}
               <Tooltip />
             </LineChart>
           </ResponsiveContainer>

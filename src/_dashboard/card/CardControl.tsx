@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
 import { getIndicatorData, getIndicators } from "@/lib/api";
 import {
   Tabs,
@@ -11,19 +11,8 @@ import ChartDataCard from '@/components/setting/ChartDataCard'
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { DataKey } from "@/models/chartData";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 
 const CardControl = () => {
-  const [referenceLine, setReferenceLine] = useState<string>('')
-  
-
   const {
     mergedYAxis,
     options,
@@ -32,8 +21,10 @@ const CardControl = () => {
     updateOrigin,
     updateItem,
     updatePeriod,
-    updateColor,
-    updateReferenceValue,
+    updateLineColor,
+    updateReferenceLineType,
+    updateReferenceLineValue,
+    updateReferenceLineColor,
     updateChartData,
   } = useChartDataStore()
   const handleUpdateOrigin = useCallback(async (dataKey: DataKey, origin: string) => {
@@ -52,9 +43,9 @@ const CardControl = () => {
     updateItem(dataKey, code)
   }, [updateItem])
   
-  const onUpdateReferenceValue = useCallback((dataKey: DataKey, e: React.ChangeEvent<HTMLInputElement>) => {
-    updateReferenceValue(dataKey, Number(e.target.value))
-  }, [updateReferenceValue])
+  const handleUpdateReferenceLineValue = useCallback((dataKey: DataKey, value: number) => {
+    updateReferenceLineValue(dataKey, value)
+  }, [updateReferenceLineValue])
 
   const handleReloadData = useCallback(async (dataKey: DataKey) => {
     try {
@@ -83,40 +74,17 @@ const CardControl = () => {
         <ChartDataCard
           dataKey="first"
           title="Data 1"
-          description="첫 번째 데이터를 선택하세요. 이 데이터는 Y축에 표시됩니다."
+          description="첫 번째 데이터를 선택하세요. 이 데이터는 항상 Y축에 표시됩니다."
           selectedOption={options.first}
           onUpdateOrigin={handleUpdateOrigin}
           onUpdateItem={handleUpdateItem}
           onUpdatePeriod={updatePeriod}
-          onUpdateColor={updateColor}
+          onUpdateLineColor={updateLineColor}
+          onUpdateReferenceLineType={updateReferenceLineType}
+          onUpdateReferenceLineValue={handleUpdateReferenceLineValue}
+          onUpdateReferenceLineColor={updateReferenceLineColor}
           onReloadData={handleReloadData}
-        >
-          <div className="space-y-1">
-            <label htmlFor="reference-line">참조 선</label>
-            <div className="flex space-x-1">
-              <Select
-                full-width
-                value={referenceLine}
-                onValueChange={setReferenceLine}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="참조 데이터 형식을 선택하세요"/>
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="manual">직접입력</SelectItem>
-                  <SelectItem value="avg">평균</SelectItem>
-                  <SelectItem value="ma">이동평균</SelectItem>
-                </SelectContent>
-              </Select>
-              {referenceLine === 'manual' 
-                ? <Input type="number" onChange={(e) => onUpdateReferenceValue('first', e)}></Input>
-                : null
-              }
-            </div>
-          </div>
-
-      
-          
+        >          
         </ChartDataCard>
 
       </TabsContent>
@@ -130,7 +98,10 @@ const CardControl = () => {
           onUpdateOrigin={handleUpdateOrigin}
           onUpdateItem={handleUpdateItem}
           onUpdatePeriod={updatePeriod}
-          onUpdateColor={updateColor}
+          onUpdateLineColor={updateLineColor}
+          onUpdateReferenceLineType={updateReferenceLineType}
+          onUpdateReferenceLineValue={handleUpdateReferenceLineValue}
+          onUpdateReferenceLineColor={updateReferenceLineColor}
           onReloadData={handleReloadData}
         >
           <div className="flex items-center space-x-2">
@@ -144,30 +115,6 @@ const CardControl = () => {
             {/* {mergedYAxis ? 'Combined Y-axis' : 'Separated Y-axes'}*/}
             { mergedYAxis ? 'Y축 합치기' : 'Y축 분리하기'}
             </Label>
-          </div>
-
-          <div className="space-y-1">
-            <label htmlFor="reference-line">참조 선</label>
-            <div className="flex space-x-1">
-              <Select
-                full-width
-                value={referenceLine}
-                onValueChange={setReferenceLine}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="참조 데이터 형식을 선택하세요"/>
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="manual">직접입력</SelectItem>
-                  <SelectItem value="avg">평균</SelectItem>
-                  <SelectItem value="ma">이동평균</SelectItem>
-                </SelectContent>
-              </Select>
-              {referenceLine === 'manual' 
-                ? <Input type="number" onChange={(e) => onUpdateReferenceValue('second', e)}></Input>
-                : null
-              }
-            </div>
           </div>
         </ChartDataCard>
       </TabsContent>
