@@ -127,4 +127,3 @@ const CardPreview = () => {
 }
 
 export default CardPreview
-1
