@@ -29,6 +29,7 @@ const addLineData = (
   options: { first: ChartDataOption, second: ChartDataOption },
   dataKey: DataKey
 ) => {
+  if (!results.first.length && !results.second.length) return []
   const result = results[dataKey]
   const keyName = options[dataKey].item.name
   if (!result.length) {
@@ -72,13 +73,29 @@ const CardPreview = () => {
     angle: -90,
     position: 'insideTopRight'
   }
-
+  const isHide = !lineChart.length
   useEffect(() => {
     if (updateKey) {
-      setLineChart(lineChart => addLineData(lineChart, results, options, updateKey))
+        setLineChart(lineChart => addLineData(lineChart, results, options, updateKey))
     }
   }, [options, results, updateKey]);
 
+  if (isHide) {
+    return (
+    <div className='md:order-1'>
+      <Card className="h-full">
+        <CardHeader>
+          <CardTitle>
+            Preview
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="h-[400px] flex justify-center items-center">
+          No data
+        </CardContent>
+      </Card>
+    </div>
+    )
+  }
   return (
     <div className="md:order-1">
       <Card className="h-full">
@@ -93,9 +110,9 @@ const CardPreview = () => {
               <Line type="monotone" dataKey={options.first.item.name} stroke={options.first.lineColor} yAxisId="1" />
               <Line type="monotone" dataKey={options.second.item.name} stroke={options.second.lineColor} yAxisId={mergedYAxis ? "1" : "2"} />
               <CartesianGrid stroke="#ddd" strokeDasharray="0" />
-              <XAxis dataKey="date" stroke='#777474' />
-              <YAxis label={y1AxisLabel} stroke='#777474' yAxisId="1" type="number" />
-              <YAxis label={y2AxisLabel} stroke="#777474" orientation="right" allowDataOverflow type="number" yAxisId="2" />
+              <XAxis dataKey="date" stroke='#777474' hide={isHide} />
+              <YAxis label={y1AxisLabel} stroke='#777474' yAxisId="1" type="number" hide={isHide} />
+              <YAxis label={y2AxisLabel} stroke="#777474" orientation="right" allowDataOverflow type="number" yAxisId="2" hide={isHide} />
               {
                 options.first.referenceLineType !== 'N/A'
                   ? <ReferenceLine
