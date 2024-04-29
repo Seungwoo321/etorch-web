@@ -21,7 +21,7 @@ import { DataKey, ChartDataOption } from "@/models/chartData";
 import React from "react";
 import { ReloadIcon } from '@radix-ui/react-icons'
 import { Input } from "@/components/ui/input";
-type DataSettingCardProps = {
+type ChartSettingCardProps = {
   dataKey: DataKey
   title: string
   description: string
@@ -37,7 +37,7 @@ type DataSettingCardProps = {
   children?: ReactNode
 }
 
-const DataSettingCard = React.memo(({
+const ChartSettingCard = React.memo(({
   dataKey,
   title,
   description,
@@ -51,7 +51,7 @@ const DataSettingCard = React.memo(({
   onUpdateReferenceLineColor,
   onReloadData,
   children
-}: DataSettingCardProps) => {
+}: ChartSettingCardProps) => {
 
   return (
     <Card>
@@ -169,4 +169,4 @@ const DataSettingCard = React.memo(({
   )
 })
 
-export default DataSettingCard
+export default ChartSettingCard

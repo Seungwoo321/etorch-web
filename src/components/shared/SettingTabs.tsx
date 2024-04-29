@@ -7,12 +7,12 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 import { useChartDataStore } from "@/store";
-import ChartDataCard from '@/components/setting/ChartDataCard'
+import ChartSettingCard from '@/components/cards/ChartSettingCard'
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { DataKey } from "@/models/chartData";
 
-const CardControl = () => {
+const SettingTabs = () => {
   const {
     mergedYAxis,
     options,
@@ -71,7 +71,7 @@ const CardControl = () => {
       </TabsList>
 
       <TabsContent value="data-1" className="space-y-2">
-        <ChartDataCard
+        <ChartSettingCard
           dataKey="first"
           title="Data 1"
           description="첫 번째 데이터를 선택하세요. 이 데이터는 항상 Y축에 표시됩니다."
@@ -85,12 +85,12 @@ const CardControl = () => {
           onUpdateReferenceLineColor={updateReferenceLineColor}
           onReloadData={handleReloadData}
         >          
-        </ChartDataCard>
+        </ChartSettingCard>
 
       </TabsContent>
 
       <TabsContent value="data-2">
-        <ChartDataCard
+        <ChartSettingCard
           dataKey="second"
           title="Data 2"
           description="두 번째 데이터를 선택하세요. 이 데이터는 Y축 또는 Y1축에 표시됩니다."
@@ -116,10 +116,10 @@ const CardControl = () => {
             { mergedYAxis ? 'Y축 합치기' : 'Y축 분리하기'}
             </Label>
           </div>
-        </ChartDataCard>
+        </ChartSettingCard>
       </TabsContent>
     </Tabs>
   )
 }
 
-export default CardControl
+export default SettingTabs
