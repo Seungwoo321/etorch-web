@@ -51,7 +51,7 @@ const addLineData = (
   })
 }
 
-const CardPreview = () => {
+const PreviewCard = () => {
   const [lineChart, setLineChart] = useState<LineItem[]>([])
   const {
     getLineAverage,
@@ -143,4 +143,4 @@ const CardPreview = () => {
   )
 }
 
-export default CardPreview
+export default PreviewCard

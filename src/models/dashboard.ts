@@ -1,20 +1,22 @@
+import { Origin } from "./chartData"
 
-export interface WidgetGrid {
-  x: number
-  y: number
-  w: number
-  h: number
-  static: boolean
-  minW: number
-  maxW: number
-}
+// export interface WidgetGrid {
+//   x: number
+//   y: number
+//   w: number
+//   h: number
+//   static: boolean
+//   minW: number
+//   maxW: number
+// }
 
-export interface WidgetData {
-  origin: string
-  code: string
-  period: string
-  yAxisId: number
-}
+
+// export interface WidgetData {
+//   origin: string
+//   code: string
+//   period: string
+//   yAxisId: number
+// }
 
 
 export interface Line {
@@ -24,7 +26,6 @@ export interface Line {
   yAxisId: string
 }
 
-
 export type YAxisLine = Line & {
   allowDataOverflow: boolean;
   orientation?: 'left' | 'right';
@@ -33,98 +34,30 @@ export type YAxisLine = Line & {
 
 export type XAxisLine = Pick<Line, "type" | "dataKey" | "stroke">;
 
-export interface ChartSettings {
-  xAxisLine: XAxisLine
-  yAxisLine: YAxisLine[]
+export interface BarChart {
+  title: string
 }
 
-export interface BarChart extends ChartSettings {
-  bar: {
-    title: string
-  }[]
+export interface LineChart {
+  origin: Origin
+  code: string
+  period: string
+  stroke: string
+  yAxisId: string
+  referenceLineColor: string
+  referenceLineType: string
 }
 
-export interface LineChart extends ChartSettings {
-  line: Line[];
-}
-
-export type Chart<T extends ChartSettings> = T extends BarChart
-  ? BarChart
-  : T extends LineChart
-    ? LineChart
-    : never
-
-export type ChartType = LineChart | BarChart;
-
-export type DashboardItem<T extends ChartType> = {
-  chart: T
-}
-
-const lineChart: DashboardItem<LineChart> = {
-  chart: {
-    line: [
-      {
-        type: '',
-        dataKey: '',
-        stroke: '',
-        yAxisId: ''
-      }
-    ],
-    xAxisLine: {
-      type: '',
-      dataKey: '',
-      stroke: '',
-    },
-    yAxisLine: [
-      {
-        type: '',
-        dataKey: '',
-        stroke: '',
-        yAxisId: '1',
-        allowDataOverflow: true,
-        orientation: 'left',
-        domain: [0, 100]
-      }
-    ]
-  }
-}
-
-const barChart: DashboardItem<BarChart> = {
-  chart: {
-    bar: [
-      {
-        title: ''
-      }
-    ],
-    xAxisLine: {
-      type: '',
-      dataKey: '',
-      stroke: '',
-    },
-    yAxisLine: [
-      {
-        type: '',
-        dataKey: '',
-        stroke: '',
-        yAxisId: '1',
-        allowDataOverflow: true,
-        orientation: 'left',
-        domain: [0, 100]
-      }
-    ]
-  }
+export interface IChart {
+  xAxisLine?: XAxisLine
+  yAxisLine?: YAxisLine[],
+  line?: LineChart[],
+  bar?: BarChart[]
 }
 
 
-const dashboard: DashboardItem<ChartType>[] = [];
+export type INewDashboard = IChart[]
 
-dashboard.push(lineChart)
-dashboard.push(barChart)
-
-if ('line' in dashboard[0].chart) {
-  console.log(dashboard[0].chart.line);
-}
-
-if ('bar' in dashboard[1].chart) {
-  console.log(dashboard[1].chart.bar);
+export type IUpdateDashboard<T extends IChart> = T & {
+  id: string;
 }

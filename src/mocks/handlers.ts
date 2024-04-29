@@ -7,7 +7,7 @@ import {
   HttpResponse,
   JsonBodyType,
 } from 'msw'
-import { kosisList, ecosList, oecdList, origins } from './data'
+import { kosisList, ecosList, oecdList, origins, dashboards } from './data'
 import { generateMockData } from './utils/generateMockData'
 
 function withDelay<
@@ -26,6 +26,9 @@ type IndicatorParamsType = {
   period: 'Y' | 'M' | 'D';
 };
 
+type DashboardParamsType = {
+  id: string;
+}
 export const handlers = [
   http.get<never, never, JsonBodyType>(
     '/v1/indicators/kosis',
@@ -67,5 +70,29 @@ export const handlers = [
         data
       })
     })
-  ) 
+  ),
+  http.post(
+    '/v1/dashboard',
+    withDelay(300, ({ params }) => {
+      console.log(params)
+      return HttpResponse.json(true)
+    })
+  ),
+  http.get<never, never, JsonBodyType>(
+    '/v1/dashboards',
+    withDelay(300, () => {
+      return HttpResponse.json({
+        dashboards
+      })
+    })
+  ),
+  http.get<DashboardParamsType, never, JsonBodyType>(
+    '/v1/dashboard/:id',
+    withDelay(300, ({ params }) => {
+      const data = dashboards.filter(item => item.id === params.id)
+      return HttpResponse.json({
+        data
+      })
+    })
+  )
 ]

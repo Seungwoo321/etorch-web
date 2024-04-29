@@ -204,3 +204,71 @@ export const oecdList = [
     hasDay: false
   },
 ]
+
+export const dashboards = [
+  {
+    id: '001',
+    name: '대시보드 1',
+    data: [
+      {
+        line: [
+          {
+            origin: 'kosis',
+            code: 'KOSPI',
+            period: 'M',
+            stroke: '#f00000',
+            yAxisId: '1',
+            referenceLineColor: '#f00000',
+            referenceLineType: 'avg'
+          },
+          {
+            origin: 'kosis',
+            code: 'CLI',
+            period: 'M',
+            stroke: '#0000cd',
+            yAxisId: '2',
+            referenceLineColor: '#0000f0',
+            referenceLineType: 'N/A'
+          }
+        ]
+      },
+      {
+        line: [
+          {
+            origin: 'CCI',
+            code: 'KOSPI',
+            period: 'M',
+            stroke: '#434343',
+            yAxisId: '1',
+            referenceLineColor: '#f00000',
+            referenceLineType: 'N/A'
+          }
+        ]
+      },
+      {
+        line: [
+          {
+            origin: 'ecos',
+            code: 'Govt. Bonds 1Y Rate',
+            period: 'A',
+            stroke: '#AC32E4',
+            yAxisId: '1',
+            referenceLineColor: '#AC32E4',
+            referenceLineType: 'N/A'
+          }
+        ]
+      }
+    ]
+
+  },
+  {
+    id: '002',
+    name: '대시보드 2',
+    data: []
+  },
+  {
+    id: '003',
+    name: '대시보드 2',
+    data: []
+  }
+]
