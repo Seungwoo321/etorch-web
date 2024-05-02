@@ -64,14 +64,16 @@ const addLineData = (
 const addLabelData = (
   labelData: LabelData,
   code: string,
-  unit: string
+  unit: string,
+  position: string,
+  angle: number
 ) => {
   return {
     ...labelData,
     [code]: {
       value: unit,
-      angle: 90,
-      position: 'insideTopLeft'
+      angle: angle,
+      position: position
     }
   }
 }
@@ -101,10 +103,10 @@ function LineChartCard({
   const [labelData, setLabelData] = useState<LabelData>({})
   const [referenceLineData, setReferenceLineData] = useState<ReferenceLineData>({})
   
-  async function fetchIndicatorData ({ origin, code, period, unit, referenceLineType, referenceLineValue }: LineChartItem) {
+  async function fetchIndicatorData ({ origin, code, period, unit, referenceLineType, referenceLineValue, labelPosition, labelAngle }: LineChartItem) {
     const { data } = await getIndicatorData({ origin, code, period })
     setLineChart(lineChart => addLineData(data, lineChart, code))
-    setLabelData(labelData => addLabelData(labelData, code, unit))
+    setLabelData(labelData => addLabelData(labelData, code, unit, labelPosition, labelAngle))
     setReferenceLineData(referenceLineData => addReferenceLineData(data, referenceLineData, code, referenceLineType, referenceLineValue))
   }
 
