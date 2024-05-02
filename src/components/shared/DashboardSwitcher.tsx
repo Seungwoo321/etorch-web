@@ -1,4 +1,4 @@
-import { useState, ComponentPropsWithoutRef } from "react"
+import { useState, ComponentPropsWithoutRef, useEffect } from "react"
 import {
   CaretSortIcon,
   CheckIcon,
@@ -38,28 +38,31 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { getDashboardById, getDashboards } from "@/lib/api"
+import { Dashboard } from "@/models/dashboard"
+import { useDashboardStore } from "@/store"
 
-const dashboardGroups = [
-  {
-    label: '기본그룹',
-    panels: [
-      {
-        label: '대시보드 1', // '경제지표와 주가 평가',
-        value: 'economic_stock_evaluation'
-      },
-      {
-        label: '대시보드 2', //'경제지표와 주가 상관관계',
-        value: 'economic_stock_association'
-      },
-      {
-        label: '대시보드 3', // '경제지표 분석',
-        value: 'economic_indicators_analysis'
-      }
-    ]
-  }
-]
+// const dashboardGroups = [
+//   {
+//     // label: '기본그룹',
+//     panels: [
+//       {
+//         label: '대시보드 1', // '경제지표와 주가 평가',
+//         value: 'economic_stock_evaluation'
+//       },
+//       {
+//         label: '대시보드 2', //'경제지표와 주가 상관관계',
+//         value: 'economic_stock_association'
+//       },
+//       {
+//         label: '대시보드 3', // '경제지표 분석',
+//         value: 'economic_indicators_analysis'
+//       }
+//     ]
+//   }
+// ]
 
-type Dashboard = (typeof dashboardGroups)[number]["panels"][number]
+// type Dashboard = (typeof dashboardGroups)[number]["panels"][number]
 
 type PopoverTriggerProps = ComponentPropsWithoutRef<typeof PopoverTrigger>
 
@@ -68,7 +71,33 @@ interface DashboardSwitcherProps extends PopoverTriggerProps {}
 const DashboardSwitcher = ({ className }: DashboardSwitcherProps) => {
   const [open, setOpen] = useState(false)
   const [showNewDashboardDialog, setShowNewDashboardDialog] = useState(false)
-  const [selectedDashboard, setSelectedDashboard] = useState<Dashboard>(dashboardGroups[0].panels[0])
+  const {
+    dashboardList,
+    currentDashboard,
+    updateDashboardList,
+    updateCurrentDashboard
+  } = useDashboardStore()
+
+  async function fetchDashboard () {
+    const { dashboards } = await getDashboards()
+    updateDashboardList(dashboards)
+    handleSelectDashboard(dashboards[0])
+  }
+
+  const handleSelectDashboard = (dashboard: Dashboard) => {
+    if (dashboard?.id) {
+      getDashboardById(dashboard.id).then(({ dashboard }) => {
+        updateCurrentDashboard(dashboard)
+      })
+    }
+  }
+  useEffect(() => {
+    fetchDashboard()
+  }, [])
+
+  // useEffect(() => {
+  //   handleSelectDashboard(dashboardList[0])
+  // }, [dashboardList])
 
   return (
     <Dialog open={showNewDashboardDialog} onOpenChange={setShowNewDashboardDialog}>
@@ -81,7 +110,7 @@ const DashboardSwitcher = ({ className }: DashboardSwitcherProps) => {
             aria-label="Select a dashboard"
             className={cn("w-[200px] justify-between", className)}
           >
-            {selectedDashboard.label}
+            {currentDashboard?.name}
             <CaretSortIcon className="ml-auto h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -90,7 +119,27 @@ const DashboardSwitcher = ({ className }: DashboardSwitcherProps) => {
             <CommandList>
               <CommandInput placeholder="Search dashboard..." />
               <CommandEmpty>No dashboard found.</CommandEmpty>
-              {dashboardGroups.map((group) => (
+              {dashboardList.map(dashboard => (
+                <CommandItem
+                  key={dashboard.id}
+                  onSelect={() => {
+                    handleSelectDashboard(dashboard)
+                    setOpen(false)
+                  }}
+                >
+                  {dashboard.name}
+                  <CheckIcon
+                    className={cn(
+                      "ml-auto h-4 w-4",
+                      currentDashboard?.id === dashboard.id
+                        ? "opacity-100"
+                        : "opacity-0"
+                    )}
+                  />
+                </CommandItem>
+              ))}
+
+              {/* {dashboardGroups.map((group) => (
                 <CommandGroup key={group.label} heading={group.label}>
                   {group.panels.map((dashboard) => (
                     <CommandItem
@@ -113,7 +162,7 @@ const DashboardSwitcher = ({ className }: DashboardSwitcherProps) => {
                     </CommandItem>
                   ))}
                 </CommandGroup>
-              ))}
+              ))} */}
             </CommandList>
             <CommandSeparator />
             <CommandList>

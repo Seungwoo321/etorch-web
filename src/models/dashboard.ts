@@ -38,12 +38,14 @@ export interface BarChart {
   title: string
 }
 
-export interface LineChart {
+export interface LineChartItem {
+  unit: string,
   origin: Origin
   code: string
   period: string
   stroke: string
   yAxisId: string
+  referenceLineValue?: number,
   referenceLineColor: string
   referenceLineType: string
 }
@@ -51,10 +53,15 @@ export interface LineChart {
 export interface IChart {
   xAxisLine?: XAxisLine
   yAxisLine?: YAxisLine[],
-  line?: LineChart[],
-  bar?: BarChart[]
+  line: LineChartItem[] | [],
+  bar: BarChart[] | []
 }
 
+export type Dashboard = {
+  id: string
+  name: string
+  data?: IChart[]
+}
 
 export type INewDashboard = IChart[]
 
