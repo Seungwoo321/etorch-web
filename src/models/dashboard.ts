@@ -39,15 +39,17 @@ export interface BarChart {
 }
 
 export interface LineChartItem {
-  unit: string,
+  unit: string
   origin: Origin
   code: string
   period: string
   stroke: string
   yAxisId: string
-  referenceLineValue?: number,
+  referenceLineValue?: number
   referenceLineColor: string
   referenceLineType: string
+  labelPosition: string
+  labelAngle: number
 }
 
 export interface IChart {

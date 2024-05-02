@@ -220,7 +220,9 @@ export const dashboards = [
             stroke: '#f00000',
             yAxisId: '1',
             referenceLineColor: '#f00000',
-            referenceLineType: 'avg'
+            referenceLineType: 'avg',
+            labelPosition: 'insideTopLeft',
+            labelAngle: 90
           },
           {
             unit: '지수',
@@ -230,7 +232,9 @@ export const dashboards = [
             stroke: '#0000cd',
             yAxisId: '2',
             referenceLineColor: '#0000f0',
-            referenceLineType: 'N/A'
+            referenceLineType: 'N/A',
+            labelPosition: 'insideTopRight',
+            labelAngle: -90
           }
         ]
       },
@@ -244,7 +248,9 @@ export const dashboards = [
             stroke: '#434343',
             yAxisId: '1',
             referenceLineColor: '#f00000',
-            referenceLineType: 'N/A'
+            referenceLineType: 'N/A',
+            labelPosition: 'insideTopLeft',
+            labelAngle: 90
           }
         ]
       },
@@ -258,7 +264,9 @@ export const dashboards = [
             stroke: '#AC32E4',
             yAxisId: '1',
             referenceLineColor: '#AC32E4',
-            referenceLineType: 'N/A'
+            referenceLineType: 'N/A',
+            labelPosition: 'insideTopLeft',
+            labelAngle: 90
           }
         ]
       }
