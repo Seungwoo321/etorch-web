@@ -82,16 +82,15 @@ export const handlers = [
     '/v1/dashboards',
     withDelay(300, () => {
       return HttpResponse.json({
-        dashboards
+        dashboards: dashboards.map(({ id, name }) => ({ id, name }))
       })
     })
   ),
   http.get<DashboardParamsType, never, JsonBodyType>(
     '/v1/dashboard/:id',
     withDelay(300, ({ params }) => {
-      const data = dashboards.filter(item => item.id === params.id)
       return HttpResponse.json({
-        data
+        dashboard: dashboards.find(({ id }) => id === params.id)
       })
     })
   )

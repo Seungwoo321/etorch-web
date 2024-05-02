@@ -37,5 +37,6 @@ export type ChartData = dataValue[] | []
 export type IGetIndicatorData = {
   origin: string,
   code: string,
-  period: string
+  period: string,
+  unit?: string
 }

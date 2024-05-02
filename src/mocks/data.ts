@@ -213,6 +213,7 @@ export const dashboards = [
       {
         line: [
           {
+            unit: '지수',
             origin: 'kosis',
             code: 'KOSPI',
             period: 'M',
@@ -222,6 +223,7 @@ export const dashboards = [
             referenceLineType: 'avg'
           },
           {
+            unit: '지수',
             origin: 'kosis',
             code: 'CLI',
             period: 'M',
@@ -235,6 +237,7 @@ export const dashboards = [
       {
         line: [
           {
+            unit: '지수',
             origin: 'CCI',
             code: 'KOSPI',
             period: 'M',
@@ -248,6 +251,7 @@ export const dashboards = [
       {
         line: [
           {
+            unit: '연%',
             origin: 'ecos',
             code: 'Govt. Bonds 1Y Rate',
             period: 'A',
@@ -268,7 +272,7 @@ export const dashboards = [
   },
   {
     id: '003',
-    name: '대시보드 2',
+    name: '대시보드 3',
     data: []
   }
 ]

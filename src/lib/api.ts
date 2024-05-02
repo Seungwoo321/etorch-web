@@ -1,6 +1,6 @@
 import { http } from "./http"
 import { ChartData, IGetIndicatorData, Indicator } from "@/models/chartData"
-import { INewDashboard, IUpdateDashboard, IChart } from '@/models/dashboard'
+import { INewDashboard, IUpdateDashboard, IChart, Dashboard } from '@/models/dashboard'
 export function getIndicators (origin: string): Promise<{ indicators: Indicator[] }> {
   return http.get(`/v1/indicators/${origin}`)
 }
@@ -19,15 +19,15 @@ export function updateDashboard (dashboard: IUpdateDashboard<IChart>) {
   return Promise.resolve({})
 }
 
-export function getDashboards () {
-  console.log('getDashboards')
+export function getDashboards (): Promise<{ dashboards: Dashboard[] }> {
+  return http.get('v1/dashboards')
 }
 
-export function getCurrentDashboard () {
-  console.log('getCurrentDashboard')
+export function getDashboardById (id: string): Promise<{ dashboard: Dashboard }> {
+  return http.get(`/v1/dashboard/${id}`)
 }
 
-export function deleteDashboard (dashboardId: string) {
-  console.log('deleteDashboard', dashboardId)
+export function deleteDashboard (id: string) {
+  console.log('deleteDashboard', id)
   return Promise.resolve(true)
 }
