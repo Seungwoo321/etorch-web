@@ -26,95 +26,57 @@ interface LineItem {
   [key: string]: string | number | null;
 }
 
-interface LabelItem {
-  value: string,
-  angle: number,
-  position: string
+interface referenceLineMap {
+  [code: string]: number
 }
 
-interface LabelData {
-  [code: string]: LabelItem
-}
-
-interface ReferenceLineData {
-  [code: string]: number | undefined
-}
-
-const addLineData = (
-  chartData: ChartData,
-  lineData: LineItem[],
-  code: string
+const addLineChartData = (
+  lineChart: LineItem[],
+  line: LineChartItem,
+  data: ChartData
 ) => {
-  if (!lineData.length) {
-    return chartData.map(item => {
+  if (!lineChart.length) {
+    return data.map(item => {
       return {
         date: item.date,
-        [code]: item.value
+        [line.code]: item.value
       }
     })
   }
-  return lineData.map((item, index) => {
+  return lineChart.map((item, index) => {
     return {
       ...item,
-      [code]: chartData[index].date === item.date ? chartData[index].value : null
+      [line.code]: data[index].date === item.date ? data[index].value : null
     }
   })
 }
 
-const addLabelData = (
-  labelData: LabelData,
-  code: string,
-  unit: string,
-  position: string,
-  angle: number
-) => {
-  return {
-    ...labelData,
-    [code]: {
-      value: unit,
-      angle: angle,
-      position: position
-    }
-  }
-}
-const getLineAverage = (chartData: ChartData ) => {
-  return chartData.reduce((acc, cur) => acc + cur.value, 0) / chartData.length
+const getLineAverage = (data: ChartData ) => {
+  return data.reduce((acc, cur) => acc + cur.value, 0) / data.length
 }
 
-
-const addReferenceLineData = (
-  chartData: ChartData,
-  referenceLineData: ReferenceLineData,
-  code: string,
-  referenceLineType: string,
-  referenceLineValue?: number
-) => {
-  return {
-    ...referenceLineData,
-    [code]: referenceLineType === 'avg' ? getLineAverage(chartData) : referenceLineValue
-  }
+const calcReferenceValue = (lineChartItem: LineChartItem, chartData: ChartData) => {
+  return lineChartItem.referenceLineType === 'avg' ? getLineAverage(chartData) : (lineChartItem.referenceLineValue || 0)
 }
 
-
-function LineChartCard({ 
+function LineChartCard({
   line
 }: LineChartCardProps) {
   const [lineChart, setLineChart] = useState<LineItem[] | []>([])
-  const [labelData, setLabelData] = useState<LabelData>({})
-  const [referenceLineData, setReferenceLineData] = useState<ReferenceLineData>({})
+  const [referenceLine, setReferenceLine] = useState<referenceLineMap>({})
   
-  async function fetchIndicatorData ({ origin, code, period, unit, referenceLineType, referenceLineValue, labelPosition, labelAngle }: LineChartItem) {
-    const { data } = await getIndicatorData({ origin, code, period })
-    setLineChart(lineChart => addLineData(data, lineChart, code))
-    setLabelData(labelData => addLabelData(labelData, code, unit, labelPosition, labelAngle))
-    setReferenceLineData(referenceLineData => addReferenceLineData(data, referenceLineData, code, referenceLineType, referenceLineValue))
-  }
-
   useEffect(() => {
-    line?.forEach(item => {
-      fetchIndicatorData(item)
-    })
+    async function fetchIndicatorData (line: LineChartItem[]) {
+        for (const item of line) {
+            const { data } = await getIndicatorData(item);
+            setLineChart(lineChart => addLineChartData(lineChart, item, data));
+            setReferenceLine(referenceLine => ({ ...referenceLine, [item.code]: calcReferenceValue(item, data) }))
+        }
+    }
+    fetchIndicatorData(line)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
   if (!line) {
     console.log('No data')
     return null
@@ -133,36 +95,42 @@ function LineChartCard({
       <CardContent className="h-[400px]">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart width={600} height={300} data={lineChart} margin={{ top: 5, right: 20, bottom: 5, left: 20 }}>
-            {line[0]?.code ? <Line type="monotone" dataKey={line[0].code} stroke={line[0].stroke} yAxisId={line[0].yAxisId} /> : null}
-            {line[1]?.code ? <Line type="monotone" dataKey={line[1].code} stroke={line[1].stroke} yAxisId={line[1].yAxisId} /> : null}
-            
-            {line[0]?.code && labelData[line[0]?.code] ? <YAxis label={labelData[line[0]?.code]} stroke='#777474' yAxisId={line[0].yAxisId} type="number"/> :null}
-            {line[1]?.code && labelData[line[1]?.code] ? <YAxis label={labelData[line[1]?.code]} stroke="#777474" orientation="right" allowDataOverflow type="number" yAxisId={line[1].yAxisId}/> : null}
 
+            {line.map(({code, stroke, yAxisId }) => (
+              <Line
+                key={`line-${code}${yAxisId}`}
+                type="monotone"
+                dataKey={code}
+                stroke={stroke}
+                yAxisId={yAxisId}
+              />
+            ))}
+            {line.map(({code, yAxisId }) => (
+              <YAxis
+                key={`yAxis-${code}${yAxisId}`}
+                label={code}
+                stroke="#777474"
+                yAxisId={yAxisId}
+                orientation={yAxisId === '2' ? 'right' : 'left'}
+                type="number"
+                allowDataOverflow
+              />
+            ))}
+    
             <CartesianGrid stroke="#ddd" strokeDasharray="0" />
             <XAxis dataKey="date" stroke='#777474'/>
-            {
-              line[0]?.code && line[0].referenceLineType !== 'N/A'
-                ? <ReferenceLine
-                    y={referenceLineData[line[0].code]}
-                    stroke={line[0]?.referenceLineColor}
-                    strokeDasharray="3 3"
-                    yAxisId="1"
-                    ifOverflow="extendDomain"
-                  />
-                : null
-            }
-            {
-              line[1]?.code && line[1].referenceLineType !== 'N/A'
-                ? <ReferenceLine
-                    y={referenceLineData[line[1].code]}
-                    stroke={line[1]?.referenceLineColor}
-                    strokeDasharray="3 3"
-                    yAxisId="1"
-                    ifOverflow="extendDomain"
-                  />
-                : null
-            }
+            {line.map(({ code, referenceLineColor, referenceLineType, yAxisId }, index) => (
+              referenceLineType !== 'N/A'
+              ? <ReferenceLine
+                  key={`ref-${referenceLineType}-${index}`}
+                  y={referenceLine[code]}
+                  yAxisId={yAxisId}
+                  strokeDasharray="3 3"
+                  stroke={referenceLineColor}
+                  ifOverflow="extendDomain"
+                />
+              : null)
+            )}
             <Tooltip />
           </LineChart>
         </ResponsiveContainer>
