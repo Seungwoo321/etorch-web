@@ -105,10 +105,10 @@ function LineChartCard({
                 yAxisId={yAxisId}
               />
             ))}
-            {line.map(({code, yAxisId }) => (
+            {line.map(({code, yAxisId, label }) => (
               <YAxis
                 key={`yAxis-${code}${yAxisId}`}
-                label={code}
+                label={label}
                 stroke="#777474"
                 yAxisId={yAxisId}
                 orientation={yAxisId === '2' ? 'right' : 'left'}
