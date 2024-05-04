@@ -22,7 +22,8 @@ export interface ChartDataOption {
   lineColor: string
   referenceLineType: string
   referenceLineValue?: number
-  referenceLineColor: string
+  referenceLineColor: string,
+  reload: boolean
 }
 
 export type DataKey = 'first' | 'second';
