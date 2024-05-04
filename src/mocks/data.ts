@@ -213,7 +213,6 @@ export const dashboards = [
       {
         line: [
           {
-            unit: '지수',
             origin: 'kosis',
             code: 'KOSPI',
             period: 'M',
@@ -221,11 +220,13 @@ export const dashboards = [
             yAxisId: '1',
             referenceLineColor: '#f00000',
             referenceLineType: 'avg',
-            labelPosition: 'insideTopLeft',
-            labelAngle: 90
+            label: {
+              value: '지수',
+              position: 'insideTopLeft',
+              angle: 90
+            }
           },
           {
-            unit: '지수',
             origin: 'kosis',
             code: 'CLI',
             period: 'M',
@@ -233,15 +234,17 @@ export const dashboards = [
             yAxisId: '2',
             referenceLineColor: '#0000f0',
             referenceLineType: 'N/A',
-            labelPosition: 'insideTopRight',
-            labelAngle: -90
+            label: {
+              value: '지수',
+              position: 'insideTopRight',
+              angle: -90
+            }
           }
         ]
       },
       {
         line: [
           {
-            unit: '지수',
             origin: 'CCI',
             code: 'KOSPI',
             period: 'M',
@@ -249,15 +252,17 @@ export const dashboards = [
             yAxisId: '1',
             referenceLineColor: '#f00000',
             referenceLineType: 'N/A',
-            labelPosition: 'insideTopLeft',
-            labelAngle: 90
+            label: {
+              value: '지수',
+              position: 'insideTopLeft',
+              angle: 90
+            }
           }
         ]
       },
       {
         line: [
           {
-            unit: '연%',
             origin: 'ecos',
             code: 'Govt. Bonds 1Y Rate',
             period: 'A',
@@ -265,8 +270,11 @@ export const dashboards = [
             yAxisId: '1',
             referenceLineColor: '#AC32E4',
             referenceLineType: 'N/A',
-            labelPosition: 'insideTopLeft',
-            labelAngle: 90
+            label: {
+              value: '연%',
+              position: 'insideTopLeft',
+              angle: 90
+            }
           }
         ]
       }

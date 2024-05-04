@@ -39,7 +39,6 @@ export interface BarChart {
 }
 
 export interface LineChartItem {
-  unit: string
   origin: Origin
   code: string
   period: string
@@ -48,8 +47,11 @@ export interface LineChartItem {
   referenceLineValue?: number
   referenceLineColor: string
   referenceLineType: string
-  labelPosition: string
-  labelAngle: number
+  label: {
+    value: string,
+    position: string,
+    angle: number
+  }
 }
 
 export interface IChart {
