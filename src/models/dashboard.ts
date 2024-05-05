@@ -1,5 +1,5 @@
 import { Origin } from "./chartData"
-
+import { YAxisProps, XAxisProps } from "recharts"
 // export interface WidgetGrid {
 //   x: number
 //   y: number
@@ -26,13 +26,13 @@ export interface Line {
   yAxisId: string
 }
 
-export type YAxisLine = Line & {
-  allowDataOverflow: boolean;
-  orientation?: 'left' | 'right';
-  domain?: [number, number];
-}
+// export type YAxisLine = Line & {
+//   allowDataOverflow: boolean;
+//   orientation?: 'left' | 'right';
+//   domain?: [number, number];
+// }
 
-export type XAxisLine = Pick<Line, "type" | "dataKey" | "stroke">;
+// export type XAxisLine = Pick<Line, "type" | "dataKey" | "stroke">;
 
 export interface BarChart {
   title: string
@@ -51,12 +51,13 @@ export interface LineChartItem {
     value: string,
     position: string,
     angle: number
-  }
+  },
+  reload?: boolean
 }
 
 export interface IChart {
-  xAxisLine?: XAxisLine
-  yAxisLine?: YAxisLine[],
+  xAxisLine?: XAxisProps
+  yAxisLine?: YAxisProps,
   line: LineChartItem[] | [],
   bar: BarChart[] | []
 }

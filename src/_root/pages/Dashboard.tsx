@@ -13,7 +13,14 @@ function Dashboard() {
       {currentDashboard?.data?.map((item, index) => (
           <LineChartCard
             key={index}
-            {...item}
+            firstLine={{
+              ...item.line[0],
+              reload: item.line.length > 0
+            }}
+            secondLine={{
+              ...item.line[1],
+              reload: item.line.length > 1
+            }}
           >
           </LineChartCard>
       ))}

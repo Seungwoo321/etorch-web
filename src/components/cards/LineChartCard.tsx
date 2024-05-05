@@ -1,26 +1,24 @@
 import {
-  LineChart,
-  Line,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ReferenceLine,
-  ResponsiveContainer
-} from 'recharts';
-import {
   Card,
   CardContent,
   // CardDescription,
   CardHeader,
   CardTitle
 } from "../ui/card"
-import { IChart, LineChartItem } from '@/models/dashboard';
-import { getIndicatorData } from '@/lib/api';
+import { LineChartItem } from '@/models/dashboard';
+import { getIndicatorData, getIndicators } from '@/lib/api';
 import { useEffect, useState } from 'react';
-import { ChartData } from '@/models/chartData';
-
-type LineChartCardProps = IChart
+import { useNavigate } from "react-router-dom"
+import { ChartData, DataKey } from '@/models/chartData';
+import LineChartContainer from "../charts/LineChartContainer";
+import {
+  Pencil2Icon
+} from "@radix-ui/react-icons"
+import { useChartDataStore } from "@/store";
+type LineChartCardProps = {
+  firstLine: LineChartItem
+  secondLine: LineChartItem
+}
 
 interface LineItem {
   [key: string]: string | number | null;
@@ -31,28 +29,29 @@ interface referenceLineMap {
 }
 
 const addLineChartData = (
-  lineChart: LineItem[],
-  line: LineChartItem,
-  data: ChartData
+  lineItems: LineItem[],
+  lineChartItem: LineChartItem,
+  chartData: ChartData
 ) => {
-  if (!lineChart.length) {
-    return data.map(item => {
+  
+  if (!lineItems.length || lineItems[0].date !== chartData[0].date) {
+    return chartData.map(item => {
       return {
         date: item.date,
-        [line.code]: item.value
+        [lineChartItem.code]: item.value
       }
     })
   }
-  return lineChart.map((item, index) => {
+  return lineItems.map((item, index) => {
     return {
       ...item,
-      [line.code]: data[index].date === item.date ? data[index].value : null
+      [lineChartItem.code]: chartData[index].date === item.date ? chartData[index].value : null
     }
   })
 }
 
-const getLineAverage = (data: ChartData ) => {
-  return data.reduce((acc, cur) => acc + cur.value, 0) / data.length
+const getLineAverage = (chartData: ChartData ) => {
+  return chartData.reduce((acc, cur) => acc + cur.value, 0) / chartData.length
 }
 
 const calcReferenceValue = (lineChartItem: LineChartItem, chartData: ChartData) => {
@@ -60,80 +59,85 @@ const calcReferenceValue = (lineChartItem: LineChartItem, chartData: ChartData) 
 }
 
 function LineChartCard({
-  line
+  firstLine,
+  secondLine
 }: LineChartCardProps) {
-  const [lineChart, setLineChart] = useState<LineItem[] | []>([])
+  const navigate = useNavigate();
+  const {
+    updateOptions,
+    updateIndicatorList
+  } = useChartDataStore()
+  const [lineItems, setLineItems] = useState<LineItem[]>([])
   const [referenceLine, setReferenceLine] = useState<referenceLineMap>({})
-  
-  useEffect(() => {
-    async function fetchIndicatorData (line: LineChartItem[]) {
-        for (const item of line) {
-            const { data } = await getIndicatorData(item);
-            setLineChart(lineChart => addLineChartData(lineChart, item, data));
-            setReferenceLine(referenceLine => ({ ...referenceLine, [item.code]: calcReferenceValue(item, data) }))
-        }
-    }
-    fetchIndicatorData(line)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
-  if (!line) {
-    console.log('No data')
-    return null
+  async function fetchIndicatorData(lineChartItem: LineChartItem) {
+    if (!lineChartItem.reload) return
+    const { data } = await getIndicatorData(lineChartItem);
+    setLineItems(lineItems => addLineChartData(lineItems, lineChartItem, data));
+    setReferenceLine(referenceLine => ({ ...referenceLine, [lineChartItem.code]: calcReferenceValue(lineChartItem, data) }))
+  }
+  useEffect(() => {
+    fetchIndicatorData(firstLine)
+  }, [firstLine])
+
+  useEffect(() => {
+    fetchIndicatorData(secondLine)
+  }, [secondLine])
+
+  const fetchIndicatorList = async (dataKey: DataKey, origin: string) => {
+    try {
+      const { indicators } = await getIndicators(origin);
+      updateIndicatorList(dataKey, indicators);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleEditChart = async () => {
+
+    await fetchIndicatorList('first', firstLine.origin)
+    updateOptions('first', firstLine)
+    if (secondLine.reload) {
+      await fetchIndicatorList('second', secondLine.origin)
+      updateOptions('second', secondLine)
+    }
+    
+    navigate('/create-chart')
+  }
+
+  if (!firstLine.reload && !secondLine.reload) {
+    return (
+      <div className='md:order-1'>
+        <Card className="h-full">
+          <CardHeader>
+            <CardTitle>
+              Preview
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="h-[400px] flex justify-center items-center">
+            No data
+          </CardContent>
+        </Card>
+      </div>
+    )
   }
   return (
     <Card className="h-full col-span-1 grid">
-      <CardHeader>
-        <CardTitle>
-          {line[0].code}
-          {line[1]?.code ? " vs " + line[1].code : ''}
-        </CardTitle>
-        {/* <CardDescription>
-          description
-        </CardDescription> */}
-      </CardHeader>
+      <div className="p-6 flex flex-row items-center justify-between space-y-1.5">
+        <h3 className="font-semibold leading-none tracking-tight">
+          {firstLine.code}
+          {secondLine.code ? " vs " + secondLine.code : ''}
+        </h3>
+        <Pencil2Icon
+          onClick={handleEditChart}
+        />
+      </div>
       <CardContent className="h-[400px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart width={600} height={300} data={lineChart} margin={{ top: 5, right: 20, bottom: 5, left: 20 }}>
-
-            {line.map(({code, stroke, yAxisId }) => (
-              <Line
-                key={`line-${code}${yAxisId}`}
-                type="monotone"
-                dataKey={code}
-                stroke={stroke}
-                yAxisId={yAxisId}
-              />
-            ))}
-            {line.map(({code, yAxisId, label }) => (
-              <YAxis
-                key={`yAxis-${code}${yAxisId}`}
-                label={label}
-                stroke="#777474"
-                yAxisId={yAxisId}
-                orientation={yAxisId === '2' ? 'right' : 'left'}
-                type="number"
-                allowDataOverflow
-              />
-            ))}
-    
-            <CartesianGrid stroke="#ddd" strokeDasharray="0" />
-            <XAxis dataKey="date" stroke='#777474'/>
-            {line.map(({ code, referenceLineColor, referenceLineType, yAxisId }, index) => (
-              referenceLineType !== 'N/A'
-              ? <ReferenceLine
-                  key={`ref-${referenceLineType}-${index}`}
-                  y={referenceLine[code]}
-                  yAxisId={yAxisId}
-                  strokeDasharray="3 3"
-                  stroke={referenceLineColor}
-                  ifOverflow="extendDomain"
-                />
-              : null)
-            )}
-            <Tooltip />
-          </LineChart>
-        </ResponsiveContainer>
+        <LineChartContainer
+          lineItems={lineItems}
+          lineChartItems={[firstLine, secondLine].filter(item => item.reload)}
+          referenceLine={referenceLine}
+        />
       </CardContent>
     </Card>
   )

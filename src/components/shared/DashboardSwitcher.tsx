@@ -93,11 +93,8 @@ const DashboardSwitcher = ({ className }: DashboardSwitcherProps) => {
   }
   useEffect(() => {
     fetchDashboard()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  // useEffect(() => {
-  //   handleSelectDashboard(dashboardList[0])
-  // }, [dashboardList])
 
   return (
     <Dialog open={showNewDashboardDialog} onOpenChange={setShowNewDashboardDialog}>
