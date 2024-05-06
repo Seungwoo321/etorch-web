@@ -41,6 +41,7 @@ import {
 import { getDashboardById, getDashboards } from "@/lib/api"
 import { Dashboard } from "@/models/dashboard"
 import { useDashboardStore } from "@/store"
+import { useNavigate } from "react-router-dom"
 
 // const dashboardGroups = [
 //   {
@@ -71,6 +72,7 @@ interface DashboardSwitcherProps extends PopoverTriggerProps {}
 const DashboardSwitcher = ({ className }: DashboardSwitcherProps) => {
   const [open, setOpen] = useState(false)
   const [showNewDashboardDialog, setShowNewDashboardDialog] = useState(false)
+  const navigate = useNavigate();
   const {
     dashboardList,
     currentDashboard,
@@ -88,6 +90,7 @@ const DashboardSwitcher = ({ className }: DashboardSwitcherProps) => {
     if (dashboard?.id) {
       getDashboardById(dashboard.id).then(({ dashboard }) => {
         updateCurrentDashboard(dashboard)
+        navigate('/')
       })
     }
   }
