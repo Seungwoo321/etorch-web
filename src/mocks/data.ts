@@ -211,6 +211,7 @@ export const dashboards = [
     name: '대시보드 1',
     data: [
       {
+        id: '0011',
         line: [
           {
             origin: 'kosis',
@@ -243,6 +244,7 @@ export const dashboards = [
         ]
       },
       {
+        id: '0012',
         line: [
           {
             origin: 'kosis',
@@ -261,6 +263,7 @@ export const dashboards = [
         ]
       },
       {
+        id: '0013',
         line: [
           {
             origin: 'ecos',
@@ -291,6 +294,7 @@ export const dashboards = [
     name: '대시보드 3',
     data: [
       {
+        id: '0031',
         line: [
           {
             origin: 'ecos',

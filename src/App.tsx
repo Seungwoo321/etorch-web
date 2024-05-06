@@ -14,6 +14,7 @@ function App() {
         <Route element={<RootLayout />}>
           <Route index element={<Dashboard/>}/>
           <Route path="/create-chart" element={<CreateChart/>}/>
+          <Route path="/edit-chart/:id" element={<CreateChart/>}/>
         </Route>
       </Routes>
     </div>
