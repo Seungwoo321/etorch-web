@@ -17,7 +17,8 @@ import { ColorPicker } from "@/components/shared/ColorPicker";
 import { Label } from "../ui/label";
 import { Button } from "@/components/ui/button";
 import { ReactNode } from "react";
-import { DataKey, ChartDataOption } from "@/models/chartData";
+import { DataKey, Indicator } from "@/models/chartData";
+import { LineChartItem } from "@/models/dashboard"
 import React from "react";
 import { ReloadIcon } from '@radix-ui/react-icons'
 import { Input } from "@/components/ui/input";
@@ -25,15 +26,17 @@ type ChartSettingCardProps = {
   dataKey: DataKey
   title: string
   description: string
-  selectedOption: ChartDataOption
+  indicatorList: Indicator[]
+  selectedItem: Indicator
+  selectedOption: LineChartItem
   onUpdateOrigin: (dataKey: DataKey, origin: string) => void
-  onUpdateItem: (dataKey: DataKey, code: string) => void
+  onUpdateCode: (dataKey: DataKey, code: string) => void
   onUpdatePeriod: (dataKey: DataKey, period: string) => void
-  onUpdateLineColor: (dataKey: DataKey, color: string) => void,
-  onUpdateReferenceLineType: (dataKey: DataKey, referenceLineType: string) => void,
-  onUpdateReferenceLineValue: (dataKey: DataKey, value: number) => void,
-  onUpdateReferenceLineColor: (dataKey: DataKey, color: string) => void,
-  onReloadData: (dataKey: DataKey) => void,
+  onUpdateStroke: (dataKey: DataKey, color: string) => void
+  onUpdateReferenceLineType: (dataKey: DataKey, referenceLineType: string) => void
+  onUpdateReferenceLineValue: (dataKey: DataKey, value: number) => void
+  onUpdateReferenceLineColor: (dataKey: DataKey, color: string) => void
+  onReloadData: (dataKey: DataKey,) => void
   children?: ReactNode
 }
 
@@ -41,11 +44,13 @@ const ChartSettingCard = React.memo(({
   dataKey,
   title,
   description,
+  indicatorList,
+  selectedItem,
   selectedOption,
   onUpdateOrigin,
-  onUpdateItem,
+  onUpdateCode,
   onUpdatePeriod,
-  onUpdateLineColor,
+  onUpdateStroke,
   onUpdateReferenceLineType,
   onUpdateReferenceLineValue,
   onUpdateReferenceLineColor,
@@ -79,30 +84,30 @@ const ChartSettingCard = React.memo(({
             <Select
               value={selectedOption.period}
               onValueChange={(value) => onUpdatePeriod(dataKey, value)}
-              disabled={!selectedOption.item?.code}
+              disabled={!selectedItem?.code}
             >
               <SelectTrigger>
                 <SelectValue placeholder="조회 주기" />
               </SelectTrigger>
               <SelectContent>
-                  <SelectItem value="Y" disabled={!selectedOption.item.hasYear}> 연간 </SelectItem>
-                  <SelectItem value="Q" disabled={!selectedOption.item.hasQuarter}> 분기 </SelectItem>
-                  <SelectItem value="M" disabled={!selectedOption.item.hasMonth}> 월간 </SelectItem>
-                  <SelectItem value="D" disabled={!selectedOption.item.hasDay}> 일간 </SelectItem>
+                  <SelectItem value="A" disabled={!selectedItem.hasYear}> 연간 </SelectItem>
+                  <SelectItem value="Q" disabled={!selectedItem.hasQuarter}> 분기 </SelectItem>
+                  <SelectItem value="M" disabled={!selectedItem.hasMonth}> 월간 </SelectItem>
+                  <SelectItem value="D" disabled={!selectedItem.hasDay}> 일간 </SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="flex space-x-1">
             <Select
-              value={selectedOption.item?.code} onValueChange={(value) => onUpdateItem(dataKey, value)}
+              value={selectedItem?.code} onValueChange={(value) => onUpdateCode(dataKey, value)}
               disabled={!selectedOption.origin}
             >
               <SelectTrigger>
                 <SelectValue placeholder="지표"/>
               </SelectTrigger>
               <SelectContent>
-                {selectedOption.list?.map(indicator => (
+                {indicatorList?.map(indicator => (
                   <SelectItem
                     key={indicator.code}
                     value={indicator.code}
@@ -113,7 +118,7 @@ const ChartSettingCard = React.memo(({
               </SelectContent>
             </Select>
             <Button
-              disabled={!(selectedOption.origin && selectedOption.item.code && selectedOption.period)}
+              disabled={!(selectedOption.origin && selectedItem.code && selectedOption.period)}
               onClick={() => onReloadData(dataKey)}
             >
               <ReloadIcon className="h-4 w-4"/>
@@ -122,8 +127,8 @@ const ChartSettingCard = React.memo(({
 
           <ColorPicker
             className="w-full truncate"
-            background={selectedOption.lineColor}
-            setBackground={(value) => onUpdateLineColor(dataKey, value)}
+            background={selectedOption.stroke}
+            setBackground={(value) => onUpdateStroke(dataKey, value)}
           />
         </div>
         

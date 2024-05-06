@@ -12,8 +12,16 @@ function Dashboard() {
       <div className="grid grid-cols-2 items-start justify-center gap-6">
       {currentDashboard?.data?.map((item, index) => (
           <LineChartCard
+            mode="view"
             key={index}
-            {...item}
+            firstLine={{
+              ...item.line[0],
+              reload: item.line.length > 0
+            }}
+            secondLine={{
+              ...item.line[1],
+              reload: item.line.length > 1
+            }}
           >
           </LineChartCard>
       ))}

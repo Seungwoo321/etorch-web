@@ -235,7 +235,7 @@ export const dashboards = [
             referenceLineColor: '#0000f0',
             referenceLineType: 'N/A',
             label: {
-              value: '지수',
+              value: '2020=100',
               position: 'insideTopRight',
               angle: -90
             }
@@ -245,7 +245,7 @@ export const dashboards = [
       {
         line: [
           {
-            origin: 'CCI',
+            origin: 'kosis',
             code: 'KOSPI',
             period: 'M',
             stroke: '#434343',
@@ -289,6 +289,25 @@ export const dashboards = [
   {
     id: '003',
     name: '대시보드 3',
-    data: []
+    data: [
+      {
+        line: [
+          {
+            origin: 'ecos',
+            code: 'Govt. Bonds 1Y Rate',
+            period: 'A',
+            stroke: '#AC32E4',
+            yAxisId: '1',
+            referenceLineColor: '#AC32E4',
+            referenceLineType: 'N/A',
+            label: {
+              value: '연%',
+              position: 'insideTopLeft',
+              angle: 90
+            }
+          }
+        ]
+      }
+    ]
   }
 ]

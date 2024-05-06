@@ -1,122 +1,193 @@
-import { ChartData, DataKey, ChartDataOption, Indicator } from '@/models/chartData'
+import { DataKey, Indicator } from '@/models/chartData'
 import { create } from 'zustand'
 import { produce, Draft } from 'immer'
+import { LineChartItem } from '@/models/dashboard'
 
 
 interface ChartDataStore {
   mergedYAxis: boolean
   updateKey: DataKey | null,
   options: {
-    first: ChartDataOption,
-    second: ChartDataOption
+    first: LineChartItem,
+    second: LineChartItem
   },
-  results: {
-    first: ChartData,
-    second: ChartData
+  first: {
+    indicatorList: Indicator[],
+    selectedItem: Indicator
   },
+  second: {
+    indicatorList: Indicator[],
+    selectedItem: Indicator
+  }
+  resetOption: () => void,
+  updateOptions: (dataKey: DataKey, option: LineChartItem) => void
   updateMergedYAxis: (isMerged: boolean) => void
-  updateList: (dataKey: DataKey, indicators: Indicator[]) => void
+  updateIndicatorList: (dataKey: DataKey, indicators: Indicator[]) => void
   updateOrigin: (dataKey: DataKey, origin: string) => void
-  updateItem: (dataKey: DataKey, code: string) => void
+  updateCode: (dataKey: DataKey, code: string) => void
   updatePeriod: (dataKey: DataKey, period: string) => void
-  updateLineColor: (dataKey: DataKey, lineColor: string) => void
-  updateChartData: (dataKey: DataKey, chartData: ChartData) => void
+  updateStroke: (dataKey: DataKey, stroke: string) => void
   updateReferenceLineType: (dataKey: DataKey, referenceLineType: string) => void 
   updateReferenceLineValue: (dataKey: DataKey, referenceLineValue: number) => void
   updateReferenceLineColor: (dataKey: DataKey, referenceLineColor: string) => void
-  getLineAverage: (dataKey: DataKey) => number
+  updateReloadData: (dataKey: DataKey, reload: boolean) => void
 }
 
 const INITIAL_ITEM = {
-    origin: '',
-    name: '',
-    description: '',
-    unit_ko: '',
-    unit_en: '',
-    code: '',
-    hasMonth: false,
-    hasQuarter: false,
-    hasYear: false,
-    hasDay: false
-  }
+  origin: '',
+  name: '',
+  description: '',
+  unit_ko: '',
+  unit_en: '',
+  code: '',
+  hasMonth: false,
+  hasQuarter: false,
+  hasYear: false,
+  hasDay: false
+}
 
-const useChartDataStore = create<ChartDataStore>((set, get) => ({
+const INITIAL_FIRST_OPTION = {
+  origin: '',
+  code: '',
+  period: '',
+  stroke: '#f00000',
+  yAxisId: '1',
+  referenceLineColor: '#000000',
+  referenceLineType: 'N/A',
+  label: {
+    value: '',
+    position: 'insideTopLeft',
+    angle: 90
+  },
+  reload: false
+}
+
+const INITIAL_SECOND_OPTION = {
+  origin: '',
+  code: '',
+  period: '',
+  stroke: '#0000f0',
+  yAxisId: '2',
+  referenceLineColor: '#000000',
+  referenceLineType: 'N/A',
+  label: {
+    value: '',
+    position: 'insideTopRight',
+    angle: -90
+  },
+  reload: false
+}
+
+const useChartDataStore = create<ChartDataStore>(set => ({
   mergedYAxis: false,
   updateKey: null,
   options: {
     first: {
-      list: [],
       origin: '',
-      item: INITIAL_ITEM,
+      code: '',
       period: '',
-      lineColor: '#000000',
-      referenceLineColor: '#f00000',
-      referenceLineType: 'N/A'
+      stroke: '#f00000',
+      yAxisId: '1',
+      referenceLineColor: '#000000',
+      referenceLineType: 'N/A',
+      label: {
+        value: '',
+        position: 'insideTopLeft',
+        angle: 90
+      },
+      reload: false
     },
     second: {
-      list: [],
       origin: '',
-      item: INITIAL_ITEM,
+      code: '',
       period: '',
-      lineColor: '#eeeeee',
-      referenceLineColor: '#0000f0',
-      referenceLineType: 'N/A'
+      stroke: '#0000f0',
+      yAxisId: '2',
+      referenceLineColor: '#000000',
+      referenceLineType: 'N/A',
+      label: {
+        value: '',
+        position: 'insideTopRight',
+        angle: -90
+      },
+      reload: false
     }
   },
-
-  results: {
-    first: [],
-    second: []
+  first: {
+    indicatorList: [],
+    selectedItem: INITIAL_ITEM
   },
-  updateMergedYAxis: (isMerged) => set(() => ({ mergedYAxis: isMerged })),
-  updateList: (dataKey, list) => set(produce((state: Draft<ChartDataStore>) => {
+  second: {
+    indicatorList: [],
+    selectedItem: INITIAL_ITEM
+  },
+  resetOption: () => set(produce((state: Draft<ChartDataStore>) => {
+    state.options.first = {
+      ...INITIAL_FIRST_OPTION
+    }
+    state.options.second = {
+      ...INITIAL_SECOND_OPTION
+    }
+  })),
+  updateOptions: (dataKey, option) => set(produce((state: Draft<ChartDataStore>) => {
+    state[dataKey].selectedItem = state[dataKey].indicatorList.find(value => value.code === option.code) || INITIAL_ITEM
+    state.options[dataKey] = option
+  })),
+  updateMergedYAxis: (isMerged) => set(produce((state: Draft<ChartDataStore>) => {
+    state.options.second.yAxisId = isMerged ? '1' : '2'
+    state.mergedYAxis = isMerged
+  })),
+  updateIndicatorList: (dataKey, list) => set(produce((state: Draft<ChartDataStore>) => {
     state.updateKey = dataKey
-    state.options[dataKey].list = list
-    
+    state[dataKey].indicatorList = list
   })),
   updateOrigin: (dataKey, origin) => set(produce((state: Draft<ChartDataStore>) => {
     state.updateKey = dataKey
     state.options[dataKey].origin = origin
-    state.options[dataKey].item = INITIAL_ITEM
+    state[dataKey].selectedItem = INITIAL_ITEM
+    state.mergedYAxis = false
+    state.options.second.yAxisId = '2'
+    state.options[dataKey].code = ''
     state.options[dataKey].period = ''
-    state.results[dataKey] = []
+    state.options[dataKey].reload = false
   })),
-  updateItem: (dataKey, code) => set(produce((state: Draft<ChartDataStore>) => {
+  updateCode: (dataKey, code) => set(produce((state: Draft<ChartDataStore>) => {
     state.updateKey = dataKey
-    state.options[dataKey].item = state.options[dataKey].list.find(value => value.code === code) || INITIAL_ITEM
+    state.options[dataKey].code = code
+    state[dataKey].selectedItem = state[dataKey].indicatorList.find(value => value.code === code) || INITIAL_ITEM
+    state.mergedYAxis = false
+    state.options.second.yAxisId = '2'
     state.options[dataKey].period = ''
-    state.results[dataKey] = []
+    state.options[dataKey].reload = false
   })),
   updatePeriod: (dataKey, period) => set(produce((state: Draft<ChartDataStore>) => {
     state.updateKey = dataKey
+    state.mergedYAxis = false
+    state.options.second.yAxisId = '2'
     state.options[dataKey].period = period
-    state.results[dataKey] = []
+    state.options[dataKey].reload = false
   })),
-  updateLineColor: (dataKey, lineColor) => set(produce((state: Draft<ChartDataStore>) => {
+  updateStroke: (dataKey, lineColor) => set(produce((state: Draft<ChartDataStore>) => {
     state.updateKey = dataKey
-    state.options[dataKey].lineColor = lineColor
-  })),
-  updateChartData: (dataKey, chartData) => set(produce((state: Draft<ChartDataStore>) => {
-    state.updateKey = dataKey
-    state.results[dataKey] = chartData
+    state.options[dataKey].stroke = lineColor
   })),
   updateReferenceLineType: (dataKey, referenceLineType) => set(produce((state: Draft<ChartDataStore>) => {
-    // state.updateKey = dataKey
     state.options[dataKey].referenceLineType = referenceLineType
-
   })),
   updateReferenceLineValue: (dataKey, referenceLineValue) => set(produce((state: Draft<ChartDataStore>) => {
-    // state.updateKey = dataKey
     state.options[dataKey].referenceLineValue = referenceLineValue
   })),
   updateReferenceLineColor: (dataKey, referenceLineColor) => set(produce((state: Draft<ChartDataStore>) => {
-    // state.updateKey = dataKey
     state.options[dataKey].referenceLineColor = referenceLineColor
   })),
-  getLineAverage: (dataKey) => {
-    const lines = get().results[dataKey]
-    return lines.reduce((acc, cur) => acc + cur.value, 0) / lines.length
-  }
+  updateReloadData: (dataKey, reload) => set(produce((state: Draft<ChartDataStore>) => {
+    const diffKey = dataKey === 'first' ? 'second' : 'first'
+    if (state.options[diffKey].period !== state.options[dataKey].period) {
+      state.options[diffKey].reload = false
+    }
+    state.options[dataKey].label.value = state[dataKey].selectedItem.unit_ko
+    state.options[dataKey].reload = reload
+  }))
 }))
 
 export default useChartDataStore

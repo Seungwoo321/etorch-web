@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { getIndicatorData, getIndicators } from "@/lib/api";
+import { getIndicators } from "@/lib/api";
 import {
   Tabs,
   TabsContent,
@@ -7,58 +7,49 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 import { useChartDataStore } from "@/store";
-import ChartSettingCard from '@/components/cards/ChartSettingCard'
+import LineChartSetupCard from '@/components/cards/LineChartSetupCard'
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { DataKey } from "@/models/chartData";
 
 const SettingTabs = () => {
   const {
+    first,
+    second,
     mergedYAxis,
     options,
     updateMergedYAxis,
-    updateList,
+    updateIndicatorList,
     updateOrigin,
-    updateItem,
+    updateCode,
     updatePeriod,
-    updateLineColor,
+    updateStroke,
     updateReferenceLineType,
     updateReferenceLineValue,
     updateReferenceLineColor,
-    updateChartData,
+    updateReloadData,
   } = useChartDataStore()
   const handleUpdateOrigin = useCallback(async (dataKey: DataKey, origin: string) => {
     updateOrigin(dataKey, origin);
     try {
       const { indicators } = await getIndicators(origin);
-      updateList(dataKey, indicators);
+      updateIndicatorList(dataKey, indicators);
     } catch (error) {
       console.log(error);
-    } finally {
-      console.log('finally');
     }
-  }, [updateOrigin, updateList]);
+  }, [updateOrigin, updateIndicatorList]);
 
-  const handleUpdateItem = useCallback((dataKey: DataKey, code: string) => {
-    updateItem(dataKey, code)
-  }, [updateItem])
+  const handleUpdateCode = useCallback((dataKey: DataKey, code: string) => {
+    updateCode(dataKey, code)
+  }, [updateCode])
   
   const handleUpdateReferenceLineValue = useCallback((dataKey: DataKey, value: number) => {
     updateReferenceLineValue(dataKey, value)
   }, [updateReferenceLineValue])
 
   const handleReloadData = useCallback(async (dataKey: DataKey) => {
-    try {
-      const response = await getIndicatorData({
-        origin: options[dataKey].origin,
-        code: options[dataKey].item.code,
-        period: options[dataKey].period
-      });
-      updateChartData(dataKey, response.data)
-    } catch (error) {
-      console.log(error);
-    }
-  }, [options, updateChartData]);
+    updateReloadData(dataKey, true)
+  }, [updateReloadData]);
 
   const handleYaxisMerge = useCallback(() => {
     updateMergedYAxis(!mergedYAxis);
@@ -71,34 +62,38 @@ const SettingTabs = () => {
       </TabsList>
 
       <TabsContent value="data-1" className="space-y-2">
-        <ChartSettingCard
+        <LineChartSetupCard
           dataKey="first"
           title="Data 1"
           description="첫 번째 데이터를 선택하세요. 이 데이터는 항상 Y축에 표시됩니다."
+          indicatorList={first.indicatorList}
+          selectedItem={first.selectedItem}
           selectedOption={options.first}
           onUpdateOrigin={handleUpdateOrigin}
-          onUpdateItem={handleUpdateItem}
+          onUpdateCode={handleUpdateCode}
           onUpdatePeriod={updatePeriod}
-          onUpdateLineColor={updateLineColor}
+          onUpdateStroke={updateStroke}
           onUpdateReferenceLineType={updateReferenceLineType}
           onUpdateReferenceLineValue={handleUpdateReferenceLineValue}
           onUpdateReferenceLineColor={updateReferenceLineColor}
           onReloadData={handleReloadData}
         >          
-        </ChartSettingCard>
+        </LineChartSetupCard>
 
       </TabsContent>
 
       <TabsContent value="data-2">
-        <ChartSettingCard
+        <LineChartSetupCard
           dataKey="second"
           title="Data 2"
           description="두 번째 데이터를 선택하세요. 이 데이터는 Y축 또는 Y1축에 표시됩니다."
+          indicatorList={second.indicatorList}
+          selectedItem={second.selectedItem}
           selectedOption={options.second}
-          onUpdateOrigin={handleUpdateOrigin}
-          onUpdateItem={handleUpdateItem}
+          onUpdateOrigin={handleUpdateOrigin.bind('first')}
+          onUpdateCode={handleUpdateCode}
           onUpdatePeriod={updatePeriod}
-          onUpdateLineColor={updateLineColor}
+          onUpdateStroke={updateStroke}
           onUpdateReferenceLineType={updateReferenceLineType}
           onUpdateReferenceLineValue={handleUpdateReferenceLineValue}
           onUpdateReferenceLineColor={updateReferenceLineColor}
@@ -107,8 +102,8 @@ const SettingTabs = () => {
           <div className="flex items-center space-x-2">
             <Switch
               id="Combined"
-              checked={options.first.item.unit_en !== options.second.item.unit_en ? false : mergedYAxis}
-              disabled={options.first.item.unit_en !== options.second.item.unit_en}
+              checked={options.first.period !== options.second.period || first.selectedItem.unit_en !== second.selectedItem.unit_en ? false : mergedYAxis}
+              disabled={options.first.period !== options.second.period || first.selectedItem.unit_en !== second.selectedItem.unit_en}
               onCheckedChange={handleYaxisMerge}
               />
             <Label htmlFor="Combined">
@@ -116,7 +111,7 @@ const SettingTabs = () => {
             { mergedYAxis ? 'Y축 합치기' : 'Y축 분리하기'}
             </Label>
           </div>
-        </ChartSettingCard>
+        </LineChartSetupCard>
       </TabsContent>
     </Tabs>
   )

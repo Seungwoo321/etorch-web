@@ -14,17 +14,6 @@ export interface Indicator {
   hasDay: boolean
 }
 
-export interface ChartDataOption {
-  list: Indicator[]
-  origin: string
-  item: Indicator
-  period: string
-  lineColor: string
-  referenceLineType: string
-  referenceLineValue?: number
-  referenceLineColor: string
-}
-
 export type DataKey = 'first' | 'second';
 
 export interface dataValue {
