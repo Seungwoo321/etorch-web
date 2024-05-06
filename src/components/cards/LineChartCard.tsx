@@ -16,6 +16,7 @@ import {
 } from "@radix-ui/react-icons"
 import { useChartDataStore } from "@/store";
 type LineChartCardProps = {
+  mode: string
   firstLine: LineChartItem
   secondLine: LineChartItem
 }
@@ -59,6 +60,7 @@ const calcReferenceValue = (lineChartItem: LineChartItem, chartData: ChartData) 
 }
 
 function LineChartCard({
+  mode,
   firstLine,
   secondLine
 }: LineChartCardProps) {
@@ -94,7 +96,6 @@ function LineChartCard({
   }
 
   const handleEditChart = async () => {
-
     await fetchIndicatorList('first', firstLine.origin)
     updateOptions('first', firstLine)
     if (secondLine.reload) {
@@ -128,9 +129,15 @@ function LineChartCard({
           {firstLine.code}
           {secondLine.code ? " vs " + secondLine.code : ''}
         </h3>
-        <Pencil2Icon
-          onClick={handleEditChart}
-        />
+        {
+          mode === "view"
+          ? <Pencil2Icon
+              className="cursor-pointer"
+              onClick={handleEditChart}
+            />
+          : null
+        }
+
       </div>
       <CardContent className="h-[400px]">
         <LineChartContainer

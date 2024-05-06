@@ -7,12 +7,16 @@ import { useNavigate } from "react-router-dom"
 // import { LineChartItem } from "@/models/dashboard"
 
 const CreateChart = () => {
-  const { options } = useChartDataStore()
+  const {
+    options,
+    resetOption
+  } = useChartDataStore()
   // const [lineChartItems, setLineChartItems] = useState<LineChartItem[] | [null, null]>([null, null]) 
   const navigate = useNavigate();
 
 
   const handleBackButton = () => {
+    resetOption()
     navigate('/')
   }
   const handleSaveButton = () => {
@@ -26,6 +30,7 @@ const CreateChart = () => {
       <div className="gap-6 grid h-full items-stretch md:grid-cols-[1fr_300px]">
         <SettingTabs/>
         <LineChartCard
+          mode="edit"
           firstLine={options.first}
           secondLine={options.second}
         />

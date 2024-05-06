@@ -90,7 +90,7 @@ const ChartSettingCard = React.memo(({
                 <SelectValue placeholder="조회 주기" />
               </SelectTrigger>
               <SelectContent>
-                  <SelectItem value="Y" disabled={!selectedItem.hasYear}> 연간 </SelectItem>
+                  <SelectItem value="A" disabled={!selectedItem.hasYear}> 연간 </SelectItem>
                   <SelectItem value="Q" disabled={!selectedItem.hasQuarter}> 분기 </SelectItem>
                   <SelectItem value="M" disabled={!selectedItem.hasMonth}> 월간 </SelectItem>
                   <SelectItem value="D" disabled={!selectedItem.hasDay}> 일간 </SelectItem>

@@ -245,7 +245,7 @@ export const dashboards = [
       {
         line: [
           {
-            origin: 'CCI',
+            origin: 'kosis',
             code: 'KOSPI',
             period: 'M',
             stroke: '#434343',

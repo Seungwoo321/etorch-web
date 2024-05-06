@@ -19,6 +19,7 @@ interface ChartDataStore {
     indicatorList: Indicator[],
     selectedItem: Indicator
   }
+  resetOption: () => void,
   updateOptions: (dataKey: DataKey, option: LineChartItem) => void
   updateMergedYAxis: (isMerged: boolean) => void
   updateIndicatorList: (dataKey: DataKey, indicators: Indicator[]) => void
@@ -33,17 +34,49 @@ interface ChartDataStore {
 }
 
 const INITIAL_ITEM = {
-    origin: '',
-    name: '',
-    description: '',
-    unit_ko: '',
-    unit_en: '',
-    code: '',
-    hasMonth: false,
-    hasQuarter: false,
-    hasYear: false,
-    hasDay: false
-  }
+  origin: '',
+  name: '',
+  description: '',
+  unit_ko: '',
+  unit_en: '',
+  code: '',
+  hasMonth: false,
+  hasQuarter: false,
+  hasYear: false,
+  hasDay: false
+}
+
+const INITIAL_FIRST_OPTION = {
+  origin: '',
+  code: '',
+  period: '',
+  stroke: '#f00000',
+  yAxisId: '1',
+  referenceLineColor: '#000000',
+  referenceLineType: 'N/A',
+  label: {
+    value: '',
+    position: 'insideTopLeft',
+    angle: 90
+  },
+  reload: false
+}
+
+const INITIAL_SECOND_OPTION = {
+  origin: '',
+  code: '',
+  period: '',
+  stroke: '#0000f0',
+  yAxisId: '2',
+  referenceLineColor: '#000000',
+  referenceLineType: 'N/A',
+  label: {
+    value: '',
+    position: 'insideTopRight',
+    angle: -90
+  },
+  reload: false
+}
 
 const useChartDataStore = create<ChartDataStore>(set => ({
   mergedYAxis: false,
@@ -88,8 +121,18 @@ const useChartDataStore = create<ChartDataStore>(set => ({
     indicatorList: [],
     selectedItem: INITIAL_ITEM
   },
+  resetOption: () => set(produce((state: Draft<ChartDataStore>) => {
+    state.options.first = {
+      ...INITIAL_FIRST_OPTION
+    }
+    state.options.second = {
+      ...INITIAL_SECOND_OPTION
+    }
+  })),
   updateOptions: (dataKey, option) => set(produce((state: Draft<ChartDataStore>) => {
+    state[dataKey].selectedItem = state[dataKey].indicatorList.find(value => value.code === option.code) || INITIAL_ITEM
     state.options[dataKey] = option
+    console.log(option)
   })),
   updateMergedYAxis: (isMerged) => set(produce((state: Draft<ChartDataStore>) => {
     state.options.second.yAxisId = isMerged ? '1' : '2'
@@ -97,7 +140,6 @@ const useChartDataStore = create<ChartDataStore>(set => ({
   updateIndicatorList: (dataKey, list) => set(produce((state: Draft<ChartDataStore>) => {
     state.updateKey = dataKey
     state[dataKey].indicatorList = list
-    
   })),
   updateOrigin: (dataKey, origin) => set(produce((state: Draft<ChartDataStore>) => {
     state.updateKey = dataKey
