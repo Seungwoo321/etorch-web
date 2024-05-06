@@ -90,7 +90,7 @@ const DashboardSwitcher = ({ className }: DashboardSwitcherProps) => {
     if (dashboard?.id) {
       getDashboardById(dashboard.id).then(({ dashboard }) => {
         updateCurrentDashboard(dashboard)
-        navigate('/')
+        // navigate('/')
       })
     }
   }
