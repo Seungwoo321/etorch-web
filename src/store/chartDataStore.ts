@@ -185,6 +185,7 @@ const useChartDataStore = create<ChartDataStore>(set => ({
     if (state.options[diffKey].period !== state.options[dataKey].period) {
       state.options[diffKey].reload = false
     }
+    state.options[dataKey].label.value = state[dataKey].selectedItem.unit_ko
     state.options[dataKey].reload = reload
   }))
 }))

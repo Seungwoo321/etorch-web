@@ -235,7 +235,7 @@ export const dashboards = [
             referenceLineColor: '#0000f0',
             referenceLineType: 'N/A',
             label: {
-              value: '지수',
+              value: '2020=100',
               position: 'insideTopRight',
               angle: -90
             }
