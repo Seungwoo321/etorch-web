@@ -102,8 +102,8 @@ const SettingTabs = () => {
           <div className="flex items-center space-x-2">
             <Switch
               id="Combined"
-              checked={first.selectedItem.unit_en !== second.selectedItem.unit_en ? false : mergedYAxis}
-              disabled={first.selectedItem.unit_en !== second.selectedItem.unit_en}
+              checked={options.first.period !== options.second.period || first.selectedItem.unit_en !== second.selectedItem.unit_en ? false : mergedYAxis}
+              disabled={options.first.period !== options.second.period || first.selectedItem.unit_en !== second.selectedItem.unit_en}
               onCheckedChange={handleYaxisMerge}
               />
             <Label htmlFor="Combined">

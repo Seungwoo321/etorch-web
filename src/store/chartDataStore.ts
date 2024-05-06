@@ -135,6 +135,7 @@ const useChartDataStore = create<ChartDataStore>(set => ({
   })),
   updateMergedYAxis: (isMerged) => set(produce((state: Draft<ChartDataStore>) => {
     state.options.second.yAxisId = isMerged ? '1' : '2'
+    state.mergedYAxis = isMerged
   })),
   updateIndicatorList: (dataKey, list) => set(produce((state: Draft<ChartDataStore>) => {
     state.updateKey = dataKey
@@ -144,6 +145,8 @@ const useChartDataStore = create<ChartDataStore>(set => ({
     state.updateKey = dataKey
     state.options[dataKey].origin = origin
     state[dataKey].selectedItem = INITIAL_ITEM
+    state.mergedYAxis = false
+    state.options.second.yAxisId = '2'
     state.options[dataKey].code = ''
     state.options[dataKey].period = ''
     state.options[dataKey].reload = false
@@ -152,11 +155,15 @@ const useChartDataStore = create<ChartDataStore>(set => ({
     state.updateKey = dataKey
     state.options[dataKey].code = code
     state[dataKey].selectedItem = state[dataKey].indicatorList.find(value => value.code === code) || INITIAL_ITEM
+    state.mergedYAxis = false
+    state.options.second.yAxisId = '2'
     state.options[dataKey].period = ''
     state.options[dataKey].reload = false
   })),
   updatePeriod: (dataKey, period) => set(produce((state: Draft<ChartDataStore>) => {
     state.updateKey = dataKey
+    state.mergedYAxis = false
+    state.options.second.yAxisId = '2'
     state.options[dataKey].period = period
     state.options[dataKey].reload = false
   })),
