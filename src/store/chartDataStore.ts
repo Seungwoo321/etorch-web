@@ -132,7 +132,6 @@ const useChartDataStore = create<ChartDataStore>(set => ({
   updateOptions: (dataKey, option) => set(produce((state: Draft<ChartDataStore>) => {
     state[dataKey].selectedItem = state[dataKey].indicatorList.find(value => value.code === option.code) || INITIAL_ITEM
     state.options[dataKey] = option
-    console.log(option)
   })),
   updateMergedYAxis: (isMerged) => set(produce((state: Draft<ChartDataStore>) => {
     state.options.second.yAxisId = isMerged ? '1' : '2'

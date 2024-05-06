@@ -23,7 +23,7 @@ const CreateChart = () => {
     console.log(options)
   }
 
-  const isDiabled = !options.first.code && !options.second.code
+  const isDiabled = !options.first.reload && !options.second.reload
 
   return (
     <div className="container py-6">
