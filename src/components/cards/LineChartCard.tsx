@@ -126,8 +126,9 @@ function LineChartCard({
     <Card className="h-full col-span-1 grid">
       <div className="p-6 flex flex-row items-center justify-between space-y-1.5">
         <h3 className="font-semibold leading-none tracking-tight">
-          {firstLine.code}
-          {secondLine.code ? " vs " + secondLine.code : ''}
+          {firstLine.reload ? firstLine.code : ''}
+          {firstLine.reload && secondLine.reload ? ' vs ' : ''}
+          {secondLine.reload ? secondLine.code : ''}
         </h3>
         {
           mode === "view"
