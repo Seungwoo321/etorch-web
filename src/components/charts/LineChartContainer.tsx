@@ -31,7 +31,7 @@ function LineChartContainer({
 }: LineChartContainerProps) {
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <LineChart width={600} height={300} data={lineItems} margin={{ top: 5, right: 20, bottom: 5, left: 20 }}>
+      <LineChart width={200} height={100} data={lineItems} margin={{ top: 5, right: 20, bottom: 15, left: 20 }}>
 
         {lineChartItems.map(({ code, stroke, yAxisId }) => (
           <Line

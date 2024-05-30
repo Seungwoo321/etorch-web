@@ -123,7 +123,7 @@ function LineChartCard({
     )
   }
   return (
-    <Card className="h-full col-span-1 grid">
+    <Card className="h-full grid select-none">
       <div className="p-6 flex flex-row items-center justify-between space-y-1.5">
         <h3 className="font-semibold leading-none tracking-tight">
           {firstLine.reload ? firstLine.code : ''}
@@ -140,7 +140,7 @@ function LineChartCard({
         }
 
       </div>
-      <CardContent className="h-[400px]">
+      <CardContent>
         <LineChartContainer
           lineItems={lineItems}
           lineChartItems={[firstLine, secondLine].filter(item => item.reload)}
