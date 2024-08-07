@@ -1,12 +1,12 @@
 import { http } from "./http"
-import { IndicatorValues, IndicatorValuesParamss, Indicator } from "@/models"
+import { ChartData, IGetIndicatorData, Indicator } from "@/models"
 
 export function getIndicators (origin: string): Promise<{ indicators: Indicator[] }> {
   return http.get(`/v1/indicators/${origin}`)
 }
 
-export function getIndicatorValues ({ origin, code, frequency }: IndicatorValuesParamss): Promise<{ data: IndicatorValues }> {
-  return http.get(`/v1/indicators/${origin}/${code}/${frequency}`)
+export function getIndicatorData ({ origin, code, period }: IGetIndicatorData): Promise<{ data: ChartData }> {
+  return http.get(`/v1/indicators/${origin}/${code}/${period}`)
 }
 
 // export function createDashboard (dashboard: INewDashboard) {

@@ -5,12 +5,13 @@ const RootLayout = () => {
   return (
     <>
       <Topbar />
-      <div className="container relative">
-        <div className="flex-col md:flex">
-          <section>
+      <div className="container relative max-w-screen-2xl pt-14 h-full">
+        <div className="flex-col md:flex h-full">
             <Outlet />
-          </section>
       </div>
+      {/* <footer className="h-[120px] border-[1px]">
+        Footer
+      </footer> */}
     </div>
   </>
 

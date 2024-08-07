@@ -23,7 +23,7 @@ function withDelay<
 type IndicatorParamsType = {
   origin: string;
   code: string;
-  frequency: 'Y' | 'M' | 'D';
+  period: 'Y' | 'M' | 'D';
 };
 
 type DashboardParamsType = {
@@ -63,9 +63,9 @@ export const handlers = [
     })
   ),
   http.get<IndicatorParamsType, never, JsonBodyType>(
-    '/v1/indicators/:origin/:code/:frequency',
-    withDelay(300, ({ params }: { params: IndicatorParamsType }) => {
-      const data = generateMockData(params.frequency)
+    '/v1/indicators/:origin/:code/:period',
+    withDelay(300, ({ params }) => {
+      const data = generateMockData(params.period)
       return HttpResponse.json({
         data
       })
@@ -88,7 +88,7 @@ export const handlers = [
   ),
   http.get<DashboardParamsType, never, JsonBodyType>(
     '/v1/dashboard/:id',
-    withDelay(300, ({ params }: { params: DashboardParamsType}) => {
+    withDelay(300, ({ params }) => {
       return HttpResponse.json({
         dashboard: dashboards.find(({ id }) => id === params.id)
       })

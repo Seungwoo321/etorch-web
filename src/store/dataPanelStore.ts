@@ -1,0 +1,37 @@
+import { Indicator, DataPanelItem } from '@/models';
+import { create } from 'zustand'
+
+export interface DataPanelStore {
+  panels: DataPanelItem[],
+  indicators: {
+    [key: string]: Indicator[]
+  };
+  createIndicators: (dataSource: string, data: Indicator[]) => void;
+  addPanelItem: (item: DataPanelItem) => void;
+  updatePanelItem: (id: number, newItem: DataPanelItem) => void;
+  removePanelItem: (id: number) => void;
+}
+
+export const useDataPanelStore = create<DataPanelStore>(set => ({
+  panels: [],
+  indicators: {
+    kosis: [],
+    ecos: [],
+    oecd: []
+  },
+  createIndicators: (dataSource, data) => set(state => ({
+    indicators: {
+      ...state.indicators,
+      [dataSource]: data
+    }
+  })),
+  addPanelItem: (item) => set(state => ({
+    panels: [...state.panels, item]
+  })),
+  updatePanelItem: (id, newItem) => set(state => ({
+    panels: state.panels.map(panel => panel.id === id ? { ...panel, ...newItem } : panel)
+  })),
+  removePanelItem: (id) => set(state => ({ panels: state.panels.filter(panel => panel.id !== id )}))
+}))
+
+export default useDataPanelStore

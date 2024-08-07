@@ -3,22 +3,23 @@ import LineChartCard from "@/components/cards/LineChartCard"
 import { Button } from "@/components/ui/button"
 import { useChartDataStore } from "@/store"
 import { useNavigate } from "react-router-dom"
+import { LineChartItem } from "@/models/dashboard"
 
 const CreateChart = () => {
-  const {
-    options,
-    resetOption
-  } = useChartDataStore()
+  const { resetOption} = useChartDataStore()
+  const firstOptions = useChartDataStore<LineChartItem>(state => state.options.first)
+  const secondOptions = useChartDataStore<LineChartItem>(state => state.options.second)
   const navigate = useNavigate();
   const handleBackButton = () => {
     resetOption()
     navigate('/')
   }
   const handleSaveButton = () => {
-    console.log(options)
+    console.log(firstOptions)
+    console.log(secondOptions)
   }
 
-  const isDiabled = !options.first.reload && !options.second.reload
+  // const isDiabled = !options.first.reload && !options.second.reload
 
   return (
     <div className="container py-6">
@@ -26,8 +27,8 @@ const CreateChart = () => {
         <SettingTabs/>
         <LineChartCard
           mode="edit"
-          firstLine={options.first}
-          secondLine={options.second}
+          firstLine={firstOptions}
+          secondLine={secondOptions}
         />
       </div>
       <div className="py-6">
@@ -38,7 +39,7 @@ const CreateChart = () => {
             Back
           </Button>
           <Button
-            disabled={isDiabled}
+            // disabled={isDiabled}
             onClick={handleSaveButton}
           >
             Save

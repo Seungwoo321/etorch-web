@@ -78,11 +78,14 @@ function LineChartCard({
     setLineItems(lineItems => addLineChartData(lineItems, lineChartItem, data));
     setReferenceLine(referenceLine => ({ ...referenceLine, [lineChartItem.code]: calcReferenceValue(lineChartItem, data) }))
   }
+
   useEffect(() => {
+    console.log(1)
     fetchIndicatorData(firstLine)
   }, [firstLine])
 
   useEffect(() => {
+    console.log(2)
     fetchIndicatorData(secondLine)
   }, [secondLine])
 
@@ -96,6 +99,7 @@ function LineChartCard({
   }
 
   const handleEditChart = async () => {
+    console.log(1)
     await fetchIndicatorList('first', firstLine.origin)
     updateOptions('first', firstLine)
     if (secondLine.reload) {
@@ -132,10 +136,15 @@ function LineChartCard({
         </h3>
         {
           mode === "view"
-          ? <Pencil2Icon
-              className="cursor-pointer"
+          ? <div
+              style={{ zIndex: 2 }}
               onClick={handleEditChart}
-            />
+            >
+              <Pencil2Icon
+                className="cursor-pointer"
+                
+              />
+          </div>
           : null
         }
 

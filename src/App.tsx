@@ -1,20 +1,17 @@
 import { Routes, Route } from "react-router-dom";
 import "@/styles/globals.css";
 import RootLayout from "./_root/RootLayout";
-import Dashboard from "./_root/pages/Dashboard";
-import CreateChart from "./_root/pages/CreateChart";
+import EditPanel from "./_root/pages/EditPanel";
 
 function App() {
   return (
-    <div className="relative flex min-h-screen flex-col bg-background">
+    <div className="relative flex h-screen flex-col bg-background">
       <Routes>
         {/* auth routes */}
 
         {/* private routes */}
         <Route element={<RootLayout />}>
-          <Route index element={<Dashboard/>}/>
-          <Route path="/create-chart" element={<CreateChart/>}/>
-          <Route path="/edit-chart/:id" element={<CreateChart/>}/>
+          <Route index element={<EditPanel/>} />
         </Route>
       </Routes>
     </div>

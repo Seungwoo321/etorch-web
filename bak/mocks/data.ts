@@ -216,7 +216,7 @@ export const dashboards = [
           {
             origin: 'kosis',
             code: 'KOSPI',
-            frequency: 'M',
+            period: 'M',
             stroke: '#f00000',
             yAxisId: '1',
             referenceLineColor: '#f00000',
@@ -230,7 +230,7 @@ export const dashboards = [
           {
             origin: 'kosis',
             code: 'CLI',
-            frequency: 'M',
+            period: 'M',
             stroke: '#0000cd',
             yAxisId: '2',
             referenceLineColor: '#0000f0',
@@ -249,7 +249,7 @@ export const dashboards = [
           {
             origin: 'kosis',
             code: 'KOSPI',
-            frequency: 'M',
+            period: 'M',
             stroke: '#434343',
             yAxisId: '1',
             referenceLineColor: '#f00000',
@@ -268,7 +268,7 @@ export const dashboards = [
           {
             origin: 'ecos',
             code: 'Govt. Bonds 1Y Rate',
-            frequency: 'A',
+            period: 'A',
             stroke: '#AC32E4',
             yAxisId: '1',
             referenceLineColor: '#AC32E4',
@@ -299,7 +299,7 @@ export const dashboards = [
           {
             origin: 'ecos',
             code: 'Govt. Bonds 1Y Rate',
-            frequency: 'A',
+            period: 'A',
             stroke: '#AC32E4',
             yAxisId: '1',
             referenceLineColor: '#AC32E4',
