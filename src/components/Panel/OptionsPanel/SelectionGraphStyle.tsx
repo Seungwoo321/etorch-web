@@ -6,16 +6,23 @@ import {
   TabsList,
   TabsTrigger
 } from "@/components/ui/tabs"
-import { useEditPanelStore } from "@/store"
+import { useGraphStylesOptionStore, GraphStylesOptionStore } from "@/store/editPanel/graphStylesOptionStore"
+
+const selectGraphStyle = (state: GraphStylesOptionStore) => state.graphStyle
+const selectLineWidth = (state: GraphStylesOptionStore) => state.lineWidth
+const selectFillOpacity = (state: GraphStylesOptionStore) => state.fillOpacity
+const selectUpdateGraphStyle = (state: GraphStylesOptionStore) => state.updateGraphStyle
+const selectUpdateLineWidth = (state: GraphStylesOptionStore) => state.updateLineWidth
+const selectUpdateFillOpacity = (state: GraphStylesOptionStore) => state.updateFillOpacity
+
 const SelectionGraphStyle = () => {
-  const graphStyle = useEditPanelStore(state => state.graphStyle)
-  const lineWidth = useEditPanelStore(state => state.lineWidth)
-  const fillOpacity = useEditPanelStore(state => state.fillOpacity)
-  const {
-    updateGraphStyle,
-    updateLineWidth,
-    updateFillOpacity
-  } = useEditPanelStore()
+  const graphStyle = useGraphStylesOptionStore(selectGraphStyle)
+  const lineWidth = useGraphStylesOptionStore(selectLineWidth)
+  const fillOpacity = useGraphStylesOptionStore(selectFillOpacity)
+  const updateGraphStyle = useGraphStylesOptionStore(selectUpdateGraphStyle)
+  const updateLineWidth = useGraphStylesOptionStore(selectUpdateLineWidth)
+  const updateFillOpacity = useGraphStylesOptionStore(selectUpdateFillOpacity)
+
   return (
     <div className="space-y-2 pl-2 pr-1">
       <div className="grid w-full max-w-sm items-center gap-1.5 ">

@@ -1,12 +1,6 @@
 import { create } from 'zustand'
 
-interface EditPanelStore {
-  // Panel options
-  title: string
-  description: string
-  updateTitle: (title: string) => void
-  updateDescription: (description: string) => void
-
+export interface GraphStylesOptionStore {
   // Graph styles
   graphStyle: string
   updateGraphStyle: (graphStyle: string) => void
@@ -21,12 +15,7 @@ interface EditPanelStore {
   // -> Point
 }
 
-const useEditPanelStore = create<EditPanelStore>(set => ({
-  title: 'Title',
-  description: 'description',
-  updateTitle: title => set(() => ({ title })),
-  updateDescription: description => set(() => ({ description })),
-
+export const useGraphStylesOptionStore = create<GraphStylesOptionStore>(set => ({
   graphStyle: 'Line',
   updateGraphStyle: graphStyle => set(() => ({ graphStyle })),
   
@@ -36,4 +25,4 @@ const useEditPanelStore = create<EditPanelStore>(set => ({
   updateFillOpacity: fillOpacity => set(() => ({ fillOpacity }))
 }))
 
-export default useEditPanelStore
+export default useGraphStylesOptionStore
