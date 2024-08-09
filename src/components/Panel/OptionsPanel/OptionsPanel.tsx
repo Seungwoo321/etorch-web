@@ -9,6 +9,8 @@ import VisualizationsSelect from "./VisualizationsSelect";
 import SelectionPanelOption from "./SelectionPanelOption";
 import SelectionTooltipOption from "./SelectionTooltipOption";
 import SelectionGraphStyle from './SelectionGraphStyle';
+import SelectionLegendOption from "./SelectionLegendOption";
+import SelectionAxisOption from "./SelectionAxisOption";
 function OptionsPanel () {
   return (
     <div className="h-full">
@@ -40,14 +42,14 @@ function OptionsPanel () {
             <AccordionItem value="legend">
               <AccordionTrigger>Legend</AccordionTrigger>
               <AccordionContent>
-                Yes. It adheres to the WAI-ARIA design pattern.
+                <SelectionLegendOption/>
               </AccordionContent>
             </AccordionItem>
 
             <AccordionItem value="axis">
               <AccordionTrigger>Axis</AccordionTrigger>
               <AccordionContent>
-                Yes. It adheres to the WAI-ARIA design pattern.
+                <SelectionAxisOption/>
               </AccordionContent>
             </AccordionItem>
 
