@@ -26,14 +26,17 @@ type DataPanelOptionsProps = {
 };
 
 const selectPanelById = (id: number) => (state: DataPanelStore) => state.panels.find(panel => panel.id === id)
+const selectFrequency = (state: DataPanelStore) => state.frequency
+const selectIndicators = (state: DataPanelStore) =>  state.indicators
+const selectSetFrequency = (state: DataPanelStore) => state.setFrequency
 const selectUpdatePanelItem = (state: DataPanelStore) => state.updatePanelItem
 const selectRemovePanelItem = (state: DataPanelStore) => state.removePanelItem
-
 const selectCreateIndicators = (state: DataPanelStore) => state.createIndicators
-const selectIndicators = (state: DataPanelStore) =>  state.indicators
 
 function DataPanelOptions({ id }: DataPanelOptionsProps) {
   const panel = useDataPanelStore(selectPanelById(id))
+  const frequency = useDataPanelStore(selectFrequency)
+  const setFrequency = useDataPanelStore(selectSetFrequency)
   const updatePanelItem = useDataPanelStore(selectUpdatePanelItem)
   const removePanelItem = useDataPanelStore(selectRemovePanelItem)
   const createIndicators = useDataPanelStore(selectCreateIndicators)
@@ -109,6 +112,7 @@ function DataPanelOptions({ id }: DataPanelOptionsProps) {
 
   const handleFetchData = () => {
     if (panel) {
+      setFrequency(panel?.frequency)
       getIndicatorValues({
         origin: panel?.dataSource,
         code: panel?.indicatorCode,
@@ -139,7 +143,11 @@ function DataPanelOptions({ id }: DataPanelOptionsProps) {
             </div>
           </CollapsibleTrigger>
           <CardTitle className="flex items-center">
-            {indicator?.name ? `${indicator?.name} / ${indicator.unit_ko} : ${panel?.dataSource} + ${panel?.indicatorCode} + ${panel?.frequency}` : ''}
+            {panel?.dataSource && indicator?.name ? 
+              `${panel?.dataSource.toUpperCase()}: ${indicator?.name}`
+              : null 
+            }
+            
           </CardTitle>
           <div className="flex">
             <RefreshCcwIcon className="cursor-pointer mr-2" size={14} onClick={handleFetchData} />
@@ -224,7 +232,7 @@ function DataPanelOptions({ id }: DataPanelOptionsProps) {
                 </div>
                 <div className="flex items-end">
                     <Button
-                      variant={panel.data.length ? "default" : "outline"}
+                      variant={panel.data.length && panel.frequency === frequency ? "default" : "outline"}
                       onClick={handleFetchData}
                       disabled={!panel.dataSource || !panel.indicatorCode || !panel.frequency}
                     >

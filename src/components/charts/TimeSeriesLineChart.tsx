@@ -10,12 +10,12 @@ import {
   ResponsiveContainer,
   Brush
 } from "recharts";
-// import { usePreviewPanelStore } from "@/store/previewPanelStore"
 import { useDataPanelStore, DataPanelStore } from "@/store/dataPanelStore";
 import { useEffect, useState } from "react";
 import { DataPanelItem } from "@/models";
 import { useTooltipOptionStore, TooltipOptionStore } from "@/store/editPanel/tooltipOptionStore";
 import { usePanelOptionStore, PanelOptionStore } from "@/store/editPanel/panelOptionStore";
+import { useLegendOptionStore, LegendOptionStore } from "@/store/editPanel/legendOptionStore";
 
 
 type CombineData = {
@@ -44,28 +44,39 @@ const combineDataByFrequency = (panels: DataPanelItem[], frequency: string) => {
 }
 
 const selectIsTransparentBackground = (state: PanelOptionStore) => state.isTransparentBackground
-
+const selectFrequency = (state: DataPanelStore) => state.frequency
+const selectPanelsData = (state: DataPanelStore) => state.panels.filter(panel => panel.data.length && panel.frequency === state.frequency)
 const selectCursorLineStyle = (state: TooltipOptionStore) => state.cursorLineStyle
 const selectTooltipMode = (state: TooltipOptionStore) => state.tooltipMode
 const selectMaxWidth = (state: TooltipOptionStore) => state.maxWidth
 const selectCursorLineStyleWidth = (state: TooltipOptionStore) => state.cursorLineStyleWidth
 const selectCursorLineStyleDasharray = (state: TooltipOptionStore) => state.cursorLineStyleDasharray
 
-const selectPanelsData = (state: DataPanelStore) => state.panels.filter(panel => panel.data.length)
+const selectVisibility = (store: LegendOptionStore) => store.visibility
+const selectLayout = (store: LegendOptionStore) => store.layout
+const selectAlign = (store: LegendOptionStore) => store.align
+const selectVerticalAlign = (store: LegendOptionStore) => store.verticalAlign
 
 function LineChartContainer() {
   const isTransparentBackground = usePanelOptionStore(selectIsTransparentBackground)
+  const frequency = useDataPanelStore(selectFrequency)
   const panelsData = useDataPanelStore(selectPanelsData)
   
   const tooltipMode = useTooltipOptionStore(selectTooltipMode)
   const cursorLineStyle = useTooltipOptionStore(selectCursorLineStyle)
   const cursorLineStyleWidth = useTooltipOptionStore(selectCursorLineStyleWidth)
   const cursorLineStyleDasharray = useTooltipOptionStore(selectCursorLineStyleDasharray)
+
+  const visibility = useLegendOptionStore(selectVisibility)
+  const layout = useLegendOptionStore(selectLayout)
+  const align = useLegendOptionStore(selectAlign)
+  const verticalAlign = useLegendOptionStore(selectVerticalAlign)
+
   const [lineChartData, setLineChartData] = useState<unknown[]>([])
 
   useEffect(() => {
-    setLineChartData(combineDataByFrequency(panelsData, 'M'))
-  }, [panelsData])
+    setLineChartData(combineDataByFrequency(panelsData, frequency))
+  }, [frequency, panelsData])
   return (
     <ResponsiveContainer className={isTransparentBackground ? "" : "bg-primary-foreground"} width="100%" height="100%" minHeight={0} minWidth={0}>
       <LineChart width={200} height={300} data={lineChartData} margin={{ top: 24, right: 20, bottom: 8, left: 0 }}>
@@ -113,21 +124,18 @@ function LineChartContainer() {
             : null)
         )} */}
         {/* <Brush /> */}
-        <Legend
-          margin={{
-            top: 20,
-            left: 20,
-            right: 20,
-            bottom: 20
-          }}
-          layout="vertical" // vertical horizontal
-          verticalAlign="top" // top middle bottom
-          align="right" // center right left
-        // width={140}
-        // height={120}
-        // iconSize={14}
-        // iconType="line" // line plainLine square rect circle cross diamond star triangle wye
-        />
+        {visibility ? (
+          <Legend
+            layout={layout}
+            verticalAlign={verticalAlign}
+            align={align}
+          // width={140}
+          // height={120}
+          // iconSize={14}
+          // iconType="line" // line plainLine square rect circle cross diamond star triangle wye
+          />
+        ) : null}
+
         <Tooltip
           active={tooltipMode === 'default' ? undefined : (tooltipMode === 'active')}
           cursor={{ stroke: 'hsl(var(--muted-foreground))', strokeWidth: cursorLineStyleWidth, strokeDasharray: cursorLineStyle === 'dash' ? cursorLineStyleDasharray : '' }}

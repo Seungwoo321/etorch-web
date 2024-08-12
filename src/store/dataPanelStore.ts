@@ -2,10 +2,12 @@ import { Indicator, DataPanelItem } from '@/models';
 import { create } from 'zustand'
 
 export interface DataPanelStore {
-  panels: DataPanelItem[],
+  frequency: string
+  panels: DataPanelItem[]
   indicators: {
     [key: string]: Indicator[]
   };
+  setFrequency: (frequency: string) => void;
   createIndicators: (dataSource: string, data: Indicator[]) => void;
   addPanelItem: (item: DataPanelItem) => void;
   updatePanelItem: (id: number, newItem: DataPanelItem) => void;
@@ -13,12 +15,14 @@ export interface DataPanelStore {
 }
 
 export const useDataPanelStore = create<DataPanelStore>(set => ({
+  frequency: '',
   panels: [],
   indicators: {
     kosis: [],
     ecos: [],
     oecd: []
   },
+  setFrequency: (frequency) => set(() => ({ frequency })),
   createIndicators: (dataSource, data) => set(state => ({
     indicators: {
       ...state.indicators,
