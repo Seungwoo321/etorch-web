@@ -1,7 +1,7 @@
 import { Indicator, DataPanelItem } from '@/models';
 import { create } from 'zustand'
 
-export interface DataPanelStore {
+export interface DataOptionStore {
   frequency: string
   panels: DataPanelItem[]
   indicators: {
@@ -14,7 +14,7 @@ export interface DataPanelStore {
   removePanelItem: (id: number) => void;
 }
 
-export const useDataPanelStore = create<DataPanelStore>(set => ({
+export const useDataOptionStore = create<DataOptionStore>(set => ({
   frequency: '',
   panels: [],
   indicators: {
@@ -38,4 +38,4 @@ export const useDataPanelStore = create<DataPanelStore>(set => ({
   removePanelItem: (id) => set(state => ({ panels: state.panels.filter(panel => panel.id !== id )}))
 }))
 
-export default useDataPanelStore
+export default useDataOptionStore

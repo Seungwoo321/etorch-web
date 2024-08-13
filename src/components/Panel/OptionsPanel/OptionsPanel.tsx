@@ -6,11 +6,11 @@ import {
 } from "@/components/ui/accordion"
 // import VisualizationsComboBox from "./VisualizationsComboBox";
 import VisualizationsSelect from "./VisualizationsSelect";
-import SelectionPanelOption from "./SelectionPanelOption";
-import SelectionTooltipOption from "./SelectionTooltipOption";
-import SelectionGraphStyle from './SelectionGraphStyle';
-import SelectionLegendOption from "./SelectionLegendOption";
-import SelectionAxisOption from "./SelectionAxisOption";
+import SelectionPanelOption from "@/components/Selection/SelectionPanelOption";
+import SelectionTooltipOption from "@/components/Selection/SelectionTooltipOption";
+import SelectionGraphStyle from '@/components/Selection/SelectionGraphStyle';
+import SelectionLegendOption from "@/components/Selection/SelectionLegendOption";
+import SelectionXAxisOption from "@/components/Selection/SelectionXAxisOption";
 function OptionsPanel () {
   return (
     <div className="h-full">
@@ -47,9 +47,9 @@ function OptionsPanel () {
             </AccordionItem>
 
             <AccordionItem value="axis">
-              <AccordionTrigger>Axis</AccordionTrigger>
+              <AccordionTrigger>X-Axis</AccordionTrigger>
               <AccordionContent>
-                <SelectionAxisOption/>
+                <SelectionXAxisOption />
               </AccordionContent>
             </AccordionItem>
 

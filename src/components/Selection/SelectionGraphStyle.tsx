@@ -6,14 +6,15 @@ import {
   TabsList,
   TabsTrigger
 } from "@/components/ui/tabs"
-import { useGraphStylesOptionStore, GraphStylesOptionStore } from "@/store/editPanel/graphStylesOptionStore"
-
-const selectGraphStyle = (state: GraphStylesOptionStore) => state.graphStyle
-const selectLineWidth = (state: GraphStylesOptionStore) => state.lineWidth
-const selectFillOpacity = (state: GraphStylesOptionStore) => state.fillOpacity
-const selectUpdateGraphStyle = (state: GraphStylesOptionStore) => state.updateGraphStyle
-const selectUpdateLineWidth = (state: GraphStylesOptionStore) => state.updateLineWidth
-const selectUpdateFillOpacity = (state: GraphStylesOptionStore) => state.updateFillOpacity
+import { useGraphStylesOptionStore } from "@/store/editPanel"
+import {
+  selectGraphStyle,
+  selectLineWidth,
+  selectFillOpacity,
+  selectUpdateGraphStyle,
+  selectUpdateLineWidth,
+  selectUpdateFillOpacity
+} from "@/store/editPanel/selector"
 
 const SelectionGraphStyle = () => {
   const graphStyle = useGraphStylesOptionStore(selectGraphStyle)

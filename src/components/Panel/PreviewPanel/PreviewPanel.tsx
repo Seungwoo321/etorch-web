@@ -6,17 +6,20 @@ import {
   CardDescription
 } from "@/components/ui/card"
 import TimeSeriesLineChart from '@/components/charts/TimeSeriesLineChart'
-import { usePanelOptionStore, PanelOptionStore } from "@/store/editPanel/panelOptionStore"
-import { useDataPanelStore, DataPanelStore } from '@/store/dataPanelStore'
-
-const selectTitle = (state: PanelOptionStore) => state.title
-const selectDescription = (state: PanelOptionStore) => state.description
-const selectPanelsData = (state: DataPanelStore) => state.panels.filter(panel => panel.data.length)
+import {
+  usePanelOptionStore,
+  useDataOptionStore,
+} from "@/store/editPanel"
+import {
+  selectTitle,
+  selectDescription,
+  selectPanelsAllData
+} from "@/store/editPanel/selector"
 
 function PreviewPanel() {
   const title = usePanelOptionStore(selectTitle)
   const description = usePanelOptionStore(selectDescription)
-  const panelsData = useDataPanelStore(selectPanelsData)
+  const panelsAllData = useDataOptionStore(selectPanelsAllData)
   return (
     <Card className="flex flex-col h-full">
       {title
@@ -34,7 +37,7 @@ function PreviewPanel() {
         : null
       }
       <CardContent className="flex h-[calc(100%-90px)] flex-grow">
-        {panelsData.length
+        {panelsAllData.length
           ? <TimeSeriesLineChart />
           : <div className="flex items-center h-full m-auto">No data</div>
         }

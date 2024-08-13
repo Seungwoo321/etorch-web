@@ -6,16 +6,32 @@ import {
   YAxis,
   Legend,
   Tooltip,
-  ReferenceLine,
+  // ReferenceLine,
   ResponsiveContainer,
-  Brush
+  // Brush
 } from "recharts";
-import { useDataPanelStore, DataPanelStore } from "@/store/dataPanelStore";
+import {
+  useLegendOptionStore,
+  usePanelOptionStore,
+  useTooltipOptionStore,
+  useDataOptionStore
+} from "@/store/editPanel";
+import {
+  selectFrequency,
+  selectPanelsData,
+  selectCursorLineStyle,
+  selectTooltipMode,
+  selectMaxWidth,
+  selectCursorLineStyleWidth,
+  selectCursorLineStyleDasharray,
+  selectVisibility,
+  selectLayout,
+  selectAlign,
+  selectVerticalAlign,
+  selectIsTransparentBackground
+} from '@/store/editPanel/selector'
 import { useEffect, useState } from "react";
 import { DataPanelItem } from "@/models";
-import { useTooltipOptionStore, TooltipOptionStore } from "@/store/editPanel/tooltipOptionStore";
-import { usePanelOptionStore, PanelOptionStore } from "@/store/editPanel/panelOptionStore";
-import { useLegendOptionStore, LegendOptionStore } from "@/store/editPanel/legendOptionStore";
 
 
 type CombineData = {
@@ -43,24 +59,12 @@ const combineDataByFrequency = (panels: DataPanelItem[], frequency: string) => {
   return Object.values(combinedData);
 }
 
-const selectIsTransparentBackground = (state: PanelOptionStore) => state.isTransparentBackground
-const selectFrequency = (state: DataPanelStore) => state.frequency
-const selectPanelsData = (state: DataPanelStore) => state.panels.filter(panel => panel.data.length && panel.frequency === state.frequency)
-const selectCursorLineStyle = (state: TooltipOptionStore) => state.cursorLineStyle
-const selectTooltipMode = (state: TooltipOptionStore) => state.tooltipMode
-const selectMaxWidth = (state: TooltipOptionStore) => state.maxWidth
-const selectCursorLineStyleWidth = (state: TooltipOptionStore) => state.cursorLineStyleWidth
-const selectCursorLineStyleDasharray = (state: TooltipOptionStore) => state.cursorLineStyleDasharray
 
-const selectVisibility = (store: LegendOptionStore) => store.visibility
-const selectLayout = (store: LegendOptionStore) => store.layout
-const selectAlign = (store: LegendOptionStore) => store.align
-const selectVerticalAlign = (store: LegendOptionStore) => store.verticalAlign
 
 function LineChartContainer() {
   const isTransparentBackground = usePanelOptionStore(selectIsTransparentBackground)
-  const frequency = useDataPanelStore(selectFrequency)
-  const panelsData = useDataPanelStore(selectPanelsData)
+  const frequency = useDataOptionStore(selectFrequency)
+  const panelsData = useDataOptionStore(selectPanelsData)
   
   const tooltipMode = useTooltipOptionStore(selectTooltipMode)
   const cursorLineStyle = useTooltipOptionStore(selectCursorLineStyle)

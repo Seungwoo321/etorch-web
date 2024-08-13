@@ -14,15 +14,18 @@ import {
 from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import DataPanelOptions from './DataPanelOption'
-import { useDataPanelStore, DataPanelStore } from '@/store/dataPanelStore'
+import { useDataOptionStore } from '@/store/editPanel'
+import {
+  selectPanelIds,
+  selectAddPanelItem
+} from '@/store/editPanel/selector'
 import { useCallback } from "react"
 
-const selectPanelIds = (state: DataPanelStore) => state.panels.map(panel => panel.id)
-const selectAddPanelItem = (state: DataPanelStore) => state.addPanelItem
+
 
 function DataPanel() {
-  const panelIds = useDataPanelStore(selectPanelIds)
-  const addPanelItem = useDataPanelStore(selectAddPanelItem)
+  const panelIds = useDataOptionStore(selectPanelIds)
+  const addPanelItem = useDataOptionStore(selectAddPanelItem)
 
   const handleAddPanel = useCallback(() => {
     addPanelItem({

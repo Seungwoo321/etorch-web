@@ -4,7 +4,19 @@ import {
   ToggleGroup,
   ToggleGroupItem,
 } from "@/components/ui/toggle-group"
-import { useTooltipOptionStore, TooltipOptionStore } from "@/store/editPanel/tooltipOptionStore";
+import { useTooltipOptionStore } from "@/store/editPanel";
+import {
+  selectCursorLineStyle,
+  selectTooltipMode,
+  selectMaxWidth,
+  selectCursorLineStyleWidth,
+  selectCursorLineStyleDasharray,
+  selectUpdateTolltipMode,
+  selectUpdateMaxWidth,
+  selectUpdateCursorLineStyle,
+  selectUpdateCursorLineStyleWidth,
+  selectUpdateCursorLineStyleDasharray
+} from "@/store/editPanel/selector"
 import {
   Select,
   SelectContent,
@@ -12,16 +24,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-const selectTooltipMode = (state: TooltipOptionStore) => state.tooltipMode
-const selectMaxWidth = (state: TooltipOptionStore) => state.maxWidth
-const selectCursorLineStyleWidth = (state: TooltipOptionStore) => state.cursorLineStyleWidth
-const selectCursorLineStyleDasharray = (state: TooltipOptionStore) => state.cursorLineStyleDasharray
-const selectCursorLineStyle = (state: TooltipOptionStore) => state.cursorLineStyle
-const selectUpdateTolltipMode = (state: TooltipOptionStore) => state.updateTooltipMode
-const selectUpdateMaxWidth = (state: TooltipOptionStore) => state.updateMaxWidth
-const selectUpdateCursorLineStyle = (state: TooltipOptionStore) => state.updateCursorLineStyle
-const selectUpdateCursorLineStyleWidth = (state: TooltipOptionStore) => state.updateCursorLineStyleWidth
-const selectUpdateCursorLineStyleDasharray = (state: TooltipOptionStore) => state.updateCursorLineStyleDasharray
 
 function SelectionTooltipOption() {
   const tooltipMode = useTooltipOptionStore(selectTooltipMode)

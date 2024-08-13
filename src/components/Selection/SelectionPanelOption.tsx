@@ -2,14 +2,15 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
-import { usePanelOptionStore, PanelOptionStore } from "@/store/editPanel/panelOptionStore"
-
-const selectTitle = (state: PanelOptionStore) => state.title
-const selectDescription = (state: PanelOptionStore) => state.description
-const selectIsTransparentBackground = (state: PanelOptionStore) => state.isTransparentBackground
-const selectUpdateTitle = (state: PanelOptionStore) => state.updateTitle
-const selectUpdateDescription = (state: PanelOptionStore) => state.updateDescription
-const selectUpdateIsTransparentBackground = (state: PanelOptionStore) => state.updateIsTransparentBackground
+import { usePanelOptionStore } from "@/store/editPanel"
+import {
+  selectIsTransparentBackground,
+  selectTitle,
+  selectDescription,
+  selectUpdateTitle,
+  selectUpdateDescription,
+  selectUpdateIsTransparentBackground
+} from "@/store/editPanel/selector"
 
 function SelectionPanelOption() {
   const title = usePanelOptionStore(selectTitle)

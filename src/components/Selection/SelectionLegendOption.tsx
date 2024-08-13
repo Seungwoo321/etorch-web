@@ -4,18 +4,19 @@ import {
   ToggleGroup,
   ToggleGroupItem,
 } from "@/components/ui/toggle-group"
-import { LegendOptionStore, useLegendOptionStore } from '@/store/editPanel/legendOptionStore'
+import { useLegendOptionStore } from '@/store/editPanel'
+import {
+  selectVisibility,
+  selectLayout,
+  selectAlign,
+  selectVerticalAlign,
+  selectUpdateVisibility,
+  selectUpdateLayout,
+  selectUpdateAlign,
+  selectUpdateVerticalAlign
+} from "@/store/editPanel/selector"
 import { LayoutType } from "recharts/types/util/types"
 import { VerticalAlignmentType, HorizontalAlignmentType } from 'recharts/types/component/DefaultLegendContent';
-const selectVisibility = (store: LegendOptionStore) => store.visibility
-const selectLayout = (store: LegendOptionStore) => store.layout
-const selectAlign = (store: LegendOptionStore) => store.align
-const selectVerticalAlign = (store: LegendOptionStore) => store.verticalAlign
-const selectUpdateVisibility = (store: LegendOptionStore) => store.updateVisibility
-const selectUpdateLayout = (store: LegendOptionStore) => store.updateLayout
-const selectUpdateAlign = (store: LegendOptionStore) => store.updateAlign
-const selectUpdateVerticalAlign = (store: LegendOptionStore) => store.updateVerticalAlign
-
 
 function SelectionLegendOption() {
   const visibility = useLegendOptionStore(selectVisibility)

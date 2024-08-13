@@ -13,7 +13,16 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getIndicatorValues, getIndicators } from "@/lib/api";
 import { Indicator } from "@/models/";
-import { useDataPanelStore, DataPanelStore } from "@/store/dataPanelStore";
+import { useDataOptionStore } from "@/store/editPanel";
+import {
+  selectPanelById,
+  selectFrequency,
+  selectIndicators,
+  selectSetFrequency,
+  selectUpdatePanelItem,
+  selectRemovePanelItem,
+  selectCreateIndicators
+} from "@/store/editPanel/selector"
 import {
   RefreshCcwIcon,
   ChevronRightIcon,
@@ -25,22 +34,16 @@ type DataPanelOptionsProps = {
   id: number;
 };
 
-const selectPanelById = (id: number) => (state: DataPanelStore) => state.panels.find(panel => panel.id === id)
-const selectFrequency = (state: DataPanelStore) => state.frequency
-const selectIndicators = (state: DataPanelStore) =>  state.indicators
-const selectSetFrequency = (state: DataPanelStore) => state.setFrequency
-const selectUpdatePanelItem = (state: DataPanelStore) => state.updatePanelItem
-const selectRemovePanelItem = (state: DataPanelStore) => state.removePanelItem
-const selectCreateIndicators = (state: DataPanelStore) => state.createIndicators
+
 
 function DataPanelOptions({ id }: DataPanelOptionsProps) {
-  const panel = useDataPanelStore(selectPanelById(id))
-  const frequency = useDataPanelStore(selectFrequency)
-  const setFrequency = useDataPanelStore(selectSetFrequency)
-  const updatePanelItem = useDataPanelStore(selectUpdatePanelItem)
-  const removePanelItem = useDataPanelStore(selectRemovePanelItem)
-  const createIndicators = useDataPanelStore(selectCreateIndicators)
-  const indicatorList = useDataPanelStore(selectIndicators)
+  const panel = useDataOptionStore(selectPanelById(id))
+  const frequency = useDataOptionStore(selectFrequency)
+  const setFrequency = useDataOptionStore(selectSetFrequency)
+  const updatePanelItem = useDataOptionStore(selectUpdatePanelItem)
+  const removePanelItem = useDataOptionStore(selectRemovePanelItem)
+  const createIndicators = useDataOptionStore(selectCreateIndicators)
+  const indicatorList = useDataOptionStore(selectIndicators)
   const [loadingStatus, setLoadingStatus] = useState<boolean>(false)
   const [indicator, setIndicator] = useState<Indicator | null>(panel?.dataSource ? indicatorList[panel.dataSource].find(indicator => indicator.code === panel.indicatorCode) ?? null : null)
 
@@ -135,20 +138,20 @@ function DataPanelOptions({ id }: DataPanelOptionsProps) {
     >
       <Card className="h-full m-2">
         <div className="flex justify-between items-center p-4">
-          <CollapsibleTrigger
-            asChild
-          >
-            <div className="flex [&[data-state=open]>svg]:rotate-90">
-              <ChevronRightIcon className="cursor-pointer transition-transform duration-200" />
-            </div>
-          </CollapsibleTrigger>
           <CardTitle className="flex items-center">
+            <CollapsibleTrigger
+              asChild
+            >
+              <div className="flex [&[data-state=open]>svg]:rotate-90">
+                <ChevronRightIcon className="cursor-pointer transition-transform duration-200" />
+              </div>
+            </CollapsibleTrigger>
             {panel?.dataSource && indicator?.name ? 
-              `${panel?.dataSource.toUpperCase()}: ${indicator?.name}`
+              `${indicator?.name} - ${panel?.dataSource.toUpperCase()}:${panel.indicatorCode}:${panel.frequency}:${panel.unit}`
               : null 
             }
-            
           </CardTitle>
+
           <div className="flex">
             <RefreshCcwIcon className="cursor-pointer mr-2" size={14} onClick={handleFetchData} />
             <Trash2 className="cursor-pointer" style={{ margin: 0 }} size={14} onClick={() => removePanelItem(id)} />
