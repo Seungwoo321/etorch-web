@@ -42,6 +42,7 @@ function SelectionPanelOption() {
       <div className="grid w-full max-w-sm items-center gap-1.5">
         <Label htmlFor="transparent-background">Transparent background</Label>
         <Switch
+          id="transparent-background"
           checked={isTransparentBackground}
           onCheckedChange={updateIsTransparentBackground}
         />

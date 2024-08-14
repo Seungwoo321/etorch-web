@@ -8,11 +8,11 @@ import { useTooltipOptionStore } from "@/store/editPanel";
 import {
   selectCursorLineStyle,
   selectTooltipMode,
-  selectMaxWidth,
+  selectTooltipMaxWidth,
   selectCursorLineStyleWidth,
   selectCursorLineStyleDasharray,
   selectUpdateTolltipMode,
-  selectUpdateMaxWidth,
+  selectUpdateTooltipMaxWidth,
   selectUpdateCursorLineStyle,
   selectUpdateCursorLineStyleWidth,
   selectUpdateCursorLineStyleDasharray
@@ -27,12 +27,12 @@ import {
 
 function SelectionTooltipOption() {
   const tooltipMode = useTooltipOptionStore(selectTooltipMode)
-  const maxWidth = useTooltipOptionStore(selectMaxWidth)
+  const maxWidth = useTooltipOptionStore(selectTooltipMaxWidth)
   const cursorLineStyleWidth = useTooltipOptionStore(selectCursorLineStyleWidth)
   const cursorLineStyleDasharray = useTooltipOptionStore(selectCursorLineStyleDasharray)
   const cursorLineStyle = useTooltipOptionStore(selectCursorLineStyle)
   const updateTooltipMode = useTooltipOptionStore(selectUpdateTolltipMode)
-  const updateMaxWidth = useTooltipOptionStore(selectUpdateMaxWidth)
+  const updateMaxWidth = useTooltipOptionStore(selectUpdateTooltipMaxWidth)
   const updateCursorLineStyle = useTooltipOptionStore(selectUpdateCursorLineStyle)
   const updateCursorLineStyleWidth = useTooltipOptionStore(selectUpdateCursorLineStyleWidth)
   const updateCursorLineStyleDasharray = useTooltipOptionStore(selectUpdateCursorLineStyleDasharray)
@@ -42,6 +42,7 @@ function SelectionTooltipOption() {
       <div className="grid w-full max-w-sm items-center gap-1.5">
         <Label htmlFor="tooltip-mode">Tooltip mode</Label>
         <ToggleGroup
+          id="tooltip-mode"
           className="justify-start"
           type="single"
           variant="outline"

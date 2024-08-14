@@ -12,7 +12,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getIndicatorValues, getIndicators } from "@/lib/api";
-import { Indicator } from "@/models/";
+import { DataPanelItem, Indicator } from "@/models/";
 import { useDataOptionStore } from "@/store/editPanel";
 import {
   selectPanelById,
@@ -21,7 +21,10 @@ import {
   selectSetFrequency,
   selectUpdatePanelItem,
   selectRemovePanelItem,
-  selectCreateIndicators
+  selectCreateIndicators,
+  selectSetChartData,
+  selectPanelsData,
+  selectChartData
 } from "@/store/editPanel/selector"
 import {
   RefreshCcwIcon,
@@ -34,11 +37,61 @@ type DataPanelOptionsProps = {
   id: number;
 };
 
+type CombineData = {
+  [date: string]: ChartDataItem
+}
+type ChartDataItem = {
+  // date: string;
+  [x: string]: string | number;
+}
+const combineDataByFrequency = (chartData: ChartDataItem[], panel: DataPanelItem, frequency: string) => {
+  const combinedData: CombineData = {}
+  panel.data.forEach(item => {
+    if (!combinedData[item.date]) {
+      combinedData[item.date] = {
+        date: item.date,
+        [panel.indicatorCode]: 0
+      }
+    }
+    combinedData[item.date][panel.indicatorCode] = item.value;
+  })
+  if (panel.frequency === frequency) {
+    return chartData.reduce((acc, cur) => {
+      let newItem: ChartDataItem = {} 
+      Object.keys(cur).forEach(key => {
+        if (key === 'date') return
+        newItem = {
+          ...newItem,
+          [key]: combinedData[cur.date][key]
+        }
+      })
+      acc.push(newItem)
+
+      return acc
+    }, ([] as ChartDataItem[]))
+  }
+  // chartData
+  //   .filter(values => panel.frequency === frequency)
+  //   .forEach((panel) => {
+  //     panel.data.forEach(item => {
+  //       if (!combinedData[item.date]) {
+  //         combinedData[item.date] = {
+  //           date: item.date,
+  //           [panel.indicatorCode]: 0
+  //         }
+  //       }
+  //       combinedData[item.date][panel.indicatorCode] = item.value;
+  //     })
+  //   })
+  return Object.values(combinedData);
+}
 
 
 function DataPanelOptions({ id }: DataPanelOptionsProps) {
+  const chartData = useDataOptionStore(selectChartData)
   const panel = useDataOptionStore(selectPanelById(id))
   const frequency = useDataOptionStore(selectFrequency)
+  const setChartData = useDataOptionStore(selectSetChartData)
   const setFrequency = useDataOptionStore(selectSetFrequency)
   const updatePanelItem = useDataOptionStore(selectUpdatePanelItem)
   const removePanelItem = useDataOptionStore(selectRemovePanelItem)
@@ -46,7 +99,6 @@ function DataPanelOptions({ id }: DataPanelOptionsProps) {
   const indicatorList = useDataOptionStore(selectIndicators)
   const [loadingStatus, setLoadingStatus] = useState<boolean>(false)
   const [indicator, setIndicator] = useState<Indicator | null>(panel?.dataSource ? indicatorList[panel.dataSource].find(indicator => indicator.code === panel.indicatorCode) ?? null : null)
-
 
   const handleCollapsibleChange = useCallback(
     (value: boolean) => {
@@ -125,6 +177,7 @@ function DataPanelOptions({ id }: DataPanelOptionsProps) {
           ...panel,
           data: data.data
         })
+        setChartData(combineDataByFrequency(chartData, panel, frequency))
       })
     }
   }

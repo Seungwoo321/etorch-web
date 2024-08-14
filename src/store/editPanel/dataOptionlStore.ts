@@ -2,11 +2,13 @@ import { Indicator, DataPanelItem } from '@/models';
 import { create } from 'zustand'
 
 export interface DataOptionStore {
+  chartData: unknown[]
   frequency: string
   panels: DataPanelItem[]
   indicators: {
     [key: string]: Indicator[]
   };
+  setChartData: (chartData: unknown[]) => void
   setFrequency: (frequency: string) => void;
   createIndicators: (dataSource: string, data: Indicator[]) => void;
   addPanelItem: (item: DataPanelItem) => void;
@@ -15,6 +17,7 @@ export interface DataOptionStore {
 }
 
 export const useDataOptionStore = create<DataOptionStore>(set => ({
+  chartData: [],
   frequency: '',
   panels: [],
   indicators: {
@@ -22,6 +25,7 @@ export const useDataOptionStore = create<DataOptionStore>(set => ({
     ecos: [],
     oecd: []
   },
+  setChartData: (chartData) => set(() => ({ chartData })),
   setFrequency: (frequency) => set(() => ({ frequency })),
   createIndicators: (dataSource, data) => set(state => ({
     indicators: {

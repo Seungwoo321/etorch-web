@@ -6,27 +6,27 @@ import {
 } from "@/components/ui/toggle-group"
 import { useLegendOptionStore } from '@/store/editPanel'
 import {
-  selectVisibility,
-  selectLayout,
-  selectAlign,
-  selectVerticalAlign,
-  selectUpdateVisibility,
-  selectUpdateLayout,
-  selectUpdateAlign,
-  selectUpdateVerticalAlign
+  selectLegendVisibility,
+  selectLegendLayout,
+  selectLegendAlign,
+  selectLegendVerticalAlign,
+  selectUpdateLegendVisibility,
+  selectUpdateLegendLayout,
+  selectUpdateLegendAlign,
+  selectUpdateLegendVerticalAlign
 } from "@/store/editPanel/selector"
 import { LayoutType } from "recharts/types/util/types"
 import { VerticalAlignmentType, HorizontalAlignmentType } from 'recharts/types/component/DefaultLegendContent';
 
 function SelectionLegendOption() {
-  const visibility = useLegendOptionStore(selectVisibility)
-  const layout = useLegendOptionStore(selectLayout)
-  const align = useLegendOptionStore(selectAlign)
-  const verticalAlign = useLegendOptionStore(selectVerticalAlign)
-  const updateVisibility = useLegendOptionStore(selectUpdateVisibility)
-  const updateLayout = useLegendOptionStore(selectUpdateLayout)
-  const updateAlign = useLegendOptionStore(selectUpdateAlign)
-  const updateVerticalAlign = useLegendOptionStore(selectUpdateVerticalAlign)
+  const visibility = useLegendOptionStore(selectLegendVisibility)
+  const layout = useLegendOptionStore(selectLegendLayout)
+  const align = useLegendOptionStore(selectLegendAlign)
+  const verticalAlign = useLegendOptionStore(selectLegendVerticalAlign)
+  const updateVisibility = useLegendOptionStore(selectUpdateLegendVisibility)
+  const updateLayout = useLegendOptionStore(selectUpdateLegendLayout)
+  const updateAlign = useLegendOptionStore(selectUpdateLegendAlign)
+  const updateVerticalAlign = useLegendOptionStore(selectUpdateLegendVerticalAlign)
   return (
     <div className="space-y-2 pl-2 pr-1">
       <div className="grid w-full max-w-sm items-center gap-1.5">

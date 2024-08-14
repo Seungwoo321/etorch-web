@@ -2,12 +2,12 @@ import { create } from 'zustand'
 
 export interface TooltipOptionStore {
   tooltipMode: string
-  maxWidth: number
+  tooltiMaxWidth: number
   cursorLineStyle: string
   cursorLineStyleWidth: number
   cursorLineStyleDasharray: string
   updateTooltipMode: (tooltipMode: undefined | string) => void
-  updateMaxWidth: (maxWdith: number) => void
+  updateTooltipMaxWidth: (maxWdith: number) => void
   updateCursorLineStyle: (cursorLineStyle: string) => void
   updateCursorLineStyleWidth: (cursorLineStyleWidth: number) => void
   updateCursorLineStyleDasharray: (cursorLineStyleDasharray: string) => void
@@ -15,12 +15,12 @@ export interface TooltipOptionStore {
 
 export const useTooltipOptionStore = create<TooltipOptionStore>(set => ({
   tooltipMode: 'default',
-  maxWidth: 160,
+  tooltiMaxWidth: 160,
   cursorLineStyleWidth: 2,
   cursorLineStyleDasharray: '2 2',
   cursorLineStyle: 'dash',
   updateTooltipMode: tooltipMode => set(() => ({ tooltipMode })),
-  updateMaxWidth: maxWidth => set(() =>({ maxWidth })),
+  updateTooltipMaxWidth: tooltiMaxWidth => set(() =>({ tooltiMaxWidth })),
   updateCursorLineStyle: cursorLineStyle  => set(() => ({ cursorLineStyle })),
   updateCursorLineStyleWidth: cursorLineStyleWidth  => set(() => ({ cursorLineStyleWidth })),
   updateCursorLineStyleDasharray: cursorLineStyleDasharray  => set(() => ({ cursorLineStyleDasharray })),

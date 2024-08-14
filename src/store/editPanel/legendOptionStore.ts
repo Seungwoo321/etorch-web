@@ -3,25 +3,25 @@ import { LayoutType } from 'recharts/types/util/types';
 import { create } from 'zustand'
 
 export interface LegendOptionStore {
-  visibility: boolean;
-  layout: LayoutType;
-  align: HorizontalAlignmentType ;
-  verticalAlign: VerticalAlignmentType;
-  updateVisibility: (visibility: boolean) => void;
-  updateLayout: (layout: LayoutType) => void;
-  updateAlign: (align: HorizontalAlignmentType) => void;
-  updateVerticalAlign: (verticalAlign: VerticalAlignmentType) => void;
+  legendVisibility: boolean;
+  legendLayout: LayoutType;
+  legendAlign: HorizontalAlignmentType ;
+  legendVerticalAlign: VerticalAlignmentType;
+  updateLegendVisibility: (visibility: boolean) => void;
+  updateLegendLayout: (layout: LayoutType) => void;
+  updateLegendAlign: (align: HorizontalAlignmentType) => void;
+  updateLegendVerticalAlign: (verticalAlign: VerticalAlignmentType) => void;
 }
 
 export const useLegendOptionStore = create<LegendOptionStore>(set => ({
-  visibility: true,
-  layout: 'horizontal',
-  align: 'left',
-  verticalAlign: 'bottom',
-  updateVisibility: (visibility) => set(() => ({ visibility })),
-  updateLayout: (layout) => set(() => ({ layout })),
-  updateAlign: (align) => set(() => ({ align })),
-  updateVerticalAlign: (verticalAlign) => set(() => ({ verticalAlign }))
+  legendVisibility: true,
+  legendLayout: 'horizontal',
+  legendAlign: 'left',
+  legendVerticalAlign: 'bottom',
+  updateLegendVisibility: (legendVisibility) => set(() => ({ legendVisibility })),
+  updateLegendLayout: (legendLayout) => set(() => ({ legendLayout })),
+  updateLegendAlign: (legendAlign) => set(() => ({ legendAlign })),
+  updateLegendVerticalAlign: (legendVerticalAlign) => set(() => ({ legendVerticalAlign }))
 }))
 
 export default useLegendOptionStore
