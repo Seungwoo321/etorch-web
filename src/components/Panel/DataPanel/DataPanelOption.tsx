@@ -168,7 +168,7 @@ function DataPanelOptions({ id }: DataPanelOptionsProps) {
 
               <div className="grid md:grid-cols-[3fr,3fr,3fr,1fr] gap-4">
                 <div className="grid gap-3">
-                  <Label>
+                  <Label htmlFor="data-source">
                     데이터 소스
                   </Label>
                   <Select
@@ -176,7 +176,7 @@ function DataPanelOptions({ id }: DataPanelOptionsProps) {
                     value={panel.dataSource}
                     onValueChange={handleDataSourceChange}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger id="data-source">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -187,7 +187,7 @@ function DataPanelOptions({ id }: DataPanelOptionsProps) {
                   </Select>
                 </div>
                 <div className="grid gap-3">
-                  <Label>
+                  <Label htmlFor="data-code">
                     지표
                   </Label>
                   <Select
@@ -196,7 +196,7 @@ function DataPanelOptions({ id }: DataPanelOptionsProps) {
                     onValueChange={handleindicatorCodeChange}
                     disabled={!panel.dataSource}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger id="data-code">
                       <SelectValue/>
                     </SelectTrigger>
                       <SelectContent>
@@ -216,7 +216,7 @@ function DataPanelOptions({ id }: DataPanelOptionsProps) {
                   </Select>
                 </div>
                 <div className="grid gap-3">
-                  <Label>
+                  <Label htmlFor="data-frequency">
                     조회 주기
                   </Label>
                   <Select
@@ -225,7 +225,7 @@ function DataPanelOptions({ id }: DataPanelOptionsProps) {
                     onValueChange={handleFrequencyChange}
                     disabled={!panel.indicatorCode}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger id="data-frequency">
                       <SelectValue/>
                     </SelectTrigger>
                     <SelectContent>

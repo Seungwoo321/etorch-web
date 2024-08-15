@@ -15,7 +15,7 @@ import {
   selectUpdateLineWidth,
   selectUpdateFillOpacity
 } from "@/store/editPanel/selector"
-
+import FormField from '@/components/shared/FormField'
 const SelectionGraphStyle = () => {
   const graphStyle = useGraphStylesOptionStore(selectGraphStyle)
   const lineWidth = useGraphStylesOptionStore(selectLineWidth)
@@ -26,8 +26,7 @@ const SelectionGraphStyle = () => {
 
   return (
     <div className="space-y-2 pl-2 pr-1">
-      <div className="grid w-full max-w-sm items-center gap-1.5 ">
-        <Label htmlFor="Style">Style</Label>
+      <FormField label="Style">
         <Tabs
           defaultValue="Line"
           value={graphStyle}
@@ -43,10 +42,7 @@ const SelectionGraphStyle = () => {
             <div className="grid gap-2 pt-2">
               <div className="grid gap-2">
                 <div className="flex items-center justify-between">
-                  <Label
-                    htmlFor="line-width"
-                  >Line width
-                  </Label>
+                  <span>Line width</span>
                   <span className="w-12 rounded-md border border-transparent px-2 py-0.5 text-right text-sm text-muted-foreground hover:border-border">
                     {lineWidth}
                   </span>
@@ -64,10 +60,7 @@ const SelectionGraphStyle = () => {
             <div className="grid gap-2 pt-2">
               <div className="grid gap-2">
                 <div className="flex items-center justify-between">
-                  <Label
-                    htmlFor="fill-opacity"
-                  >Fill opacity
-                  </Label>
+                  <span>Fill opacity</span>
                   <span className="w-12 rounded-md border border-transparent px-2 py-0.5 text-right text-sm text-muted-foreground hover:border-border">
                     {fillOpacity}
                   </span>
@@ -89,7 +82,7 @@ const SelectionGraphStyle = () => {
 
           </TabsContent>
         </Tabs>
-      </div>
+      </FormField>
     </div>
   )
 }

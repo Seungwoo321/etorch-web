@@ -17,6 +17,7 @@ import {
 } from "@/store/editPanel/selector"
 import { LayoutType } from "recharts/types/util/types"
 import { VerticalAlignmentType, HorizontalAlignmentType } from 'recharts/types/component/DefaultLegendContent';
+import FormField from "../shared/FormField"
 
 function SelectionLegendOption() {
   const visibility = useLegendOptionStore(selectLegendVisibility)
@@ -30,14 +31,15 @@ function SelectionLegendOption() {
   return (
     <div className="space-y-2 pl-2 pr-1">
       <div className="grid w-full max-w-sm items-center gap-1.5">
-        <Label htmlFor="visibility">Visibility</Label>
+        <Label htmlFor="legend-visibility">Visibility</Label>
         <Switch
+          id="legend-visibility"
           checked={visibility}
           onCheckedChange={updateVisibility}
         />
       </div>
       <div className="grid w-full max-w-sm items-center gap-1.5">
-        <Label htmlFor="layout">Layout</Label>
+        <span>Layout</span>
         <ToggleGroup
           className="justify-start"
           type="single"
@@ -57,14 +59,16 @@ function SelectionLegendOption() {
         </ToggleGroup>
       </div>
       <div className="grid w-full max-w-sm items-center gap-1.5">
-        <Label htmlFor="placement">Horizontal Align</Label>
+        <span>Horizontal Align</span>
         <ToggleGroup
           className="justify-start"
           type="single"
           variant="outline"
           value={align}
-          onValueChange={(value: HorizontalAlignmentType | undefined) => {
-            if (value) updateAlign(value)
+          onValueChange={(value) => {
+            if (value === 'left' || value === 'center' || value === 'right') {
+              updateAlign(value)
+            }
           }}
         > 
         {(layout !== 'horizontal' || verticalAlign !== 'middle')
@@ -84,17 +88,18 @@ function SelectionLegendOption() {
           }
         </ToggleGroup>
       </div>
-      <div className="grid w-full max-w-sm items-center gap-1.5">
-        <Label htmlFor="placement">Vertical Align</Label>
+      <FormField label="Vertical Alig">
         <ToggleGroup
           className="justify-start"
           type="single"
           variant="outline"
           value={verticalAlign}
-          onValueChange={(value: VerticalAlignmentType | undefined) => {
-            if (value) updateVerticalAlign(value)
+          onValueChange={(value) => {
+            if (value === 'top' || value === 'bottom' || value === 'middle') {
+              updateVerticalAlign(value)
+            }
             if (layout === 'horizontal' && value === 'middle') updateAlign('center')
-            }}
+          }}
         >
           <ToggleGroupItem value="top" aria-label="Toggle top">
             Top
@@ -106,7 +111,7 @@ function SelectionLegendOption() {
             Bottom
           </ToggleGroupItem>
         </ToggleGroup>
-      </div>
+      </FormField>
     </div>
   )
 }

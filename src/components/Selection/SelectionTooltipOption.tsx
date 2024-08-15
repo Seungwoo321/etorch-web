@@ -24,6 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import FormField from "../shared/FormField";
 
 function SelectionTooltipOption() {
   const tooltipMode = useTooltipOptionStore(selectTooltipMode)
@@ -39,10 +40,8 @@ function SelectionTooltipOption() {
 
   return (
     <div className="space-y-2 pl-2 pr-1">
-      <div className="grid w-full max-w-sm items-center gap-1.5">
-        <Label htmlFor="tooltip-mode">Tooltip mode</Label>
+      <FormField label="Tooltip mode">
         <ToggleGroup
-          id="tooltip-mode"
           className="justify-start"
           type="single"
           variant="outline"
@@ -61,22 +60,19 @@ function SelectionTooltipOption() {
             Hidden
           </ToggleGroupItem>
         </ToggleGroup>
-      </div>
-      {tooltipMode === 'hidden'
-        ? null
-        : <>
-          <div className="grid w-full max-w-sm items-center gap-1.5">
-            <Label htmlFor="max-width">Max width</Label>
+      </FormField>
+      {tooltipMode !== 'hidden' && (
+        <>
+          <FormField htmlFor="tooltip-max-width" label="Max width">
             <Input
-              id="max-width"
+              id="tooltip-max-width"
               type="nuumber"
               className="sm"
               value={maxWidth}
               onInput={(e) => updateMaxWidth(+e.currentTarget.value)}
             />
-          </div>
-          <div className="grid w-full max-w-sm items-center gap-1.5">
-            <Label htmlFor="cursor-style">Cursor style</Label>
+          </FormField>
+          <FormField label="Cursor style">
             <div className="flex gap-1.5">
               <ToggleGroup
                 className="justify-start"
@@ -94,40 +90,37 @@ function SelectionTooltipOption() {
                   Dash
                 </ToggleGroupItem>
               </ToggleGroup>
-              
-
-              {cursorLineStyle === 'dash' ? (
-              <Select
-                onValueChange={updateCursorLineStyleDasharray}
-                value={cursorLineStyleDasharray}
-              >
-                <SelectTrigger>
-                  <SelectValue defaultValue="2 2"></SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="1 1">1, 1</SelectItem>
-                  <SelectItem value="2 2">2, 2</SelectItem>
-                  <SelectItem value="3 3">3, 3</SelectItem>
-                  <SelectItem value="4 4">4, 4</SelectItem>
-                  <SelectItem value="5 5">5, 5</SelectItem>
-                </SelectContent>
-              </Select>
-              ) : null}
+              {cursorLineStyle === 'dash' && (
+                <Select
+                  onValueChange={updateCursorLineStyleDasharray}
+                  value={cursorLineStyleDasharray}
+                >
+                  <SelectTrigger>
+                    <SelectValue defaultValue="2 2"></SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="1 1">1, 1</SelectItem>
+                    <SelectItem value="2 2">2, 2</SelectItem>
+                    <SelectItem value="3 3">3, 3</SelectItem>
+                    <SelectItem value="4 4">4, 4</SelectItem>
+                    <SelectItem value="5 5">5, 5</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
             </div>
-          </div>
-          <div className="grid w-full max-w-sm items-center gap-1.5">
-            <Label htmlFor="cursor-width">Cursor width</Label>
+          </FormField>
+          <FormField htmlFor="tooltip-cursor-width" label="Cursor width">
             <Input
-              id="cursor-width"
+              id="tooltip-cursor-width"
               type="nuumber"
               max={10}
               className="sm"
               value={cursorLineStyleWidth}
               onInput={(e) => updateCursorLineStyleWidth(+e.currentTarget.value)}
             />
-          </div>
+          </FormField>
         </>
-        }
+      )}
     </div>
   )
 }

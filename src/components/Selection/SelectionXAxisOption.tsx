@@ -1,4 +1,3 @@
-import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Input } from "@/components/ui/input"
 import {
@@ -8,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { DataPanelItem, DataValue } from "@/models"
+import { DataValue } from "@/models"
 import { useDataOptionStore, useXAxisOptionStore } from "@/store/editPanel"
 import {
   selectXAxisVisibility,
@@ -18,7 +17,6 @@ import {
   selectXAxisDomainMax,
   selectXAxisAxisLine,
   selectXAxisTickLine,
-  selectXAxisColor,
   selectUpdateXAxisVisibility,
   selectUpdateXAxisType,
   selectUpdateXAxisTickAngle,
@@ -26,13 +24,13 @@ import {
   selectUpdateXAxisDomainMax,
   selectUpdateXAxisAxisLine,
   selectUpdateXAxisTickLine,
-  selectUpdateXAxisColor,
   selectXAxisTickSize,
   selectUpdateXAxisTickSize,
   selecteUpdateXAxisDataKey,
   selectXAxisDataKey,
   selectChartData
 } from "@/store/editPanel/selector"
+import FormField from "../shared/FormField"
 
 const uniqueDataKeyReducer = (acc: string[], cur: DataValue) => {
   Object.keys(cur).forEach((key) => {
@@ -54,7 +52,6 @@ function SelectionAxisOption() {
   const xAxisAxisLine = useXAxisOptionStore(selectXAxisAxisLine)
   const xAxisTickSize = useXAxisOptionStore(selectXAxisTickSize)
   const xAxisTickLine = useXAxisOptionStore(selectXAxisTickLine)
-  const xAxisColor = useXAxisOptionStore(selectXAxisColor)
   const updateXAxisDataKey = useXAxisOptionStore(selecteUpdateXAxisDataKey)
   const updateXAxisVisibility = useXAxisOptionStore(selectUpdateXAxisVisibility)
   const updateXAxisType = useXAxisOptionStore(selectUpdateXAxisType)
@@ -64,27 +61,26 @@ function SelectionAxisOption() {
   const updateXAxisAxisLine = useXAxisOptionStore(selectUpdateXAxisAxisLine)
   const updateXAxisTickSzie = useXAxisOptionStore(selectUpdateXAxisTickSize)
   const updateXAxisTickLine = useXAxisOptionStore(selectUpdateXAxisTickLine)
-  const updateXAxisColor = useXAxisOptionStore(selectUpdateXAxisColor)
   return (
     <div className="space-y-2 pl-2 pr-1">
-      <div className="grid w-full max-w-sm items-center gap-1.5">
-        <Label htmlFor="label">Visibility</Label>
+      <FormField htmlFor="x-axis-visibility" label="Visibility">
         <Switch
-          name="label"
+          id="x-axis-visibility"
           checked={xAxisVisibility}
           onCheckedChange={updateXAxisVisibility}
         />
-      </div>
+      </FormField>
 
-      <div className="grid w-full max-w-sm items-center gap-1.5">
-        <Label htmlFor="label">Data key</Label>
+      <FormField htmlFor="x-axis-data-key" label="Data key">
         <div className="flex gap-1.5">
           <Select
             onValueChange={updateXAxisDataKey}
             value={xAxisDataKey}
           >
-            <SelectTrigger>
-              <SelectValue defaultValue={xAxisDataKey}></SelectValue>
+            <SelectTrigger id="x-axis-data-key">
+              <SelectValue defaultValue={xAxisDataKey}>
+                {uniqueDataKey.length ? xAxisDataKey : 'Not selectable'}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
               {uniqueDataKey.map(key => (
@@ -97,50 +93,52 @@ function SelectionAxisOption() {
             </SelectContent>
           </Select>
         </div>
-      </div>
+      </FormField>
 
-      <div className="grid w-full max-w-sm items-center gap-1.5">
-        <Label htmlFor="type">Type</Label>
+      <FormField htmlFor="x-axis-type" label="Type">
         <Select
           onValueChange={(value) => {
             if (value === 'category' || value === 'number') {
               updateXAxisType(value)
             }
+            if (value === 'category') {
+              updateXAxisDomainMin(0)
+              updateXAxisDomainMax('auto')
+            }
           }}
           value={xAxisType}
         >
-          <SelectTrigger>
+          <SelectTrigger id="x-axis-type">
             <SelectValue defaultValue="category"></SelectValue>
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="category">Category</SelectItem>
-            <SelectItem value="number">Number</SelectItem>
+            <SelectItem value="category">category</SelectItem>
+            <SelectItem value="number">number</SelectItem>
           </SelectContent>
         </Select>
-      </div>
-      {xAxisType === 'number'
-        ? (
+      </FormField>
+
+      {xAxisType === 'number' && (
         <>
-          <div className="grid w-full max-w-sm items-center gap-1.5">
-            <Label htmlFor="domain-min">Min</Label>
+          <FormField htmlFor="x-axis-domain-min" label="Min">
             <Input
-              id="domain-min"
+              id="x-axis-domain-min"
               type="text"
               className="sm"
               value={xAxisDomainMin}
               onInput={(e) => {
                 if (e.currentTarget.value === 'auto') {
                   updateXAxisDomainMin(e.currentTarget.value)
-                } else if (!isNaN(+e.currentTarget.value)  && typeof +e.currentTarget.value === 'number') {
+                } else if (!isNaN(+e.currentTarget.value) && typeof +e.currentTarget.value === 'number') {
                   updateXAxisDomainMin(+e.currentTarget.value)
                 }
               }}
             />
-          </div>
-          <div className="grid w-full max-w-sm items-center gap-1.5">
-            <Label htmlFor="domain-max">Max</Label>
+          </FormField>
+
+          <FormField htmlFor="x-axis-domain-max" label="Max">
             <Input
-              id="domain-max"
+              id="x-axis-domain-max"
               type="text"
               className="sm"
               value={xAxisDomainMax}
@@ -152,50 +150,59 @@ function SelectionAxisOption() {
                 }
               }}
             />
-          </div>
-        </>)
-        : null}
+          </FormField>
+        </>
+      )}
 
-      <div className="grid w-full max-w-sm items-center gap-1.5">
-        <Label htmlFor="axis-line">Show Axis</Label>
+      <FormField htmlFor="x-axis-axis-line" label="Show Axis">
         <Switch
+          id="x-axis-axis-line"
           checked={xAxisAxisLine}
           onCheckedChange={updateXAxisAxisLine}
         />
-      </div>
-      <div className="grid w-full max-w-sm items-center gap-1.5">
-        <Label htmlFor="tick-line">Show Tick</Label>
+      </FormField>
+
+      <FormField htmlFor="x-axis-tick-angle" label="Tick Angle">
+        <Input
+          id="x-axis-tick-angle"
+          type="nuumber"
+          min={0}
+          max={360}
+          className="sm"
+          value={xAxisTickAngle}
+          onInput={(e) => {
+            if (!isNaN(+e.currentTarget.value) && typeof +e.currentTarget.value === 'number') {
+              updateXAxisTickAngle(+e.currentTarget.value)
+            }
+          }}
+        />
+      </FormField>
+
+      <FormField htmlFor="x-axis-tick-line" label="Show Tick">
         <Switch
+          id="x-axis-tick-line"
           checked={xAxisTickLine}
           onCheckedChange={updateXAxisTickLine}
         />
-      </div>
-      {xAxisTickLine ? (
-        <>
-          <div className="grid w-full max-w-sm items-center gap-1.5">
-            <Label htmlFor="tick-size">Tick Size</Label>
-            <Input
-              id="tick-size"
-              type="nuumber"
-              max={10}
-              className="sm"
-              value={xAxisTickSize}
-              onInput={(e) => updateXAxisTickSzie(+e.currentTarget.value)}
-            />
-          </div>
-          <div className="grid w-full max-w-sm items-center gap-1.5">
-            <Label htmlFor="tick-angle">Tick Angle</Label>
-            <Input
-              id="tick-angle"
-              type="nuumber"
-              max={10}
-              className="sm"
-              value={xAxisTickAngle}
-              onInput={(e) => updateXAxisTickAngle(+e.currentTarget.value)}
-            />
-          </div>
-        </>
-      ) : null}
+      </FormField>
+      {xAxisTickLine && (
+        <FormField htmlFor="x-axis-tick-size" label="Tick Size">
+          <Input
+            id="x-axis-tick-size"
+            type="nuumber"
+            max={10}
+            className="sm"
+            value={xAxisTickSize}
+            onInput={(e) => {
+              if (!isNaN(+e.currentTarget.value) && typeof +e.currentTarget.value === 'number') {
+                updateXAxisTickAngle(+e.currentTarget.value)
+              }
+              updateXAxisTickSzie(+e.currentTarget.value)
+            }}
+          />
+        </FormField>
+      )}
+
     </div>
   )
 }

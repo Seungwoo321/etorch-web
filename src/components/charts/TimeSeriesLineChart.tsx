@@ -1,5 +1,7 @@
 import {
-  LineChart,
+  ComposedChart,
+  Bar,
+  Area,
   Line,
   CartesianGrid,
   XAxis,
@@ -70,21 +72,32 @@ function LineChartContainer() {
 
   return (
     <ResponsiveContainer className={isTransparentBackground ? "" : "bg-primary-foreground"} width="100%" height="100%" minHeight={0} minWidth={0}>
-      <LineChart width={200} height={300} data={chartData} margin={{ top: 24, right: 20, bottom: 8, left: 0 }}>
+      <ComposedChart width={200} height={300} data={chartData} margin={{ top: 24, right: 20, bottom: 8, left: 0 }}>
 
-        <CartesianGrid stroke="hsl(var(--muted))" strokeDasharray="0" />
+        <CartesianGrid
+          vertical={true}
+          horizontal={true}
+          stroke="hsl(var(--muted))"
+          strokeDasharray="0" 
+        />
         
         <XAxis
+          // padding={{ left: 20, right: 200 }}
           hide={!xAxisVisibility}
           dataKey={xAxisDataKey}
           stroke={xAxisColor}
           type={xAxisType}
-          // domain={[xAxisDomainMin, xAxisDomainMax]}
+          domain={[xAxisDomainMin, xAxisDomainMax]}
           angle={xAxisTickAngle}
           tickSize={xAxisTickSize}
           tickLine={xAxisTickLine}
           axisLine={xAxisAxisLine}
-          allowDecimals={false}
+          allowDecimals={true}
+          allowDataOverflow={true}
+          // tickFormatter={(value) => {
+          //   // return value.replace('-', '. ')
+          //   return `${value.substring(2, 4)}-${value.substring(5, 7) }`
+          // }}
         />
         
         <YAxis
@@ -101,7 +114,24 @@ function LineChartContainer() {
             yAxisId={1}
           />
         ))}
-
+        {/* {panelsData.map((panel) => (
+          <Area
+            key={`area-${panel.indicatorCode}`}
+            type="monotone"
+            dataKey={panel.indicatorCode}
+            stroke={'rgb(115, 191, 105)'}
+            yAxisId={1}
+          />
+        ))} */}
+        {/* {panelsData.map((panel) => (
+          <Bar
+            key={`bar-${panel.indicatorCode}`}
+            type="monotone"
+            dataKey={panel.indicatorCode}
+            stroke={'rgb(115, 191, 105)'}
+            yAxisId={1}
+          />
+        ))} */}
         {/* <XAxis dataKey="date" stroke="#777474" />
         {lineChartItems.map(({ code, yAxisId, label }) => (
           <YAxis
@@ -143,7 +173,7 @@ function LineChartContainer() {
           cursor={{ stroke: 'hsl(var(--muted-foreground))', strokeWidth: cursorLineStyleWidth, strokeDasharray: cursorLineStyle === 'dash' ? cursorLineStyleDasharray : '' }}
           content={<CustomTooltip/>}
         />
-      </LineChart>
+      </ComposedChart>
     </ResponsiveContainer>
   )
 }
@@ -170,8 +200,8 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload, label })
         </div>
 
         <div className="flex flex-col flex-1 gap-1 border-t-[1px] border-solid border-[rgba(204, 204, 220, 0.2)] p-2">
-          {payload.map(item => (
-            <div className="flex items-start justify-between mr-0" key={`${item.name}-${item.value}`}>
+          {payload.map((item, index) => (
+            <div className="flex items-start justify-between mr-0" key={`${index}-${item.name}-${item.value}`}>
               <div className="flex items-center">
                 {item.name}
               </div>
