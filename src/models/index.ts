@@ -13,8 +13,7 @@ export interface Indicator {
 }
 
 export interface DataValue {
-  date: string,
-  value: number
+  [x: string]: string | number;
 }
 
 export type IndicatorValues = DataValue[] | []

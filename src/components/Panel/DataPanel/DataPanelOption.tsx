@@ -12,7 +12,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getIndicatorValues, getIndicators } from "@/lib/api";
-import { DataPanelItem, Indicator } from "@/models/";
+import { Indicator } from "@/models/";
 import { useDataOptionStore } from "@/store/editPanel";
 import {
   selectPanelById,
@@ -22,9 +22,7 @@ import {
   selectUpdatePanelItem,
   selectRemovePanelItem,
   selectCreateIndicators,
-  selectSetChartData,
-  selectPanelsData,
-  selectChartData
+  selectSetChartData
 } from "@/store/editPanel/selector"
 import {
   RefreshCcwIcon,
@@ -37,58 +35,7 @@ type DataPanelOptionsProps = {
   id: number;
 };
 
-type CombineData = {
-  [date: string]: ChartDataItem
-}
-type ChartDataItem = {
-  // date: string;
-  [x: string]: string | number;
-}
-const combineDataByFrequency = (chartData: ChartDataItem[], panel: DataPanelItem, frequency: string) => {
-  const combinedData: CombineData = {}
-  panel.data.forEach(item => {
-    if (!combinedData[item.date]) {
-      combinedData[item.date] = {
-        date: item.date,
-        [panel.indicatorCode]: 0
-      }
-    }
-    combinedData[item.date][panel.indicatorCode] = item.value;
-  })
-  if (panel.frequency === frequency) {
-    return chartData.reduce((acc, cur) => {
-      let newItem: ChartDataItem = {} 
-      Object.keys(cur).forEach(key => {
-        if (key === 'date') return
-        newItem = {
-          ...newItem,
-          [key]: combinedData[cur.date][key]
-        }
-      })
-      acc.push(newItem)
-
-      return acc
-    }, ([] as ChartDataItem[]))
-  }
-  // chartData
-  //   .filter(values => panel.frequency === frequency)
-  //   .forEach((panel) => {
-  //     panel.data.forEach(item => {
-  //       if (!combinedData[item.date]) {
-  //         combinedData[item.date] = {
-  //           date: item.date,
-  //           [panel.indicatorCode]: 0
-  //         }
-  //       }
-  //       combinedData[item.date][panel.indicatorCode] = item.value;
-  //     })
-  //   })
-  return Object.values(combinedData);
-}
-
-
 function DataPanelOptions({ id }: DataPanelOptionsProps) {
-  const chartData = useDataOptionStore(selectChartData)
   const panel = useDataOptionStore(selectPanelById(id))
   const frequency = useDataOptionStore(selectFrequency)
   const setChartData = useDataOptionStore(selectSetChartData)
@@ -177,7 +124,7 @@ function DataPanelOptions({ id }: DataPanelOptionsProps) {
           ...panel,
           data: data.data
         })
-        setChartData(combineDataByFrequency(chartData, panel, frequency))
+        setChartData()        
       })
     }
   }
@@ -207,7 +154,10 @@ function DataPanelOptions({ id }: DataPanelOptionsProps) {
 
           <div className="flex">
             <RefreshCcwIcon className="cursor-pointer mr-2" size={14} onClick={handleFetchData} />
-            <Trash2 className="cursor-pointer" style={{ margin: 0 }} size={14} onClick={() => removePanelItem(id)} />
+            <Trash2 className="cursor-pointer" style={{ margin: 0 }} size={14} onClick={() => {
+              removePanelItem(id)
+              setChartData()
+            }} />
           </div>
 
         </div>

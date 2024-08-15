@@ -8,12 +8,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { DataPanelItem } from "@/models"
+import { DataPanelItem, DataValue } from "@/models"
 import { useDataOptionStore, useXAxisOptionStore } from "@/store/editPanel"
 import {
-  selectFrequency,
-  selectSetFrequency,
-  selectPanelsAllData,
   selectXAxisVisibility,
   selectXAxisType,
   selectXAxisTickAngle,
@@ -33,20 +30,12 @@ import {
   selectXAxisTickSize,
   selectUpdateXAxisTickSize,
   selecteUpdateXAxisDataKey,
-  selectXAxisDataKey
+  selectXAxisDataKey,
+  selectChartData
 } from "@/store/editPanel/selector"
 
-
-const frequencyConvertToText = (frequency: string) => ({ M: '월간', D: '일간', A: '연간', Q: '분기' }[frequency])
-const uniqueFrequencyReducer = (acc: DataPanelItem[], cur: DataPanelItem) => {
-  if (!cur.frequency) return acc
-  if (acc.every(item => item.frequency !== cur.frequency)) {
-    acc.push(cur)
-  }
-  return acc
-}
-const uniqueDataKeyReducer = (acc: string[], cur: DataPanelItem) => {
-  Object.keys(cur.data[0]).forEach((key) => {
+const uniqueDataKeyReducer = (acc: string[], cur: DataValue) => {
+  Object.keys(cur).forEach((key) => {
     if (!acc.includes(key)) {
       acc.push(key)
     }
@@ -54,11 +43,8 @@ const uniqueDataKeyReducer = (acc: string[], cur: DataPanelItem) => {
   return acc
 }
 function SelectionAxisOption() {
-  // const frequency = useDataOptionStore(selectFrequency)
-  // const setFrequency = useDataOptionStore(selectSetFrequency)
-  const panelsAllData = useDataOptionStore(selectPanelsAllData)
-  // const uniqueFrequency = panelsAllData.reduce<DataPanelItem[]>(uniqueFrequencyReducer, [])
-  const uniqueDataKey = panelsAllData.reduce<string[]>(uniqueDataKeyReducer, [])
+  const chartData = useDataOptionStore(selectChartData)
+  const uniqueDataKey = chartData.reduce<string[]>(uniqueDataKeyReducer, [])
   const xAxisDataKey = useXAxisOptionStore(selectXAxisDataKey)
   const xAxisVisibility = useXAxisOptionStore(selectXAxisVisibility)
   const xAxisType = useXAxisOptionStore(selectXAxisType)
@@ -89,26 +75,10 @@ function SelectionAxisOption() {
           onCheckedChange={updateXAxisVisibility}
         />
       </div>
+
       <div className="grid w-full max-w-sm items-center gap-1.5">
         <Label htmlFor="label">Data key</Label>
         <div className="flex gap-1.5">
-          {/* <Select
-            onValueChange={setFrequency}
-            value={frequency}
-            >
-            <SelectTrigger>
-              <SelectValue defaultValue={frequency}></SelectValue>
-            </SelectTrigger>
-            <SelectContent>
-              {uniqueFrequency.map(panel => (
-                <SelectItem
-                  key={panel.frequency}
-                  value={panel.frequency}>
-                    {frequencyConvertToText(panel.frequency)}
-                  </SelectItem>
-              ))}
-            </SelectContent>
-          </Select> */}
           <Select
             onValueChange={updateXAxisDataKey}
             value={xAxisDataKey}
@@ -127,14 +97,6 @@ function SelectionAxisOption() {
             </SelectContent>
           </Select>
         </div>
-      </div>
-
-      <div className="grid w-full max-w-sm items-center gap-1.5">
-        <Label htmlFor="axis-line">Show Axis</Label>
-        <Switch
-          checked={xAxisAxisLine}
-          onCheckedChange={updateXAxisAxisLine}
-        />
       </div>
 
       <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -194,6 +156,13 @@ function SelectionAxisOption() {
         </>)
         : null}
 
+      <div className="grid w-full max-w-sm items-center gap-1.5">
+        <Label htmlFor="axis-line">Show Axis</Label>
+        <Switch
+          checked={xAxisAxisLine}
+          onCheckedChange={updateXAxisAxisLine}
+        />
+      </div>
       <div className="grid w-full max-w-sm items-center gap-1.5">
         <Label htmlFor="tick-line">Show Tick</Label>
         <Switch

@@ -1,14 +1,35 @@
-import { Indicator, DataPanelItem } from '@/models';
+import { Indicator, DataPanelItem, DataValue } from '@/models';
 import { create } from 'zustand'
 
+type CombineData = {
+  [date: string]: DataValue
+}
+const combineDataByFrequency = (panels: DataPanelItem[], frequency: string) => {
+  const combinedData: CombineData = {}
+  panels
+    .filter(panel => panel.frequency === frequency)
+    .forEach((panel) => {
+      panel.data.forEach(item => {
+        if (!combinedData[item.date]) {
+          combinedData[item.date] = {
+            date: item.date,
+            [panel.indicatorCode]: 0
+          }
+        }
+        combinedData[item.date][panel.indicatorCode] = item.value;
+      })
+    })
+  return Object.values(combinedData);
+}
+
 export interface DataOptionStore {
-  chartData: unknown[]
+  chartData: DataValue[]
   frequency: string
   panels: DataPanelItem[]
   indicators: {
     [key: string]: Indicator[]
   };
-  setChartData: (chartData: unknown[]) => void
+  setChartData: () => void
   setFrequency: (frequency: string) => void;
   createIndicators: (dataSource: string, data: Indicator[]) => void;
   addPanelItem: (item: DataPanelItem) => void;
@@ -25,7 +46,9 @@ export const useDataOptionStore = create<DataOptionStore>(set => ({
     ecos: [],
     oecd: []
   },
-  setChartData: (chartData) => set(() => ({ chartData })),
+  setChartData: () => set((state) => ({
+    chartData: combineDataByFrequency(state.panels, state.frequency)
+  })),
   setFrequency: (frequency) => set(() => ({ frequency })),
   createIndicators: (dataSource, data) => set(state => ({
     indicators: {
