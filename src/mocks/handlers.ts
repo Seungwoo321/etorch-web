@@ -20,13 +20,13 @@ function withDelay<
     return await resolver(...args)
   }
 }
-interface IndicatorParamsType {
+interface IndicatorParamsType extends PathParams {
   origin: string
   code: string
-  frequency: 'Y' | 'M' | 'D' | 
+  frequency: 'Y' | 'M' | 'D'
 }
 
-interface DashboardParamsType {
+interface DashboardParamsType extends PathParams {
   id: string
 }
 export const handlers = [
