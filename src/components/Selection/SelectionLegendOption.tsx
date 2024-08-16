@@ -45,7 +45,7 @@ function SelectionLegendOption() {
           type="single"
           variant="outline"
           value={layout}
-          onValueChange={(value: LayoutType | undefined) => {
+          onValueChange={(value: LayoutType) => {
             if (value) updateLayout(value)
             if (value === 'horizontal' && verticalAlign === 'middle') updateAlign('center')
           }}
@@ -65,7 +65,7 @@ function SelectionLegendOption() {
           type="single"
           variant="outline"
           value={align}
-          onValueChange={(value) => {
+          onValueChange={(value: HorizontalAlignmentType) => {
             if (value === 'left' || value === 'center' || value === 'right') {
               updateAlign(value)
             }
@@ -94,7 +94,7 @@ function SelectionLegendOption() {
           type="single"
           variant="outline"
           value={verticalAlign}
-          onValueChange={(value) => {
+          onValueChange={(value: VerticalAlignmentType) => {
             if (value === 'top' || value === 'bottom' || value === 'middle') {
               updateVerticalAlign(value)
             }
