@@ -1,19 +1,19 @@
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
   CardTitle
-} from "@/components/ui/card"
+} from '@/components/ui/card'
 import {
   Collapsible,
   CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible"
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { getIndicatorValues, getIndicators } from "@/lib/api";
-import { Indicator } from "@/models/";
-import { useDataOptionStore } from "@/store/editPanel";
+  CollapsibleTrigger
+} from '@/components/ui/collapsible'
+import { Label } from '@/components/ui/label'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { getIndicatorValues, getIndicators } from '@/lib/api'
+import { type Indicator } from '@/models/'
+import { useDataOptionStore } from '@/store/editPanel'
 import {
   selectPanelById,
   selectFrequency,
@@ -23,19 +23,19 @@ import {
   selectRemovePanelItem,
   selectCreateIndicators,
   selectSetChartData
-} from "@/store/editPanel/selector"
+} from '@/store/editPanel/selector'
 import {
   RefreshCcwIcon,
   ChevronRightIcon,
   Trash2,
   CheckCircle
-} from "lucide-react"
-import React, { useCallback, useState } from "react";
-type DataPanelOptionsProps = {
-  id: number;
-};
+} from 'lucide-react'
+import React, { useCallback, useState } from 'react'
+interface DataPanelOptionsProps {
+  id: number
+}
 
-function DataPanelOptions({ id }: DataPanelOptionsProps) {
+function DataPanelOptions ({ id }: DataPanelOptionsProps): JSX.Element | null {
   const panel = useDataOptionStore(selectPanelById(id))
   const frequency = useDataOptionStore(selectFrequency)
   const setChartData = useDataOptionStore(selectSetChartData)
@@ -45,11 +45,11 @@ function DataPanelOptions({ id }: DataPanelOptionsProps) {
   const createIndicators = useDataOptionStore(selectCreateIndicators)
   const indicatorList = useDataOptionStore(selectIndicators)
   const [loadingStatus, setLoadingStatus] = useState<boolean>(false)
-  const [indicator, setIndicator] = useState<Indicator | null>(panel?.dataSource ? indicatorList[panel.dataSource].find(indicator => indicator.code === panel.indicatorCode) ?? null : null)
+  const [indicator, setIndicator] = useState<Indicator | undefined>((panel != null && panel?.dataSource !== '') ? indicatorList[panel.dataSource].find(indicator => indicator.code === panel.indicatorCode) : undefined)
 
   const handleCollapsibleChange = useCallback(
     (value: boolean) => {
-      if (panel) {
+      if (panel != null) {
         updatePanelItem(id, {
           ...panel,
           isOpen: value
@@ -58,10 +58,10 @@ function DataPanelOptions({ id }: DataPanelOptionsProps) {
     },
     [id, panel, updatePanelItem]
   )
-  
+
   const handleDataSourceChange = useCallback(
     (value: string) => {
-      if (panel) {
+      if (panel != null) {
         updatePanelItem(id, {
           ...panel,
           dataSource: value,
@@ -70,21 +70,21 @@ function DataPanelOptions({ id }: DataPanelOptionsProps) {
           data: []
         })
         // api call
-        if (!indicatorList[value].length) {
+        if (indicatorList[value].length === 0) {
           setLoadingStatus(true)
           getIndicators(value).then(data => {
-            createIndicators(value, data.indicators)   
+            createIndicators(value, data.indicators)
             setLoadingStatus(false)
-          })
+          }).catch(console.error)
         }
       }
     },
     [createIndicators, id, indicatorList, panel, updatePanelItem]
   )
-  
+
   const handleindicatorCodeChange = useCallback(
     (value: string) => {
-      if (panel) {
+      if (panel != null) {
         const indicator = indicatorList[panel.dataSource].find(indicator => indicator.code === value)
         updatePanelItem(id, {
           ...panel,
@@ -93,15 +93,15 @@ function DataPanelOptions({ id }: DataPanelOptionsProps) {
           frequency: '',
           data: []
         })
-        setIndicator(indicator ?? null)
+        setIndicator(indicator)
       }
     },
     [id, indicatorList, panel, updatePanelItem]
   )
-  
+
   const handleFrequencyChange = useCallback(
     (value: string) => {
-      if (panel) {
+      if (panel != null) {
         updatePanelItem(id, {
           ...panel,
           frequency: value,
@@ -112,25 +112,25 @@ function DataPanelOptions({ id }: DataPanelOptionsProps) {
     [id, panel, updatePanelItem]
   )
 
-  const handleFetchData = () => {
-    if (panel) {
+  const handleFetchData = (): void => {
+    if (panel != null) {
       setFrequency(panel?.frequency)
       getIndicatorValues({
         origin: panel?.dataSource,
         code: panel?.indicatorCode,
         frequency: panel?.frequency
-      }).then(data => {
+      }).then((data) => {
         updatePanelItem(id, {
           ...panel,
           data: data.data
         })
-        setChartData()        
-      })
+        setChartData()
+      }).catch(console.error)
     }
   }
 
-  if (!panel) return null
-  
+  if (panel == null) return null
+
   return (
     <Collapsible
       open={panel.isOpen}
@@ -146,9 +146,9 @@ function DataPanelOptions({ id }: DataPanelOptionsProps) {
                 <ChevronRightIcon className="cursor-pointer transition-transform duration-200" />
               </div>
             </CollapsibleTrigger>
-            {panel?.dataSource && indicator?.name ? 
-              `${indicator?.name} - ${panel?.dataSource.toUpperCase()}:${panel.indicatorCode}:${panel.frequency}:${panel.unit}`
-              : null 
+            {panel?.dataSource.length > 0 && indicator?.name != null
+              ? `${indicator?.name} - ${panel?.dataSource.toUpperCase()}:${panel.indicatorCode}:${panel.frequency}:${panel.unit}`
+              : null
             }
           </CardTitle>
 
@@ -194,7 +194,7 @@ function DataPanelOptions({ id }: DataPanelOptionsProps) {
                     defaultValue={panel.indicatorCode}
                     value={panel.indicatorCode}
                     onValueChange={handleindicatorCodeChange}
-                    disabled={!panel.dataSource}
+                    disabled={panel == null}
                   >
                     <SelectTrigger id="data-code">
                       <SelectValue/>
@@ -211,7 +211,7 @@ function DataPanelOptions({ id }: DataPanelOptionsProps) {
                           >
                             {indicator.name}
                           </SelectItem>
-                        ))}
+                          ))}
                       </SelectContent>
                   </Select>
                 </div>
@@ -223,24 +223,24 @@ function DataPanelOptions({ id }: DataPanelOptionsProps) {
                     defaultValue={panel.frequency}
                     value={panel.frequency}
                     onValueChange={handleFrequencyChange}
-                    disabled={!panel.indicatorCode}
+                    disabled={panel == null}
                   >
                     <SelectTrigger id="data-frequency">
                       <SelectValue/>
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="A" disabled={!indicator?.hasYear}> 연간 </SelectItem>
-                      <SelectItem value="Q" disabled={!indicator?.hasQuarter}> 분기 </SelectItem>
-                      <SelectItem value="M" disabled={!indicator?.hasMonth}> 월간 </SelectItem>
-                      <SelectItem value="D" disabled={!indicator?.hasDay}> 일간 </SelectItem>
+                      <SelectItem value="A" disabled={!(indicator?.hasYear ?? false)}> 연간 </SelectItem>
+                      <SelectItem value="Q" disabled={!(indicator?.hasQuarter ?? false)}> 분기 </SelectItem>
+                      <SelectItem value="M" disabled={!(indicator?.hasMonth ?? false)}> 월간 </SelectItem>
+                      <SelectItem value="D" disabled={!((indicator?.hasDay) ?? false)}> 일간 </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="flex items-end">
                     <Button
-                      variant={panel.data.length && panel.frequency === frequency ? "default" : "outline"}
+                      variant={(panel.data.length > 0) && panel.frequency === frequency ? 'default' : 'outline'}
                       onClick={handleFetchData}
-                      disabled={!panel.dataSource || !panel.indicatorCode || !panel.frequency}
+                      disabled={(panel.dataSource === '') || (panel.indicatorCode === '') || (panel.frequency === '')}
                     >
                     <CheckCircle />
                   </Button>

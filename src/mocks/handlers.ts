@@ -1,11 +1,11 @@
 import {
-  PathParams,
-  DefaultBodyType,
-  HttpResponseResolver,
+  type PathParams,
+  type DefaultBodyType,
+  type HttpResponseResolver,
   delay,
   http,
   HttpResponse,
-  JsonBodyType,
+  type JsonBodyType
 } from 'msw'
 import { kosisList, ecosList, oecdList, origins, dashboards } from './data'
 import { generateMockData } from './utils/generateMockData'
@@ -14,20 +14,20 @@ function withDelay<
   Params extends PathParams,
   RequestBodyType extends DefaultBodyType,
   ResponseBodyType extends DefaultBodyType
->(durationMs: number, resolver: HttpResponseResolver<Params, RequestBodyType, ResponseBodyType>): HttpResponseResolver<Params, RequestBodyType, ResponseBodyType> {
+> (durationMs: number, resolver: HttpResponseResolver<Params, RequestBodyType, ResponseBodyType>): HttpResponseResolver<Params, RequestBodyType, ResponseBodyType> {
   return async (...args) => {
     await delay(durationMs)
-    return resolver(...args)
+    return await resolver(...args)
   }
 }
-type IndicatorParamsType = {
-  origin: string;
-  code: string;
-  frequency: 'Y' | 'M' | 'D';
-};
+interface IndicatorParamsType {
+  origin: string
+  code: string
+  frequency: 'Y' | 'M' | 'D' | 
+}
 
-type DashboardParamsType = {
-  id: string;
+interface DashboardParamsType {
+  id: string
 }
 export const handlers = [
   http.get<never, never, JsonBodyType>(
@@ -88,7 +88,7 @@ export const handlers = [
   ),
   http.get<DashboardParamsType, never, JsonBodyType>(
     '/v1/dashboard/:id',
-    withDelay(300, ({ params }: { params: DashboardParamsType}) => {
+    withDelay(300, ({ params }: { params: DashboardParamsType }) => {
       return HttpResponse.json({
         dashboard: dashboards.find(({ id }) => id === params.id)
       })

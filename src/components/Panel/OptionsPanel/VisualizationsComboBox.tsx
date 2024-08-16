@@ -1,4 +1,4 @@
-import { ReactElement, useState } from "react"
+import { type ReactElement, useState } from 'react'
 import {
   ChevronDown,
   ChartSpline,
@@ -9,8 +9,8 @@ import {
   Table,
   Grid3X3,
   Type
-} from "lucide-react"
-import { Button } from "@/components/ui/button"
+} from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import {
   Command,
   CommandEmpty,
@@ -18,26 +18,26 @@ import {
   CommandInput,
   CommandItem,
   CommandList
-} from "@/components/ui/command"
+} from '@/components/ui/command'
 import {
   Popover,
   PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
+  PopoverTrigger
+} from '@/components/ui/popover'
 
-type Visualization = {
+interface Visualization {
   icon: ReactElement
   value: string
   label: string
   description: string
 }
 
-type VisualizationListProps = {
+interface VisualizationListProps {
   setOpen: (open: boolean) => void
   setSelectedVisualization: (visualization: Visualization | null) => void
 }
 
-function VisualizationsComboBox() {
+function VisualizationsComboBox (): JSX.Element {
   const [open, setOpen] = useState(false)
   const [selectedVisualization, setSelectedVisualization] = useState<Visualization | null>(visualizations[0])
   return (
@@ -48,7 +48,7 @@ function VisualizationsComboBox() {
           className="w-full justify-between h-[40px] rounded-xl"
         >
           <div className="flex">
-            {selectedVisualization
+            {selectedVisualization != null
               ? <><span className="mr-2">{selectedVisualization.icon}</span><div className="p-1">{selectedVisualization.label}</div></>
               : <>Set visualization</>}
           </div>
@@ -61,7 +61,6 @@ function VisualizationsComboBox() {
     </Popover>
   )
 }
-
 
 const visualizations: Visualization[] = [
   {
@@ -114,10 +113,10 @@ const visualizations: Visualization[] = [
   }
 ]
 
-function VisualizationList({
+function VisualizationList ({
   setOpen,
   setSelectedVisualization
-}: VisualizationListProps) {
+}: VisualizationListProps): JSX.Element {
   return (
     <Command>
       <CommandInput placeholder="Search for..." />
@@ -130,7 +129,7 @@ function VisualizationList({
               value={visualization.value}
               onSelect={(value) => {
                 setSelectedVisualization(
-                  visualizations.find(item => item.value === value) || null
+                  visualizations.find(item => item.value === value) ?? null
                 )
                 setOpen(false)
               }}
@@ -152,7 +151,6 @@ function VisualizationList({
           ))}
         </CommandGroup>
       </CommandList>
-
 
     </Command>
   )

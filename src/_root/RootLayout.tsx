@@ -1,7 +1,7 @@
-import { Outlet } from "react-router-dom"
-import Topbar from "@/_root/layout/LayoutHeader"
+import { Outlet } from 'react-router-dom'
+import Topbar from '@/_root/layout/LayoutHeader'
 
-const RootLayout = () => {
+const RootLayout = (): JSX.Element => {
   return (
     <>
       <Topbar />

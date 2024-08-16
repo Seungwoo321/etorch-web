@@ -1,13 +1,13 @@
 import {
   ResizableHandle,
   ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable"
-import DataPanel from "@/components/Panel/DataPanel/DataPanel"
-import OptionsPanel from "@/components/Panel/OptionsPanel/OptionsPanel"
-import PreviewPanel from "@/components/Panel/PreviewPanel/PreviewPanel"
+  ResizablePanelGroup
+} from '@/components/ui/resizable'
+import DataPanel from '@/components/Panel/DataPanel/DataPanel'
+import OptionsPanel from '@/components/Panel/OptionsPanel/OptionsPanel'
+import PreviewPanel from '@/components/Panel/PreviewPanel/PreviewPanel'
 
-function EditPanel () {
+function EditPanel (): JSX.Element {
   return (
     <div className="py-3 h-full">
       <ResizablePanelGroup

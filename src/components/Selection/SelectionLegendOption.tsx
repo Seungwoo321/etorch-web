@@ -1,9 +1,9 @@
-import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
+import { Label } from '@/components/ui/label'
+import { Switch } from '@/components/ui/switch'
 import {
   ToggleGroup,
-  ToggleGroupItem,
-} from "@/components/ui/toggle-group"
+  ToggleGroupItem
+} from '@/components/ui/toggle-group'
 import { useLegendOptionStore } from '@/store/editPanel'
 import {
   selectLegendVisibility,
@@ -14,12 +14,12 @@ import {
   selectUpdateLegendLayout,
   selectUpdateLegendAlign,
   selectUpdateLegendVerticalAlign
-} from "@/store/editPanel/selector"
-import { LayoutType } from "recharts/types/util/types"
-import { VerticalAlignmentType, HorizontalAlignmentType } from 'recharts/types/component/DefaultLegendContent';
-import FormField from "../shared/FormField"
+} from '@/store/editPanel/selector'
+import { type LayoutType } from 'recharts/types/util/types'
+import { type VerticalAlignmentType, type HorizontalAlignmentType } from 'recharts/types/component/DefaultLegendContent'
+import FormField from '../shared/FormField'
 
-function SelectionLegendOption() {
+function SelectionLegendOption (): JSX.Element {
   const visibility = useLegendOptionStore(selectLegendVisibility)
   const layout = useLegendOptionStore(selectLegendLayout)
   const align = useLegendOptionStore(selectLegendAlign)
@@ -46,7 +46,7 @@ function SelectionLegendOption() {
           variant="outline"
           value={layout}
           onValueChange={(value: LayoutType) => {
-            if (value) updateLayout(value)
+            if (value.length > 0) updateLayout(value)
             if (value === 'horizontal' && verticalAlign === 'middle') updateAlign('center')
           }}
         >
@@ -70,7 +70,7 @@ function SelectionLegendOption() {
               updateAlign(value)
             }
           }}
-        > 
+        >
         {(layout !== 'horizontal' || verticalAlign !== 'middle')
           ? (<ToggleGroupItem value="left" aria-label="Toggle left">
             Left

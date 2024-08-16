@@ -1,22 +1,28 @@
-import { useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 
-export function useInternalRouter() {
-  const navigate = useNavigate();
+interface InternalRouterType {
+  goBack: () => void
+  push: (path: RoutePath) => void
+  replace: (path: RoutePath) => void
+}
+
+export function useInternalRouter (): InternalRouterType {
+  const navigate = useNavigate()
 
   return useMemo(() => {
     return {
-      goBack() {
-        navigate(-1);
+      goBack () {
+        navigate(-1)
       },
-      push(path: RoutePath) {
-        navigate(path);
+      push (path: RoutePath) {
+        navigate(path)
       },
-      replace(path: RoutePath) {
-        navigate(path, { replace: true });
-      },
-    };
-  }, [navigate]);
+      replace (path: RoutePath) {
+        navigate(path, { replace: true })
+      }
+    }
+  }, [navigate])
 }
 
-type RoutePath = `/${string}`;
+type RoutePath = `/${string}`

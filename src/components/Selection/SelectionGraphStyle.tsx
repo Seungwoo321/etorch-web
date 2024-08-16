@@ -1,11 +1,11 @@
-import { Slider } from "@/components/ui/slider"
+import { Slider } from '@/components/ui/slider'
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger
-} from "@/components/ui/tabs"
-import { useGraphStylesOptionStore } from "@/store/editPanel"
+} from '@/components/ui/tabs'
+import { useGraphStylesOptionStore } from '@/store/editPanel'
 import {
   selectGraphStyle,
   selectLineWidth,
@@ -13,9 +13,9 @@ import {
   selectUpdateGraphStyle,
   selectUpdateLineWidth,
   selectUpdateFillOpacity
-} from "@/store/editPanel/selector"
+} from '@/store/editPanel/selector'
 import FormField from '@/components/shared/FormField'
-const SelectionGraphStyle = () => {
+function SelectionGraphStyle (): JSX.Element {
   const graphStyle = useGraphStylesOptionStore(selectGraphStyle)
   const lineWidth = useGraphStylesOptionStore(selectLineWidth)
   const fillOpacity = useGraphStylesOptionStore(selectFillOpacity)
@@ -51,7 +51,7 @@ const SelectionGraphStyle = () => {
                   defaultValue={[1]}
                   max={10}
                   step={1}
-                  onValueChange={values => updateLineWidth(values[0])}
+                  onValueChange={values => { updateLineWidth(values[0]) }}
                 />
               </div>
             </div>
@@ -69,7 +69,7 @@ const SelectionGraphStyle = () => {
                   defaultValue={[100]}
                   max={100}
                   step={1}
-                  onValueChange={values => updateFillOpacity(values[0])}
+                  onValueChange={values => { updateFillOpacity(values[0]) }}
                 />
               </div>
             </div>

@@ -4,44 +4,43 @@ import {
   CardHeader,
   CardTitle,
   CardDescription
-} from "@/components/ui/card"
+} from '@/components/ui/card'
 import TimeSeriesLineChart from '@/components/charts/TimeSeriesLineChart'
 import {
   usePanelOptionStore,
-  useDataOptionStore,
-} from "@/store/editPanel"
+  useDataOptionStore
+} from '@/store/editPanel'
 import {
   selectTitle,
   selectDescription,
   selectPanelsAllData
-} from "@/store/editPanel/selector"
+} from '@/store/editPanel/selector'
 
-function PreviewPanel() {
+function PreviewPanel (): JSX.Element {
   const title = usePanelOptionStore(selectTitle)
   const description = usePanelOptionStore(selectDescription)
   const panelsAllData = useDataOptionStore(selectPanelsAllData)
   return (
     <Card className="flex flex-col h-full">
-      {title
+      {(title !== '')
         ? (<CardHeader className="flex">
           <CardTitle>
             {title}
           </CardTitle>
-          {description
-            ? (
-              <CardDescription>
-                {description}
-              </CardDescription>
-            ) : null}
+          {description !== '' && (
+            <CardDescription>
+              {description}
+            </CardDescription>
+          )}
         </CardHeader>)
         : null
       }
       <CardContent className="flex h-[calc(100%-90px)] flex-grow">
-        {panelsAllData.length
+        {(panelsAllData.length > 0)
           ? <TimeSeriesLineChart />
           : <div className="flex items-center h-full m-auto">No data</div>
         }
-        
+
       </CardContent>
     </Card>
   )

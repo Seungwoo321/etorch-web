@@ -34,16 +34,16 @@ export const useXAxisOptionStore = create<XAxisOptionStore>(set => ({
   xAxisAxisLine: true,
   xAxisTickLine: true,
   xAxisColor: 'hsl(var(--muted-foreground))',
-  updateXAxisDataKey: xAxisDataKey => set(() => ({ xAxisDataKey })),
-  updateXAxisVisibility: xAxisVisibility => set(() => ({ xAxisVisibility })),
-  updateXAxisType: xAxisType => set(() => ({ xAxisType })),
-  updateXAxisTickSize: xAxisTickSize => set(() => ({ xAxisTickSize })),
-  updateXAxisTickAngle: xAxisTickAngle => set(() => ({ xAxisTickAngle })),
-  updateXAxisDomainMin: xAxisDomainMin => set(() => ({ xAxisDomainMin })),
-  updateXAxisDomainMax: xAxisDomainMax => set(() => ({ xAxisDomainMax })),
-  updateXAxisAxisLine: xAxisAxisLine => set(() => ({ xAxisAxisLine })),
-  updateXAxisTickLine: xAxisTickLine => set(() => ({ xAxisTickLine })),
-  updateXAxisColor: xAxisColor => set(() => ({ xAxisColor })),
+  updateXAxisDataKey: xAxisDataKey => { set(() => ({ xAxisDataKey })) },
+  updateXAxisVisibility: xAxisVisibility => { set(() => ({ xAxisVisibility })) },
+  updateXAxisType: xAxisType => { set(() => ({ xAxisType })) },
+  updateXAxisTickSize: xAxisTickSize => { set(() => ({ xAxisTickSize })) },
+  updateXAxisTickAngle: xAxisTickAngle => { set(() => ({ xAxisTickAngle })) },
+  updateXAxisDomainMin: xAxisDomainMin => { set(() => ({ xAxisDomainMin })) },
+  updateXAxisDomainMax: xAxisDomainMax => { set(() => ({ xAxisDomainMax })) },
+  updateXAxisAxisLine: xAxisAxisLine => { set(() => ({ xAxisAxisLine })) },
+  updateXAxisTickLine: xAxisTickLine => { set(() => ({ xAxisTickLine })) },
+  updateXAxisColor: xAxisColor => { set(() => ({ xAxisColor })) }
 }))
 
 export default useXAxisOptionStore

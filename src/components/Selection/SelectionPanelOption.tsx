@@ -1,8 +1,8 @@
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
-import { Textarea } from "@/components/ui/textarea"
-import { usePanelOptionStore } from "@/store/editPanel"
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Switch } from '@/components/ui/switch'
+import { Textarea } from '@/components/ui/textarea'
+import { usePanelOptionStore } from '@/store/editPanel'
 import {
   selectIsTransparentBackground,
   selectTitle,
@@ -10,9 +10,9 @@ import {
   selectUpdateTitle,
   selectUpdateDescription,
   selectUpdateIsTransparentBackground
-} from "@/store/editPanel/selector"
+} from '@/store/editPanel/selector'
 
-function SelectionPanelOption() {
+function SelectionPanelOption (): JSX.Element {
   const title = usePanelOptionStore(selectTitle)
   const description = usePanelOptionStore(selectDescription)
   const isTransparentBackground = usePanelOptionStore(selectIsTransparentBackground)
@@ -28,7 +28,7 @@ function SelectionPanelOption() {
           type="text"
           className="sm"
           value={title}
-          onInput={(e) => updateTitle(e.currentTarget.value)}
+          onInput={(e) => { updateTitle(e.currentTarget.value) }}
         />
       </div>
       <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -36,7 +36,7 @@ function SelectionPanelOption() {
         <Textarea
           id="description"
           value={description}
-          onInput={(e) => updateDescription(e.currentTarget.value)}
+          onInput={(e) => { updateDescription(e.currentTarget.value) }}
         />
       </div>
       <div className="grid w-full max-w-sm items-center gap-1.5">

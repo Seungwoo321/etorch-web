@@ -1,14 +1,14 @@
-import { Switch } from "@/components/ui/switch"
-import { Input } from "@/components/ui/input"
+import { Switch } from '@/components/ui/switch'
+import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { DataValue } from "@/models"
-import { useDataOptionStore, useXAxisOptionStore } from "@/store/editPanel"
+  SelectValue
+} from '@/components/ui/select'
+import { type DataValue } from '@/models'
+import { useDataOptionStore, useXAxisOptionStore } from '@/store/editPanel'
 import {
   selectXAxisVisibility,
   selectXAxisType,
@@ -29,10 +29,10 @@ import {
   selecteUpdateXAxisDataKey,
   selectXAxisDataKey,
   selectChartData
-} from "@/store/editPanel/selector"
-import FormField from "../shared/FormField"
+} from '@/store/editPanel/selector'
+import FormField from '../shared/FormField'
 
-const uniqueDataKeyReducer = (acc: string[], cur: DataValue) => {
+const uniqueDataKeyReducer = (acc: string[], cur: DataValue): string[] => {
   Object.keys(cur).forEach((key) => {
     if (!acc.includes(key)) {
       acc.push(key)
@@ -40,7 +40,7 @@ const uniqueDataKeyReducer = (acc: string[], cur: DataValue) => {
   })
   return acc
 }
-function SelectionAxisOption() {
+function SelectionAxisOption (): JSX.Element {
   const chartData = useDataOptionStore(selectChartData)
   const uniqueDataKey = chartData.reduce<string[]>(uniqueDataKeyReducer, [])
   const xAxisDataKey = useXAxisOptionStore(selectXAxisDataKey)
@@ -79,7 +79,7 @@ function SelectionAxisOption() {
           >
             <SelectTrigger id="x-axis-data-key">
               <SelectValue defaultValue={xAxisDataKey}>
-                {uniqueDataKey.length ? xAxisDataKey : 'Not selectable'}
+                {(uniqueDataKey.length > 0) ? xAxisDataKey : 'Not selectable'}
               </SelectValue>
             </SelectTrigger>
             <SelectContent>

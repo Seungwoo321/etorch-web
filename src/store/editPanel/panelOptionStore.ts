@@ -14,9 +14,9 @@ export const usePanelOptionStore = create<PanelOptionStore>(set => ({
   title: 'Title',
   description: 'description',
   isTransparentBackground: false,
-  updateTitle: title => set(() => ({ title })),
-  updateDescription: description => set(() => ({ description })),
-  updateIsTransparentBackground: isTransparentBackground => set(() => ({ isTransparentBackground }))
+  updateTitle: title => { set(() => ({ title })) },
+  updateDescription: description => { set(() => ({ description })) },
+  updateIsTransparentBackground: isTransparentBackground => { set(() => ({ isTransparentBackground })) }
 }))
 
 export default usePanelOptionStore

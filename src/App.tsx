@@ -1,9 +1,9 @@
-import { Routes, Route } from "react-router-dom";
-import "@/styles/globals.css";
-import RootLayout from "./_root/RootLayout";
-import EditPanel from "./_root/pages/EditPanel";
+import { Routes, Route } from 'react-router-dom'
+import '@/styles/globals.css'
+import RootLayout from './_root/RootLayout'
+import EditPanel from './_root/pages/EditPanel'
 
-function App() {
+function App (): JSX.Element {
   return (
     <div className="relative flex h-screen flex-col bg-background">
       <Routes>
@@ -15,7 +15,7 @@ function App() {
         </Route>
       </Routes>
     </div>
-  );
+  )
 }
 
 export default App

@@ -1,40 +1,36 @@
-import { Indicator, DataPanelItem, DataValue } from '@/models';
+import { type Indicator, type DataPanelItem, type DataValue } from '@/models'
 import { create } from 'zustand'
 
-type CombineData = {
-  [date: string]: DataValue
-}
-const combineDataByFrequency = (panels: DataPanelItem[], frequency: string) => {
+type CombineData = Record<string, DataValue>
+const combineDataByFrequency = (panels: DataPanelItem[], frequency: string): DataValue[] => {
   const combinedData: CombineData = {}
   panels
     .filter(panel => panel.frequency === frequency)
     .forEach((panel) => {
       panel.data.forEach(item => {
-        if (!combinedData[item.date]) {
+        if (!(item.date in combinedData)) {
           combinedData[item.date] = {
             date: item.date,
             [panel.indicatorCode]: 0
           }
         }
-        combinedData[item.date][panel.indicatorCode] = item.value;
+        combinedData[item.date][panel.indicatorCode] = item.value
       })
     })
-  return Object.values(combinedData);
+  return Object.values(combinedData)
 }
 
 export interface DataOptionStore {
   chartData: DataValue[]
   frequency: string
   panels: DataPanelItem[]
-  indicators: {
-    [key: string]: Indicator[]
-  };
+  indicators: Record<string, Indicator[]>
   setChartData: () => void
-  setFrequency: (frequency: string) => void;
-  createIndicators: (dataSource: string, data: Indicator[]) => void;
-  addPanelItem: (item: DataPanelItem) => void;
-  updatePanelItem: (id: number, newItem: DataPanelItem) => void;
-  removePanelItem: (id: number) => void;
+  setFrequency: (frequency: string) => void
+  createIndicators: (dataSource: string, data: Indicator[]) => void
+  addPanelItem: (item: DataPanelItem) => void
+  updatePanelItem: (id: number, newItem: DataPanelItem) => void
+  removePanelItem: (id: number) => void
 }
 
 export const useDataOptionStore = create<DataOptionStore>(set => ({
@@ -46,23 +42,31 @@ export const useDataOptionStore = create<DataOptionStore>(set => ({
     ecos: [],
     oecd: []
   },
-  setChartData: () => set((state) => ({
-    chartData: combineDataByFrequency(state.panels, state.frequency)
-  })),
-  setFrequency: (frequency) => set(() => ({ frequency })),
-  createIndicators: (dataSource, data) => set(state => ({
-    indicators: {
-      ...state.indicators,
-      [dataSource]: data
-    }
-  })),
-  addPanelItem: (item) => set(state => ({
-    panels: [...state.panels, item]
-  })),
-  updatePanelItem: (id, newItem) => set(state => ({
-    panels: state.panels.map(panel => panel.id === id ? { ...panel, ...newItem } : panel)
-  })),
-  removePanelItem: (id) => set(state => ({ panels: state.panels.filter(panel => panel.id !== id )}))
+  setChartData: () => {
+    set((state) => ({
+      chartData: combineDataByFrequency(state.panels, state.frequency)
+    }))
+  },
+  setFrequency: (frequency) => { set(() => ({ frequency })) },
+  createIndicators: (dataSource, data) => {
+    set(state => ({
+      indicators: {
+        ...state.indicators,
+        [dataSource]: data
+      }
+    }))
+  },
+  addPanelItem: (item) => {
+    set(state => ({
+      panels: [...state.panels, item]
+    }))
+  },
+  updatePanelItem: (id, newItem) => {
+    set(state => ({
+      panels: state.panels.map(panel => panel.id === id ? { ...panel, ...newItem } : panel)
+    }))
+  },
+  removePanelItem: (id) => { set(state => ({ panels: state.panels.filter(panel => panel.id !== id) })) }
 }))
 
 export default useDataOptionStore

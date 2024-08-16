@@ -19,11 +19,11 @@ export const useTooltipOptionStore = create<TooltipOptionStore>(set => ({
   cursorLineStyleWidth: 2,
   cursorLineStyleDasharray: '2 2',
   cursorLineStyle: 'dash',
-  updateTooltipMode: tooltipMode => set(() => ({ tooltipMode })),
-  updateTooltipMaxWidth: tooltiMaxWidth => set(() =>({ tooltiMaxWidth })),
-  updateCursorLineStyle: cursorLineStyle  => set(() => ({ cursorLineStyle })),
-  updateCursorLineStyleWidth: cursorLineStyleWidth  => set(() => ({ cursorLineStyleWidth })),
-  updateCursorLineStyleDasharray: cursorLineStyleDasharray  => set(() => ({ cursorLineStyleDasharray })),
+  updateTooltipMode: tooltipMode => { set(() => ({ tooltipMode })) },
+  updateTooltipMaxWidth: tooltiMaxWidth => { set(() => ({ tooltiMaxWidth })) },
+  updateCursorLineStyle: cursorLineStyle => { set(() => ({ cursorLineStyle })) },
+  updateCursorLineStyleWidth: cursorLineStyleWidth => { set(() => ({ cursorLineStyleWidth })) },
+  updateCursorLineStyleDasharray: cursorLineStyleDasharray => { set(() => ({ cursorLineStyleDasharray })) }
 }))
 
 export default useTooltipOptionStore

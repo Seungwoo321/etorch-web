@@ -10,15 +10,16 @@ import {
   Tooltip,
   // ReferenceLine,
   ResponsiveContainer,
+  type TooltipProps
   // Brush
-} from "recharts";
+} from 'recharts'
 import {
   useLegendOptionStore,
   usePanelOptionStore,
   useTooltipOptionStore,
   useDataOptionStore,
   useXAxisOptionStore
-} from "@/store/editPanel";
+} from '@/store/editPanel'
 import {
   selectChartData,
   selectPanelsData,
@@ -44,7 +45,7 @@ import {
   selectXAxisDataKey
 } from '@/store/editPanel/selector'
 
-function LineChartContainer() {
+function LineChartContainer (): JSX.Element {
   const isTransparentBackground = usePanelOptionStore(selectIsTransparentBackground)
   const panelsData = useDataOptionStore(selectPanelsData)
   const chartData = useDataOptionStore(selectChartData)
@@ -68,19 +69,18 @@ function LineChartContainer() {
   const xAxisTickSize = useXAxisOptionStore(selectXAxisTickSize)
   const xAxisTickLine = useXAxisOptionStore(selectXAxisTickLine)
   const xAxisColor = useXAxisOptionStore(selectXAxisColor)
-  
 
   return (
-    <ResponsiveContainer className={isTransparentBackground ? "" : "bg-primary-foreground"} width="100%" height="100%" minHeight={0} minWidth={0}>
+    <ResponsiveContainer className={isTransparentBackground ? '' : 'bg-primary-foreground'} width="100%" height="100%" minHeight={0} minWidth={0}>
       <ComposedChart width={200} height={300} data={chartData} margin={{ top: 24, right: 20, bottom: 8, left: 0 }}>
 
         <CartesianGrid
           vertical={true}
           horizontal={true}
           stroke="hsl(var(--muted))"
-          strokeDasharray="0" 
+          strokeDasharray="0"
         />
-        
+
         <XAxis
           // padding={{ left: 20, right: 200 }}
           hide={!xAxisVisibility}
@@ -99,12 +99,12 @@ function LineChartContainer() {
           //   return `${value.substring(2, 4)}-${value.substring(5, 7) }`
           // }}
         />
-        
+
         <YAxis
           stroke="hsl(var(--muted-foreground))"
           yAxisId={1}
         />
-      
+
         {panelsData.map((panel) => (
           <Line
             key={`line-${panel.indicatorCode}`}
@@ -156,7 +156,7 @@ function LineChartContainer() {
             : null)
         )} */}
         {/* <Brush /> */}
-        {legendVisibility ? (
+        {legendVisibility && (
           <Legend
             layout={legendLayout}
             verticalAlign={legendVerticalAlign}
@@ -166,7 +166,7 @@ function LineChartContainer() {
           // iconSize={14}
           // iconType="line" // line plainLine square rect circle cross diamond star triangle wye
           />
-        ) : null}
+        )}
 
         <Tooltip
           active={tooltipMode === 'default' ? undefined : (tooltipMode === 'active')}
@@ -178,17 +178,15 @@ function LineChartContainer() {
   )
 }
 
-type CustomTooltipProps = {
-  active?: boolean;
-  payload?: {
-    [key: string]: string | number
-  }[]; 
-  label?: string | number;
-};
+interface CustomTooltipProps {
+  active?: boolean
+  payload?: Array<Record<string, string | number>>
+  label?: string | number
+}
 
-const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload, label }) => {
+const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload, label }: TooltipProps<string, string>) => {
   const maxWidth = useTooltipOptionStore(selectTooltipMaxWidth)
-  if (active && payload && payload.length) {
+  if (active === true && payload?.length != null) {
     return (
       <div className={`flex flex-col bg-background border-[1px] border-solid border-[rgba(204, 204, 220, 0.2)] w-[${maxWidth}px] overflow-hidden`}>
         <div className="flex flex-col flex-1 p-2">
@@ -206,7 +204,7 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload, label })
                 {item.name}
               </div>
               <div className="flex items-center">
-                <div className="text-ellipsis overflow-hidden cursor-pointer whitespace-normal break-words"> 
+                <div className="text-ellipsis overflow-hidden cursor-pointer whitespace-normal break-words">
                   {item.value}
                 </div>
               </div>

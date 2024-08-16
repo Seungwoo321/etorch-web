@@ -1,9 +1,9 @@
-import { Input } from "@/components/ui/input";
+import { Input } from '@/components/ui/input'
 import {
   ToggleGroup,
-  ToggleGroupItem,
-} from "@/components/ui/toggle-group"
-import { useTooltipOptionStore } from "@/store/editPanel";
+  ToggleGroupItem
+} from '@/components/ui/toggle-group'
+import { useTooltipOptionStore } from '@/store/editPanel'
 import {
   selectCursorLineStyle,
   selectTooltipMode,
@@ -15,17 +15,17 @@ import {
   selectUpdateCursorLineStyle,
   selectUpdateCursorLineStyleWidth,
   selectUpdateCursorLineStyleDasharray
-} from "@/store/editPanel/selector"
+} from '@/store/editPanel/selector'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import FormField from "../shared/FormField";
+  SelectValue
+} from '@/components/ui/select'
+import FormField from '../shared/FormField'
 
-function SelectionTooltipOption() {
+function SelectionTooltipOption (): JSX.Element {
   const tooltipMode = useTooltipOptionStore(selectTooltipMode)
   const maxWidth = useTooltipOptionStore(selectTooltipMaxWidth)
   const cursorLineStyleWidth = useTooltipOptionStore(selectCursorLineStyleWidth)
@@ -46,7 +46,7 @@ function SelectionTooltipOption() {
           variant="outline"
           value={tooltipMode}
           onValueChange={(value: string | undefined) => {
-            if (value) updateTooltipMode(value)
+            if (value != null) updateTooltipMode(value)
           }}
         >
           <ToggleGroupItem value="default" aria-label="Toggle default">
@@ -68,7 +68,7 @@ function SelectionTooltipOption() {
               type="nuumber"
               className="sm"
               value={maxWidth}
-              onInput={(e) => updateMaxWidth(+e.currentTarget.value)}
+              onInput={(e) => { updateMaxWidth(+e.currentTarget.value) }}
             />
           </FormField>
           <FormField label="Cursor style">
@@ -79,7 +79,7 @@ function SelectionTooltipOption() {
                 variant="outline"
                 value={cursorLineStyle}
                 onValueChange={(value: string | undefined) => {
-                  if (value) updateCursorLineStyle(value)
+                  if (value != null) updateCursorLineStyle(value)
                 }}
               >
                 <ToggleGroupItem value="solid" aria-label="Toggle solid">
@@ -115,7 +115,7 @@ function SelectionTooltipOption() {
               max={10}
               className="sm"
               value={cursorLineStyleWidth}
-              onInput={(e) => updateCursorLineStyleWidth(+e.currentTarget.value)}
+              onInput={(e) => { updateCursorLineStyleWidth(+e.currentTarget.value) }}
             />
           </FormField>
         </>

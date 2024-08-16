@@ -1,29 +1,27 @@
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger
 }
-from "@/components/ui/tabs"
+  from '@/components/ui/tabs'
 import {
   Database,
   Plus
 }
-from "lucide-react"
-import { ScrollArea } from "@/components/ui/scroll-area"
+  from 'lucide-react'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import DataPanelOptions from './DataPanelOption'
 import { useDataOptionStore } from '@/store/editPanel'
 import {
   selectPanelIds,
   selectAddPanelItem
 } from '@/store/editPanel/selector'
-import { useCallback } from "react"
+import { useCallback } from 'react'
 
-
-
-function DataPanel() {
+function DataPanel (): JSX.Element {
   const panelIds = useDataOptionStore(selectPanelIds)
   const addPanelItem = useDataOptionStore(selectAddPanelItem)
 

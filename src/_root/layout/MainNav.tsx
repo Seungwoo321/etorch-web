@@ -1,12 +1,12 @@
-import { Link } from "react-router-dom"
+import { Link } from 'react-router-dom'
 
-import { cn } from "@/lib/utils"
-import { Icons } from "@/components/shared/Icons"
+import { cn } from '@/lib/utils'
+import { Icons } from '@/components/shared/Icons'
 
-export function MainNav({
+export function MainNav ({
   className,
   ...props
-}: React.HTMLAttributes<HTMLElement>) {
+}: React.HTMLAttributes<HTMLElement>): JSX.Element {
   return (
     <div className="mr-4 hidden md:flex">
       <Link to="/" className="mr-6 flex items-center space-x-2">
@@ -16,7 +16,7 @@ export function MainNav({
         </span>
       </Link>
       <nav
-        className={cn("flex items-center space-x-4 lg:space-x-6", className)}
+        className={cn('flex items-center space-x-4 lg:space-x-6', className)}
         {...props}
       >
         <Link

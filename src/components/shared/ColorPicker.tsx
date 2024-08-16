@@ -5,34 +5,31 @@ import { Input } from '@/components/ui/input'
 import {
   Popover,
   PopoverContent,
-  PopoverTrigger,
+  PopoverTrigger
 } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
 import { Paintbrush } from 'lucide-react'
 import { useState } from 'react'
 
-export function PickerExample() {
+export function PickerExample (): JSX.Element {
   const [background, setBackground] = useState('#B4D455')
 
   return (
-    <div
-      className="w-full h-full preview flex min-h-[350px] justify-center p-10 items-center rounded !bg-cover !bg-center transition-all"
-      style={{ background }}
-    >
+    <div className={`w-full h-full preview flex min-h-[350px] justify-center p-10 items-center rounded !bg-cover !bg-center transition-all bg-[${background}]`}>
       <ColorPicker background={background} setBackground={setBackground} />
     </div>
   )
 }
 
-export function ColorPicker({
+export function ColorPicker ({
   background,
   setBackground,
-  className,
+  className
 }: {
   background: string
   setBackground: (background: string) => void
   className?: string
-}) {
+}): JSX.Element {
   const solids = [
     '#000000',
     '#09203f',
@@ -81,9 +78,8 @@ export function ColorPicker({
     '#fcc5e4',
     '#c8699e',
     '#ffa647',
-    '#cd93ff',
+    '#cd93ff'
   ]
-
 
   return (
     <Popover>
@@ -92,33 +88,31 @@ export function ColorPicker({
           variant={'outline'}
           className={cn(
             'w-[220px] justify-start text-left font-normal',
-            !background && 'text-muted-foreground',
+            (background.length > 0) && 'text-muted-foreground',
             className
           )}
         >
           <div className="w-full flex items-center gap-2">
-            {background ? (
-              <div
-                className="h-4 w-4 rounded !bg-center !bg-cover transition-all"
-                style={{ background }}
-              ></div>
-            ) : (
+            {background.length > 0
+              ? (
+              <div className={`h-4 w-4 rounded !bg-center !bg-cover transition-all bg-[${background}]`}></div>
+                )
+              : (
               <Paintbrush className="h-4 w-4" />
-            )}
+                )}
             <div className="truncate flex-1">
-              {background ? background : 'Pick a color'}
+              {background.length > 0 || 'Pick a color'}
             </div>
           </div>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-64">
         <div className="flex flex-wrap gap-1 mt-0">
-          {solids.map((s) => (
+          {solids.map((color) => (
             <div
-              key={s}
-              style={{ background: s }}
-              className="rounded-md h-6 w-6 cursor-pointer active:scale-105"
-              onClick={() => setBackground(s)}
+              key={color}
+              className={`rounded-md h-6 w-6 cursor-pointer active:scale-105 bg-${color}`}
+              onClick={() => { setBackground(color) }}
             />
           ))}
         </div>
@@ -126,7 +120,7 @@ export function ColorPicker({
           id="custom"
           value={background}
           className="col-span-2 h-8 mt-4"
-          onChange={(e) => setBackground(e.currentTarget.value)}
+          onChange={(e) => { setBackground(e.currentTarget.value) }}
         />
       </PopoverContent>
     </Popover>

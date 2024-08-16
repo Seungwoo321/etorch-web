@@ -2,10 +2,10 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import { BrowserRouter } from 'react-router-dom'
-import { ThemeProvider } from "@/components/shared/ThemeProvider.tsx"
+import { ThemeProvider } from '@/components/shared/ThemeProvider.tsx'
 import QueryProvider from './lib/react-query/QueryProvider.tsx'
 
-async function enableMocking() {
+async function enableMocking (): Promise<ServiceWorkerRegistration | undefined> {
   if (process.env.NODE_ENV !== 'development') {
     return
   }
@@ -14,22 +14,22 @@ async function enableMocking() {
 
   // `worker.start()` returns a Promise that resolves
   // once the Service Worker is up and ready to intercept requests.
-  return worker.start()
+  return await worker.start()
 }
 
 const rootElement = document.getElementById('root')
-
-enableMocking().then(() => {
-  ReactDOM.createRoot(rootElement!).render(
-    <BrowserRouter>
-      <QueryProvider>
-        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-          <React.StrictMode>
-            <App />
-          </React.StrictMode>
-        </ThemeProvider>
-      </QueryProvider>
-    </BrowserRouter>
-  )
-})
-
+if (rootElement != null) {
+  enableMocking().then(() => {
+    ReactDOM.createRoot(rootElement).render(
+      <BrowserRouter>
+        <QueryProvider>
+          <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+            <React.StrictMode>
+              <App />
+            </React.StrictMode>
+          </ThemeProvider>
+        </QueryProvider>
+      </BrowserRouter>
+    )
+  }).catch(console.error)
+}

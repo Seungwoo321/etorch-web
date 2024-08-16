@@ -1,4 +1,4 @@
-import { ReactElement, useState } from "react"
+import { type ReactElement, useState } from 'react'
 import {
   ChartSpline,
   ChartNoAxesColumn,
@@ -8,16 +8,16 @@ import {
   Table,
   Grid3X3,
   Type
-} from "lucide-react"
+} from 'lucide-react'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+  SelectValue
+} from '@/components/ui/select'
 
-type Visualization = {
+interface Visualization {
   icon: ReactElement
   value: string
   label: string
@@ -75,7 +75,7 @@ const visualizations: Visualization[] = [
   }
 ]
 
-function VisualizationsSelect() {
+function VisualizationsSelect (): JSX.Element {
   const [selectedVisualization, setSelectedVisualization] = useState<string>('timeseries')
   return (
     <Select

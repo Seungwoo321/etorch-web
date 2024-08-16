@@ -187,7 +187,7 @@ export const ecosList = [
     hasQuarter: true,
     hasYear: true,
     hasDay: true
-  },
+  }
 ]
 
 export const oecdList = [
@@ -202,7 +202,7 @@ export const oecdList = [
     hasQuarter: false,
     hasYear: false,
     hasDay: false
-  },
+  }
 ]
 
 export const dashboards = [
