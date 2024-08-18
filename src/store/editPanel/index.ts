@@ -1,3 +1,4 @@
+export * from './yAxisOptionStore'
 export * from './xAxisOptionStore'
 export * from './dataOptionlStore'
 export * from './graphStylesOptionStore'

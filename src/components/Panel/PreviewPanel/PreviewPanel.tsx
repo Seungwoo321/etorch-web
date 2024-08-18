@@ -1,46 +1,17 @@
 import {
   Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription
+  CardContent
 } from '@/components/ui/card'
 import TimeSeriesLineChart from '@/components/charts/TimeSeriesLineChart'
-import {
-  usePanelOptionStore,
-  useDataOptionStore
-} from '@/store/editPanel'
-import {
-  selectTitle,
-  selectDescription,
-  selectPanelsAllData
-} from '@/store/editPanel/selector'
+import PreviewPanelHeader from './PreviewPanelHeader'
 
 function PreviewPanel (): JSX.Element {
-  const title = usePanelOptionStore(selectTitle)
-  const description = usePanelOptionStore(selectDescription)
-  const panelsAllData = useDataOptionStore(selectPanelsAllData)
+
   return (
     <Card className="flex flex-col h-full">
-      {(title !== '')
-        ? (<CardHeader className="flex">
-          <CardTitle>
-            {title}
-          </CardTitle>
-          {description !== '' && (
-            <CardDescription>
-              {description}
-            </CardDescription>
-          )}
-        </CardHeader>)
-        : null
-      }
+      <PreviewPanelHeader/>
       <CardContent className="flex h-[calc(100%-90px)] flex-grow">
-        {(panelsAllData.length > 0)
-          ? <TimeSeriesLineChart />
-          : <div className="flex items-center h-full m-auto">No data</div>
-        }
-
+        <TimeSeriesLineChart />
       </CardContent>
     </Card>
   )

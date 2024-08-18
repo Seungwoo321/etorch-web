@@ -7,79 +7,69 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { type DataValue } from '@/models'
-import { useDataOptionStore, useXAxisOptionStore } from '@/store/editPanel'
+import { useDataOptionStore, useYAxisOptionStore } from '@/store/editPanel'
 import {
-  selectXAxisVisibility,
-  selectXAxisType,
-  selectXAxisTickAngle,
-  selectXAxisDomainMin,
-  selectXAxisDomainMax,
-  selectXAxisAxisLine,
-  selectXAxisTickLine,
-  selectUpdateXAxisVisibility,
-  selectUpdateXAxisType,
-  selectUpdateXAxisTickAngle,
-  selectUpdateXAxisDomainMin,
-  selectUpdateXAxisDomainMax,
-  selectUpdateXAxisAxisLine,
-  selectUpdateXAxisTickLine,
-  selectXAxisTickSize,
-  selectUpdateXAxisTickSize,
-  selecteUpdateXAxisDataKey,
-  selectXAxisDataKey,
-  selectChartData
+  selectYAxisVisibility,
+  selectYAxisType,
+  selectYAxisTickCount,
+  selectYAxisTickSize,
+  selectYAxisDomainMin,
+  selectYAxisDomainMax,
+  selectYAxisAxisLine,
+  selectYAxisTickLine,
+  selectYAxisDataKey,
+  selectUpdateYAxisVisibility,
+  selectUpdateYAxisType,
+  selectUpdateYAxisDomainMin,
+  selectUpdateYAxisDomainMax,
+  selectUpdateYAxisAxisLine,
+  selectUpdateYAxisTickLine,
+  selectUpdateYAxisTickSize,
+  selectUpdateYAxisDataKey,
+  selectUpdateYAxisTickCount,
+  selectUniqueDataKeys
 } from '@/store/editPanel/selector'
 import FormField from '../shared/FormField'
 
-const uniqueDataKeyReducer = (acc: string[], cur: DataValue): string[] => {
-  Object.keys(cur).forEach((key) => {
-    if (!acc.includes(key)) {
-      acc.push(key)
-    }
-  })
-  return acc
-}
 function SelectionYAxisOption (): JSX.Element {
-  const chartData = useDataOptionStore(selectChartData)
-  const uniqueDataKey = chartData.reduce<string[]>(uniqueDataKeyReducer, [])
-  const xAxisDataKey = useXAxisOptionStore(selectXAxisDataKey)
-  const xAxisVisibility = useXAxisOptionStore(selectXAxisVisibility)
-  const xAxisType = useXAxisOptionStore(selectXAxisType)
-  const xAxisTickAngle = useXAxisOptionStore(selectXAxisTickAngle)
-  const xAxisDomainMin = useXAxisOptionStore(selectXAxisDomainMin)
-  const xAxisDomainMax = useXAxisOptionStore(selectXAxisDomainMax)
-  const xAxisAxisLine = useXAxisOptionStore(selectXAxisAxisLine)
-  const xAxisTickSize = useXAxisOptionStore(selectXAxisTickSize)
-  const xAxisTickLine = useXAxisOptionStore(selectXAxisTickLine)
-  const updateXAxisDataKey = useXAxisOptionStore(selecteUpdateXAxisDataKey)
-  const updateXAxisVisibility = useXAxisOptionStore(selectUpdateXAxisVisibility)
-  const updateXAxisType = useXAxisOptionStore(selectUpdateXAxisType)
-  const updateXAxisTickAngle = useXAxisOptionStore(selectUpdateXAxisTickAngle)
-  const updateXAxisDomainMin = useXAxisOptionStore(selectUpdateXAxisDomainMin)
-  const updateXAxisDomainMax = useXAxisOptionStore(selectUpdateXAxisDomainMax)
-  const updateXAxisAxisLine = useXAxisOptionStore(selectUpdateXAxisAxisLine)
-  const updateXAxisTickSzie = useXAxisOptionStore(selectUpdateXAxisTickSize)
-  const updateXAxisTickLine = useXAxisOptionStore(selectUpdateXAxisTickLine)
+  const uniqueDataKey = useDataOptionStore(selectUniqueDataKeys)
+  const yAxisDataKey = useYAxisOptionStore(selectYAxisDataKey)
+  const yAxisVisibility = useYAxisOptionStore(selectYAxisVisibility)
+  const yAxisType = useYAxisOptionStore(selectYAxisType)
+  const yAxisDomainMin = useYAxisOptionStore(selectYAxisDomainMin)
+  const yAxisDomainMax = useYAxisOptionStore(selectYAxisDomainMax)
+  const yAxisAxisLine = useYAxisOptionStore(selectYAxisAxisLine)
+  const yAxisTickCount = useYAxisOptionStore(selectYAxisTickCount)
+  const yAxisTickSize = useYAxisOptionStore(selectYAxisTickSize)
+  const yAxisTickLine = useYAxisOptionStore(selectYAxisTickLine)
+  const updateYAxisDataKey = useYAxisOptionStore(selectUpdateYAxisDataKey)
+  const updateYAxisVisibility = useYAxisOptionStore(selectUpdateYAxisVisibility)
+  const updateYAxisType = useYAxisOptionStore(selectUpdateYAxisType)
+  const updateYAxisDomainMin = useYAxisOptionStore(selectUpdateYAxisDomainMin)
+  const updateYAxisDomainMax = useYAxisOptionStore(selectUpdateYAxisDomainMax)
+  const updateYAxisAxisLine = useYAxisOptionStore(selectUpdateYAxisAxisLine)
+  const updateYAxisTickCount = useYAxisOptionStore(selectUpdateYAxisTickCount)
+  const updateYAxisTickSzie = useYAxisOptionStore(selectUpdateYAxisTickSize)
+  const updateYAxisTickLine = useYAxisOptionStore(selectUpdateYAxisTickLine)
   return (
     <div className="space-y-2 pl-2 pr-1">
-      <FormField htmlFor="x-axis-visibility" label="Visibility">
+      <FormField htmlFor="y-axis-visibility" label="Visibility">
         <Switch
-          id="x-axis-visibility"
-          checked={xAxisVisibility}
-          onCheckedChange={updateXAxisVisibility}
+          id="y-axis-visibility"
+          checked={yAxisVisibility}
+          onCheckedChange={updateYAxisVisibility}
         />
       </FormField>
 
-      <FormField htmlFor="x-axis-data-key" label="Data key">
+      <FormField htmlFor="y-axis-data-key" label="Data key">
         <div className="flex gap-1.5">
           <Select
-            onValueChange={updateXAxisDataKey}
-            value={xAxisDataKey}
+            onValueChange={updateYAxisDataKey}
+            value={yAxisDataKey}
           >
-            <SelectTrigger id="x-axis-data-key">
-              <SelectValue defaultValue={xAxisDataKey}>
-                {(uniqueDataKey.length > 0) ? xAxisDataKey : 'Not selectable'}
+            <SelectTrigger id="y-axis-data-key">
+              <SelectValue defaultValue={yAxisDataKey}>
+                {(uniqueDataKey.length > 0) ? yAxisDataKey : 'Not selectable'}
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
@@ -95,20 +85,20 @@ function SelectionYAxisOption (): JSX.Element {
         </div>
       </FormField>
 
-      <FormField htmlFor="x-axis-type" label="Type">
+      <FormField htmlFor="y-axis-type" label="Type">
         <Select
           onValueChange={(value) => {
             if (value === 'category' || value === 'number') {
-              updateXAxisType(value)
+              updateYAxisType(value)
             }
             if (value === 'category') {
-              updateXAxisDomainMin(0)
-              updateXAxisDomainMax('auto')
+              updateYAxisDomainMin(0)
+              updateYAxisDomainMax('auto')
             }
           }}
-          value={xAxisType}
+          value={yAxisType}
         >
-          <SelectTrigger id="x-axis-type">
+          <SelectTrigger id="y-axis-type">
             <SelectValue defaultValue="category"></SelectValue>
           </SelectTrigger>
           <SelectContent>
@@ -118,35 +108,35 @@ function SelectionYAxisOption (): JSX.Element {
         </Select>
       </FormField>
 
-      {xAxisType === 'number' && (
+      {yAxisType === 'number' && (
         <>
-          <FormField htmlFor="x-axis-domain-min" label="Min">
+          <FormField htmlFor="y-axis-domain-min" label="Min">
             <Input
-              id="x-axis-domain-min"
+              id="y-axis-domain-min"
               type="text"
               className="sm"
-              value={xAxisDomainMin}
+              value={yAxisDomainMin}
               onInput={(e) => {
                 if (e.currentTarget.value === 'auto') {
-                  updateXAxisDomainMin(e.currentTarget.value)
+                  updateYAxisDomainMin(e.currentTarget.value)
                 } else if (!isNaN(+e.currentTarget.value) && typeof +e.currentTarget.value === 'number') {
-                  updateXAxisDomainMin(+e.currentTarget.value)
+                  updateYAxisDomainMin(+e.currentTarget.value)
                 }
               }}
             />
           </FormField>
 
-          <FormField htmlFor="x-axis-domain-max" label="Max">
+          <FormField htmlFor="y-axis-domain-max" label="Max">
             <Input
-              id="x-axis-domain-max"
+              id="y-axis-domain-max"
               type="text"
               className="sm"
-              value={xAxisDomainMax}
+              value={yAxisDomainMax}
               onInput={(e) => {
                 if (e.currentTarget.value === 'auto') {
-                  updateXAxisDomainMax(e.currentTarget.value)
+                  updateYAxisDomainMax(e.currentTarget.value)
                 } else if (!isNaN(+e.currentTarget.value) && typeof +e.currentTarget.value === 'number') {
-                  updateXAxisDomainMax(+e.currentTarget.value)
+                  updateYAxisDomainMax(+e.currentTarget.value)
                 }
               }}
             />
@@ -154,50 +144,49 @@ function SelectionYAxisOption (): JSX.Element {
         </>
       )}
 
-      <FormField htmlFor="x-axis-axis-line" label="Show Axis">
+      <FormField htmlFor="y-axis-axis-line" label="Show Axis">
         <Switch
-          id="x-axis-axis-line"
-          checked={xAxisAxisLine}
-          onCheckedChange={updateXAxisAxisLine}
+          id="y-axis-axis-line"
+          checked={yAxisAxisLine}
+          onCheckedChange={updateYAxisAxisLine}
         />
       </FormField>
-
-      <FormField htmlFor="x-axis-tick-angle" label="Tick Angle">
-        <Input
-          id="x-axis-tick-angle"
-          type="nuumber"
-          min={0}
-          max={360}
-          className="sm"
-          value={xAxisTickAngle}
-          onInput={(e) => {
-            if (!isNaN(+e.currentTarget.value) && typeof +e.currentTarget.value === 'number') {
-              updateXAxisTickAngle(+e.currentTarget.value)
-            }
-          }}
-        />
-      </FormField>
-
-      <FormField htmlFor="x-axis-tick-line" label="Show Tick">
-        <Switch
-          id="x-axis-tick-line"
-          checked={xAxisTickLine}
-          onCheckedChange={updateXAxisTickLine}
-        />
-      </FormField>
-      {xAxisTickLine && (
-        <FormField htmlFor="x-axis-tick-size" label="Tick Size">
+      {yAxisType === 'number' && (
+        <FormField htmlFor="y-axis-tick-count" label="Tick Count">
           <Input
-            id="x-axis-tick-size"
+            id="y-axis-tick-count"
+            type="number"
+            min={2}
+            className="sm"
+            value={yAxisTickCount}
+            onInput={(e) => {
+              if (!isNaN(+e.currentTarget.value) && typeof +e.currentTarget.value === 'number') {
+                updateYAxisTickCount(+e.currentTarget.value)
+              }
+            }}
+          />
+        </FormField>
+      )}
+      <FormField htmlFor="y-axis-tick-line" label="Show Tick">
+        <Switch
+          id="y-axis-tick-line"
+          checked={yAxisTickLine}
+          onCheckedChange={updateYAxisTickLine}
+        />
+      </FormField>
+      {yAxisTickLine && (
+        <FormField htmlFor="y-axis-tick-size" label="Tick Size">
+          <Input
+            id="y-axis-tick-size"
             type="nuumber"
             max={10}
             className="sm"
-            value={xAxisTickSize}
+            value={yAxisTickSize}
             onInput={(e) => {
               if (!isNaN(+e.currentTarget.value) && typeof +e.currentTarget.value === 'number') {
-                updateXAxisTickAngle(+e.currentTarget.value)
+                updateYAxisTickSzie(+e.currentTarget.value)
               }
-              updateXAxisTickSzie(+e.currentTarget.value)
+              
             }}
           />
         </FormField>

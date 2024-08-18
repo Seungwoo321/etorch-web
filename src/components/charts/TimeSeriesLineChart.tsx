@@ -18,7 +18,8 @@ import {
   usePanelOptionStore,
   useTooltipOptionStore,
   useDataOptionStore,
-  useXAxisOptionStore
+  useXAxisOptionStore,
+  useYAxisOptionStore
 } from '@/store/editPanel'
 import {
   selectChartData,
@@ -41,8 +42,19 @@ import {
   selectXAxisTickLine,
   selectXAxisTickSize,
   selectXAxisType,
+  selectXAxisTickCount,
   selectXAxisVisibility,
-  selectXAxisDataKey
+  selectXAxisDataKey,
+  selectYAxisDataKey,
+  selectYAxisVisibility,
+  selectYAxisType,
+  selectYAxisTickCount,
+  selectYAxisDomainMin,
+  selectYAxisDomainMax,
+  selectYAxisAxisLine,
+  selectYAxisTickSize,
+  selectYAxisTickLine,
+  selectYAxisColor
 } from '@/store/editPanel/selector'
 
 function LineChartContainer (): JSX.Element {
@@ -62,6 +74,7 @@ function LineChartContainer (): JSX.Element {
   const xAxisDataKey = useXAxisOptionStore(selectXAxisDataKey)
   const xAxisVisibility = useXAxisOptionStore(selectXAxisVisibility)
   const xAxisType = useXAxisOptionStore(selectXAxisType)
+  const xAxisTickCount = useXAxisOptionStore(selectXAxisTickCount)
   const xAxisTickAngle = useXAxisOptionStore(selectXAxisTickAngle)
   const xAxisDomainMin = useXAxisOptionStore(selectXAxisDomainMin)
   const xAxisDomainMax = useXAxisOptionStore(selectXAxisDomainMax)
@@ -69,6 +82,23 @@ function LineChartContainer (): JSX.Element {
   const xAxisTickSize = useXAxisOptionStore(selectXAxisTickSize)
   const xAxisTickLine = useXAxisOptionStore(selectXAxisTickLine)
   const xAxisColor = useXAxisOptionStore(selectXAxisColor)
+
+  const yAxisDataKey = useYAxisOptionStore(selectYAxisDataKey)
+  const yAxisVisibility = useYAxisOptionStore(selectYAxisVisibility)
+  const yAxisType = useYAxisOptionStore(selectYAxisType)
+  const yAxisTickCount = useYAxisOptionStore(selectYAxisTickCount)
+  const yAxisDomainMin = useYAxisOptionStore(selectYAxisDomainMin)
+  const yAxisDomainMax = useYAxisOptionStore(selectYAxisDomainMax)
+  const yAxisAxisLine = useYAxisOptionStore(selectYAxisAxisLine)
+  const yAxisTickSize = useYAxisOptionStore(selectYAxisTickSize)
+  const yAxisTickLine = useYAxisOptionStore(selectYAxisTickLine)
+  const yAxisColor = useYAxisOptionStore(selectYAxisColor)
+
+  if (panelsData.length === 0) {
+    return (
+      <div className="flex items-center h-full m-auto">No data</div>
+    )
+  }
 
   return (
     <ResponsiveContainer className={isTransparentBackground ? '' : 'bg-primary-foreground'} width="100%" height="100%" minHeight={0} minWidth={0}>
@@ -88,6 +118,7 @@ function LineChartContainer (): JSX.Element {
           stroke={xAxisColor}
           type={xAxisType}
           domain={[xAxisDomainMin, xAxisDomainMax]}
+          tickCount={xAxisTickCount}
           angle={xAxisTickAngle}
           tickSize={xAxisTickSize}
           tickLine={xAxisTickLine}
@@ -101,7 +132,18 @@ function LineChartContainer (): JSX.Element {
         />
 
         <YAxis
-          stroke="hsl(var(--muted-foreground))"
+          hide={!yAxisVisibility}
+          dataKey={yAxisDataKey}
+          stroke={yAxisColor}
+          type={yAxisType}
+          domain={[yAxisDomainMin, yAxisDomainMax]}
+          tickCount={yAxisTickCount}
+          tickSize={yAxisTickSize}
+          tickLine={yAxisTickLine}
+          axisLine={yAxisAxisLine}
+          allowDecimals={true}
+          allowDataOverflow={true}
+          minTickGap={5}
           yAxisId={1}
         />
 

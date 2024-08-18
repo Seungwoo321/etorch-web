@@ -11,6 +11,7 @@ import SelectionTooltipOption from '@/components/Selection/SelectionTooltipOptio
 import SelectionGraphStyle from '@/components/Selection/SelectionGraphStyle'
 import SelectionLegendOption from '@/components/Selection/SelectionLegendOption'
 import SelectionXAxisOption from '@/components/Selection/SelectionXAxisOption'
+import SelectionYAxisOption from '@/components/Selection/SelectionYAxisOption'
 function OptionsPanel (): JSX.Element {
   return (
     <div className="h-full">
@@ -46,10 +47,17 @@ function OptionsPanel (): JSX.Element {
               </AccordionContent>
             </AccordionItem>
 
-            <AccordionItem value="axis">
+            <AccordionItem value="x-axis">
               <AccordionTrigger>X-Axis</AccordionTrigger>
               <AccordionContent>
                 <SelectionXAxisOption />
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="y-axis">
+              <AccordionTrigger>Y-Axis</AccordionTrigger>
+              <AccordionContent>
+                <SelectionYAxisOption />
               </AccordionContent>
             </AccordionItem>
 

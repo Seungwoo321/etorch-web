@@ -1,4 +1,6 @@
+import { DataValue } from '@/models'
 import {
+  type YAxisOptionStore,
   type XAxisOptionStore,
   type DataOptionStore,
   type TooltipOptionStore,
@@ -7,10 +9,42 @@ import {
   type GraphStylesOptionStore
 } from './'
 
+const uniqueDataKeyReducer = (acc: string[], cur: DataValue): string[] => {
+  Object.keys(cur).forEach((key) => {
+    if (!acc.includes(key)) {
+      acc.push(key)
+    }
+  })
+  return acc
+}
+
+/** YAxisOptionStore */
+export const selectYAxisDataKey = (state: YAxisOptionStore): YAxisOptionStore['yAxisDataKey'] => state.yAxisDataKey
+export const selectYAxisVisibility = (state: YAxisOptionStore): YAxisOptionStore['yAxisVisibility'] => state.yAxisVisibility
+export const selectYAxisType = (state: YAxisOptionStore): YAxisOptionStore['yAxisType'] => state.yAxisType
+export const selectYAxisTickCount = (state: YAxisOptionStore): YAxisOptionStore['yAxisTickCount'] => state.yAxisTickCount
+export const selectYAxisDomainMin = (state: YAxisOptionStore): YAxisOptionStore['yAxisDomainMin'] => state.yAxisDomainMin
+export const selectYAxisDomainMax = (state: YAxisOptionStore): YAxisOptionStore['yAxisDomainMax'] => state.yAxisDomainMax
+export const selectYAxisAxisLine = (state: YAxisOptionStore): YAxisOptionStore['yAxisAxisLine'] => state.yAxisAxisLine
+export const selectYAxisTickSize = (state: YAxisOptionStore): YAxisOptionStore['yAxisTickSize'] => state.yAxisTickSize
+export const selectYAxisTickLine = (state: YAxisOptionStore): YAxisOptionStore['yAxisTickLine'] => state.yAxisTickLine
+export const selectYAxisColor = (state: YAxisOptionStore): YAxisOptionStore['yAxisColor'] => state.yAxisColor
+export const selectUpdateYAxisDataKey = (state: YAxisOptionStore): YAxisOptionStore['updateYAxisDataKey'] => state.updateYAxisDataKey
+export const selectUpdateYAxisVisibility = (state: YAxisOptionStore): YAxisOptionStore['updateYAxisVisibility'] => state.updateYAxisVisibility
+export const selectUpdateYAxisType = (state: YAxisOptionStore): YAxisOptionStore['updateYAxisType'] => state.updateYAxisType
+export const selectUpdateYAxisTickCount = (state: YAxisOptionStore): YAxisOptionStore['updateYAxisTickCount'] => state.updateYAxisTickCount
+export const selectUpdateYAxisTickSize = (state: YAxisOptionStore): YAxisOptionStore['updateYAxisTickSize'] => state.updateYAxisTickSize
+export const selectUpdateYAxisDomainMin = (state: YAxisOptionStore): YAxisOptionStore['updateYAxisDomainMin'] => state.updateYAxisDomainMin
+export const selectUpdateYAxisDomainMax = (state: YAxisOptionStore): YAxisOptionStore['updateYAxisDomainMax'] => state.updateYAxisDomainMax
+export const selectUpdateYAxisAxisLine = (state: YAxisOptionStore): YAxisOptionStore['updateYAxisAxisLine'] => state.updateYAxisAxisLine
+export const selectUpdateYAxisTickLine = (state: YAxisOptionStore): YAxisOptionStore['updateYAxisTickLine'] => state.updateYAxisTickLine
+export const selectUpdateYAxisColor = (state: YAxisOptionStore): YAxisOptionStore['updateYAxisColor'] => state.updateYAxisColor
+
 /** XAxisOptionStore */
 export const selectXAxisDataKey = (state: XAxisOptionStore): XAxisOptionStore['xAxisDataKey'] => state.xAxisDataKey
 export const selectXAxisVisibility = (state: XAxisOptionStore): XAxisOptionStore['xAxisVisibility'] => state.xAxisVisibility
 export const selectXAxisType = (state: XAxisOptionStore): XAxisOptionStore['xAxisType'] => state.xAxisType
+export const selectXAxisTickCount = (state: XAxisOptionStore): XAxisOptionStore['xAxisTickCount'] => state.xAxisTickCount
 export const selectXAxisTickAngle = (state: XAxisOptionStore): XAxisOptionStore['xAxisTickAngle'] => state.xAxisTickAngle
 export const selectXAxisDomainMin = (state: XAxisOptionStore): XAxisOptionStore['xAxisDomainMin'] => state.xAxisDomainMin
 export const selectXAxisDomainMax = (state: XAxisOptionStore): XAxisOptionStore['xAxisDomainMax'] => state.xAxisDomainMax
@@ -18,9 +52,10 @@ export const selectXAxisAxisLine = (state: XAxisOptionStore): XAxisOptionStore['
 export const selectXAxisTickSize = (state: XAxisOptionStore): XAxisOptionStore['xAxisTickSize'] => state.xAxisTickSize
 export const selectXAxisTickLine = (state: XAxisOptionStore): XAxisOptionStore['xAxisTickLine'] => state.xAxisTickLine
 export const selectXAxisColor = (state: XAxisOptionStore): XAxisOptionStore['xAxisColor'] => state.xAxisColor
-export const selecteUpdateXAxisDataKey = (state: XAxisOptionStore): XAxisOptionStore['updateXAxisDataKey'] => state.updateXAxisDataKey
+export const selectUpdateXAxisDataKey = (state: XAxisOptionStore): XAxisOptionStore['updateXAxisDataKey'] => state.updateXAxisDataKey
 export const selectUpdateXAxisVisibility = (state: XAxisOptionStore): XAxisOptionStore['updateXAxisVisibility'] => state.updateXAxisVisibility
 export const selectUpdateXAxisType = (state: XAxisOptionStore): XAxisOptionStore['updateXAxisType'] => state.updateXAxisType
+export const selectUpdateXAxisTickCount = (state: XAxisOptionStore): XAxisOptionStore['updateXAxisTickCount'] => state.updateXAxisTickCount
 export const selectUpdateXAxisTickSize = (state: XAxisOptionStore): XAxisOptionStore['updateXAxisTickSize'] => state.updateXAxisTickSize
 export const selectUpdateXAxisTickAngle = (state: XAxisOptionStore): XAxisOptionStore['updateXAxisTickAngle'] => state.updateXAxisTickAngle
 export const selectUpdateXAxisDomainMin = (state: XAxisOptionStore): XAxisOptionStore['updateXAxisDomainMin'] => state.updateXAxisDomainMin
@@ -30,6 +65,7 @@ export const selectUpdateXAxisTickLine = (state: XAxisOptionStore): XAxisOptionS
 export const selectUpdateXAxisColor = (state: XAxisOptionStore): XAxisOptionStore['updateXAxisColor'] => state.updateXAxisColor
 
 /** DataOptionStore */
+export const selectUniqueDataKeys = (state: DataOptionStore): string[] => state.chartData.reduce<string[]>(uniqueDataKeyReducer, [])
 export const selectChartData = (state: DataOptionStore): DataOptionStore['chartData'] => state.chartData
 export const selectIndicators = (state: DataOptionStore): DataOptionStore['indicators'] => state.indicators
 export const selectFrequency = (state: DataOptionStore): DataOptionStore['frequency'] => state.frequency

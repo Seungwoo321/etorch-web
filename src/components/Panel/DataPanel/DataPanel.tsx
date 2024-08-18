@@ -10,8 +10,7 @@ import {
 import {
   Database,
   Plus
-}
-  from 'lucide-react'
+} from 'lucide-react'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import DataPanelOptions from './DataPanelOption'
 import { useDataOptionStore } from '@/store/editPanel'
@@ -20,11 +19,10 @@ import {
   selectAddPanelItem
 } from '@/store/editPanel/selector'
 import { useCallback } from 'react'
-
+import { useShallow } from 'zustand/react/shallow'
 function DataPanel (): JSX.Element {
-  const panelIds = useDataOptionStore(selectPanelIds)
+  const panelIds = useDataOptionStore(useShallow(selectPanelIds))
   const addPanelItem = useDataOptionStore(selectAddPanelItem)
-
   const handleAddPanel = useCallback(() => {
     addPanelItem({
       id: (panelIds[panelIds.length - 1] ?? 0) + 1,
@@ -34,10 +32,9 @@ function DataPanel (): JSX.Element {
       frequency: '',
       data: []
     })
-  }, [addPanelItem, panelIds])
+  }, [panelIds])
   return (
     <Tabs
-
       className="flex-col flex md:order-2 w-full h-full"
       defaultValue="query"
     >

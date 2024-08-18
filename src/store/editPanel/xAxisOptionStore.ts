@@ -4,6 +4,7 @@ export interface XAxisOptionStore {
   xAxisDataKey: string
   xAxisVisibility: boolean
   xAxisType: 'number' | 'category' | undefined
+  xAxisTickCount: number,
   xAxisTickSize: number
   xAxisTickAngle: number
   xAxisDomainMin: number | 'auto'
@@ -14,6 +15,7 @@ export interface XAxisOptionStore {
   updateXAxisDataKey: (xAxisDataKey: string) => void
   updateXAxisVisibility: (xAxisVisibility: boolean) => void
   updateXAxisType: (xAxisType: 'number' | 'category' | undefined) => void
+  updateXAxisTickCount: (xAxisTickCount: number) => void
   updateXAxisTickSize: (xAxisTickSize: number) => void
   updateXAxisTickAngle: (xAxisTickAngle: number) => void
   updateXAxisDomainMin: (xAxisDomainMin: number | 'auto') => void
@@ -27,6 +29,7 @@ export const useXAxisOptionStore = create<XAxisOptionStore>(set => ({
   xAxisDataKey: 'date',
   xAxisVisibility: true,
   xAxisType: 'category',
+  xAxisTickCount: 5,
   xAxisTickSize: 6,
   xAxisTickAngle: 0,
   xAxisDomainMin: 0,
@@ -36,6 +39,7 @@ export const useXAxisOptionStore = create<XAxisOptionStore>(set => ({
   xAxisColor: 'hsl(var(--muted-foreground))',
   updateXAxisDataKey: xAxisDataKey => { set(() => ({ xAxisDataKey })) },
   updateXAxisVisibility: xAxisVisibility => { set(() => ({ xAxisVisibility })) },
+  updateXAxisTickCount: xAxisTickCount => { set(() => ({ xAxisTickCount }))},
   updateXAxisType: xAxisType => { set(() => ({ xAxisType })) },
   updateXAxisTickSize: xAxisTickSize => { set(() => ({ xAxisTickSize })) },
   updateXAxisTickAngle: xAxisTickAngle => { set(() => ({ xAxisTickAngle })) },

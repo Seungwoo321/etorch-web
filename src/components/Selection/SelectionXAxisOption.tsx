@@ -7,58 +7,52 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { type DataValue } from '@/models'
 import { useDataOptionStore, useXAxisOptionStore } from '@/store/editPanel'
 import {
   selectXAxisVisibility,
   selectXAxisType,
+  selectXAxisTickCount,
   selectXAxisTickAngle,
+  selectXAxisTickSize,
   selectXAxisDomainMin,
   selectXAxisDomainMax,
   selectXAxisAxisLine,
   selectXAxisTickLine,
+  selectXAxisDataKey,
   selectUpdateXAxisVisibility,
   selectUpdateXAxisType,
+  selectUpdateXAxisTickCount,
   selectUpdateXAxisTickAngle,
   selectUpdateXAxisDomainMin,
   selectUpdateXAxisDomainMax,
   selectUpdateXAxisAxisLine,
   selectUpdateXAxisTickLine,
-  selectXAxisTickSize,
   selectUpdateXAxisTickSize,
-  selecteUpdateXAxisDataKey,
-  selectXAxisDataKey,
-  selectChartData
+  selectUpdateXAxisDataKey,
+  selectUniqueDataKeys
 } from '@/store/editPanel/selector'
 import FormField from '../shared/FormField'
 
-const uniqueDataKeyReducer = (acc: string[], cur: DataValue): string[] => {
-  Object.keys(cur).forEach((key) => {
-    if (!acc.includes(key)) {
-      acc.push(key)
-    }
-  })
-  return acc
-}
 function SelectionAxisOption (): JSX.Element {
-  const chartData = useDataOptionStore(selectChartData)
-  const uniqueDataKey = chartData.reduce<string[]>(uniqueDataKeyReducer, [])
+  const uniqueDataKey = useDataOptionStore(selectUniqueDataKeys)
   const xAxisDataKey = useXAxisOptionStore(selectXAxisDataKey)
   const xAxisVisibility = useXAxisOptionStore(selectXAxisVisibility)
   const xAxisType = useXAxisOptionStore(selectXAxisType)
-  const xAxisTickAngle = useXAxisOptionStore(selectXAxisTickAngle)
   const xAxisDomainMin = useXAxisOptionStore(selectXAxisDomainMin)
   const xAxisDomainMax = useXAxisOptionStore(selectXAxisDomainMax)
   const xAxisAxisLine = useXAxisOptionStore(selectXAxisAxisLine)
+  const xAxisTickCount = useXAxisOptionStore(selectXAxisTickCount)
+  const xAxisTickAngle = useXAxisOptionStore(selectXAxisTickAngle)
   const xAxisTickSize = useXAxisOptionStore(selectXAxisTickSize)
   const xAxisTickLine = useXAxisOptionStore(selectXAxisTickLine)
-  const updateXAxisDataKey = useXAxisOptionStore(selecteUpdateXAxisDataKey)
+  const updateXAxisDataKey = useXAxisOptionStore(selectUpdateXAxisDataKey)
   const updateXAxisVisibility = useXAxisOptionStore(selectUpdateXAxisVisibility)
   const updateXAxisType = useXAxisOptionStore(selectUpdateXAxisType)
-  const updateXAxisTickAngle = useXAxisOptionStore(selectUpdateXAxisTickAngle)
   const updateXAxisDomainMin = useXAxisOptionStore(selectUpdateXAxisDomainMin)
   const updateXAxisDomainMax = useXAxisOptionStore(selectUpdateXAxisDomainMax)
   const updateXAxisAxisLine = useXAxisOptionStore(selectUpdateXAxisAxisLine)
+  const updateXAxisTickCount = useXAxisOptionStore(selectUpdateXAxisTickCount)
+  const updateXAxisTickAngle = useXAxisOptionStore(selectUpdateXAxisTickAngle)
   const updateXAxisTickSzie = useXAxisOptionStore(selectUpdateXAxisTickSize)
   const updateXAxisTickLine = useXAxisOptionStore(selectUpdateXAxisTickLine)
   return (
@@ -162,10 +156,26 @@ function SelectionAxisOption (): JSX.Element {
         />
       </FormField>
 
+      {xAxisType === 'number' && (
+        <FormField htmlFor="x-axis-tick-count" label="Tick Count">
+          <Input
+            id="x-axis-tick-count"
+            type="number"
+            min={5}
+            className="sm"
+            value={xAxisTickCount}
+            onInput={(e) => {
+              if (!isNaN(+e.currentTarget.value) && typeof +e.currentTarget.value === 'number') {
+                updateXAxisTickCount(+e.currentTarget.value)
+              }
+            }}
+          />
+        </FormField>
+      )}
       <FormField htmlFor="x-axis-tick-angle" label="Tick Angle">
         <Input
           id="x-axis-tick-angle"
-          type="nuumber"
+          type="number"
           min={0}
           max={360}
           className="sm"
@@ -189,15 +199,14 @@ function SelectionAxisOption (): JSX.Element {
         <FormField htmlFor="x-axis-tick-size" label="Tick Size">
           <Input
             id="x-axis-tick-size"
-            type="nuumber"
+            type="number"
             max={10}
             className="sm"
             value={xAxisTickSize}
             onInput={(e) => {
               if (!isNaN(+e.currentTarget.value) && typeof +e.currentTarget.value === 'number') {
-                updateXAxisTickAngle(+e.currentTarget.value)
+                updateXAxisTickSzie(+e.currentTarget.value)
               }
-              updateXAxisTickSzie(+e.currentTarget.value)
             }}
           />
         </FormField>
