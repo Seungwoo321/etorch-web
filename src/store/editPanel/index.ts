@@ -1,3 +1,4 @@
+export * from './yAxisSecondaryOptionStore'
 export * from './yAxisOptionStore'
 export * from './xAxisOptionStore'
 export * from './dataOptionlStore'

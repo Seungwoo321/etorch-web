@@ -6,22 +6,14 @@ import {
   TabsTrigger
 } from '@/components/ui/tabs'
 import { useGraphStylesOptionStore } from '@/store/editPanel'
-import {
-  selectGraphStyle,
-  selectLineWidth,
-  selectFillOpacity,
-  selectUpdateGraphStyle,
-  selectUpdateLineWidth,
-  selectUpdateFillOpacity
-} from '@/store/editPanel/selector'
 import FormField from '@/components/shared/FormField'
 function SelectionGraphStyle (): JSX.Element {
-  const graphStyle = useGraphStylesOptionStore(selectGraphStyle)
-  const lineWidth = useGraphStylesOptionStore(selectLineWidth)
-  const fillOpacity = useGraphStylesOptionStore(selectFillOpacity)
-  const updateGraphStyle = useGraphStylesOptionStore(selectUpdateGraphStyle)
-  const updateLineWidth = useGraphStylesOptionStore(selectUpdateLineWidth)
-  const updateFillOpacity = useGraphStylesOptionStore(selectUpdateFillOpacity)
+  const graphStyle = useGraphStylesOptionStore.use.graphStyle()
+  const lineWidth = useGraphStylesOptionStore.use.lineWidth()
+  const fillOpacity = useGraphStylesOptionStore.use.fillOpacity()
+  const updateGraphStyle = useGraphStylesOptionStore.use.updateGraphStyle()
+  const updateLineWidth = useGraphStylesOptionStore.use.updateLineWidth()
+  const updateFillOpacity = useGraphStylesOptionStore.use.updateFillOpacity()
 
   return (
     <div className="space-y-2 pl-2 pr-1">

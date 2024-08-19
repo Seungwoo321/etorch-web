@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import createSelectors from '../createSelectors'
 
 export interface YAxisOptionStore {
   yAxisDataKey: string
@@ -23,7 +24,7 @@ export interface YAxisOptionStore {
   updateYAxisColor: (yAxisColor: string) => void
 }
 
-export const useYAxisOptionStore = create<YAxisOptionStore>(set => ({
+export const useYAxisOptionStoreBase = create<YAxisOptionStore>(set => ({
   yAxisDataKey: '',
   yAxisVisibility: true,
   yAxisType: 'number',
@@ -45,5 +46,7 @@ export const useYAxisOptionStore = create<YAxisOptionStore>(set => ({
   updateYAxisTickLine: yAxisTickLine => { set(() => ({ yAxisTickLine })) },
   updateYAxisColor: yAxisColor => { set(() => ({ yAxisColor })) }
 }))
+
+export const useYAxisOptionStore = createSelectors(useYAxisOptionStoreBase)
 
 export default useYAxisOptionStore

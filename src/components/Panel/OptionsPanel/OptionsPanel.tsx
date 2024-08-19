@@ -12,6 +12,7 @@ import SelectionGraphStyle from '@/components/Selection/SelectionGraphStyle'
 import SelectionLegendOption from '@/components/Selection/SelectionLegendOption'
 import SelectionXAxisOption from '@/components/Selection/SelectionXAxisOption'
 import SelectionYAxisOption from '@/components/Selection/SelectionYAxisOption'
+import SelectionYAxisSecondaryOption from '@/components/Selection/SelectionYAxisSecondaryOption'
 function OptionsPanel (): JSX.Element {
   return (
     <div className="h-full">
@@ -58,6 +59,13 @@ function OptionsPanel (): JSX.Element {
               <AccordionTrigger>Y-Axis</AccordionTrigger>
               <AccordionContent>
                 <SelectionYAxisOption />
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="y-axis-scondary">
+              <AccordionTrigger>Y-Axis (Scondary)</AccordionTrigger>
+              <AccordionContent>
+                <SelectionYAxisSecondaryOption />
               </AccordionContent>
             </AccordionItem>
 

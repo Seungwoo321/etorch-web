@@ -5,37 +5,27 @@ import {
   ToggleGroupItem
 } from '@/components/ui/toggle-group'
 import { useLegendOptionStore } from '@/store/editPanel'
-import {
-  selectLegendVisibility,
-  selectLegendLayout,
-  selectLegendAlign,
-  selectLegendVerticalAlign,
-  selectUpdateLegendVisibility,
-  selectUpdateLegendLayout,
-  selectUpdateLegendAlign,
-  selectUpdateLegendVerticalAlign
-} from '@/store/editPanel/selector'
 import { type LayoutType } from 'recharts/types/util/types'
 import { type VerticalAlignmentType, type HorizontalAlignmentType } from 'recharts/types/component/DefaultLegendContent'
 import FormField from '../shared/FormField'
 
 function SelectionLegendOption (): JSX.Element {
-  const visibility = useLegendOptionStore(selectLegendVisibility)
-  const layout = useLegendOptionStore(selectLegendLayout)
-  const align = useLegendOptionStore(selectLegendAlign)
-  const verticalAlign = useLegendOptionStore(selectLegendVerticalAlign)
-  const updateVisibility = useLegendOptionStore(selectUpdateLegendVisibility)
-  const updateLayout = useLegendOptionStore(selectUpdateLegendLayout)
-  const updateAlign = useLegendOptionStore(selectUpdateLegendAlign)
-  const updateVerticalAlign = useLegendOptionStore(selectUpdateLegendVerticalAlign)
+  const legendVisibility = useLegendOptionStore.use.legendVisibility()
+  const legendLayout = useLegendOptionStore.use.legendLayout()
+  const legendAlign = useLegendOptionStore.use.legendAlign()
+  const legendVerticalAlign = useLegendOptionStore.use.legendVerticalAlign()
+  const updateLegendVisibility = useLegendOptionStore.use.updateLegendVisibility()
+  const updateLegendLayout = useLegendOptionStore.use.updateLegendLayout()
+  const updateLegendAlign = useLegendOptionStore.use.updateLegendAlign()
+  const updateLegendVerticalAlign = useLegendOptionStore.use.updateLegendVerticalAlign()
   return (
     <div className="space-y-2 pl-2 pr-1">
       <div className="grid w-full max-w-sm items-center gap-1.5">
         <Label htmlFor="legend-visibility">Visibility</Label>
         <Switch
           id="legend-visibility"
-          checked={visibility}
-          onCheckedChange={updateVisibility}
+          checked={legendVisibility}
+          onCheckedChange={updateLegendVisibility}
         />
       </div>
       <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -44,10 +34,10 @@ function SelectionLegendOption (): JSX.Element {
           className="justify-start"
           type="single"
           variant="outline"
-          value={layout}
+          value={legendLayout}
           onValueChange={(value: LayoutType) => {
-            if (value.length > 0) updateLayout(value)
-            if (value === 'horizontal' && verticalAlign === 'middle') updateAlign('center')
+            if (value.length > 0) updateLegendLayout(value)
+            if (value === 'horizontal' && legendVerticalAlign === 'middle') updateLegendAlign('center')
           }}
         >
           <ToggleGroupItem value="vertical" aria-label="Toggle vertical">
@@ -64,23 +54,23 @@ function SelectionLegendOption (): JSX.Element {
           className="justify-start"
           type="single"
           variant="outline"
-          value={align}
+          value={legendAlign}
           onValueChange={(value: HorizontalAlignmentType) => {
             if (value === 'left' || value === 'center' || value === 'right') {
-              updateAlign(value)
+              updateLegendAlign(value)
             }
           }}
         >
-        {(layout !== 'horizontal' || verticalAlign !== 'middle')
-          ? (<ToggleGroupItem value="left" aria-label="Toggle left">
+          {(legendLayout !== 'horizontal' || legendVerticalAlign !== 'middle')
+            ? (<ToggleGroupItem value="left" aria-label="Toggle left">
             Left
           </ToggleGroupItem>)
-          : null
+            : null
         }
           <ToggleGroupItem value="center" aria-label="Toggle center">
             Center
           </ToggleGroupItem>
-          {(layout !== 'horizontal' || verticalAlign !== 'middle')
+          {(legendLayout !== 'horizontal' || legendVerticalAlign !== 'middle')
             ? (<ToggleGroupItem value="right" aria-label="Toggle right">
               Right
             </ToggleGroupItem>)
@@ -93,12 +83,12 @@ function SelectionLegendOption (): JSX.Element {
           className="justify-start"
           type="single"
           variant="outline"
-          value={verticalAlign}
+          value={legendVerticalAlign}
           onValueChange={(value: VerticalAlignmentType) => {
             if (value === 'top' || value === 'bottom' || value === 'middle') {
-              updateVerticalAlign(value)
+              updateLegendVerticalAlign(value)
             }
-            if (layout === 'horizontal' && value === 'middle') updateAlign('center')
+            if (legendLayout === 'horizontal' && value === 'middle') updateLegendAlign('center')
           }}
         >
           <ToggleGroupItem value="top" aria-label="Toggle top">

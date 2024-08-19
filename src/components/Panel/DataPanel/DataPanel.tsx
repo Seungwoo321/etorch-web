@@ -15,14 +15,13 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import DataPanelOptions from './DataPanelOption'
 import { useDataOptionStore } from '@/store/editPanel'
 import {
-  selectPanelIds,
-  selectAddPanelItem
+  selectPanelIds
 } from '@/store/editPanel/selector'
 import { useCallback } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 function DataPanel (): JSX.Element {
   const panelIds = useDataOptionStore(useShallow(selectPanelIds))
-  const addPanelItem = useDataOptionStore(selectAddPanelItem)
+  const addPanelItem = useDataOptionStore.use.addPanelItem()
   const handleAddPanel = useCallback(() => {
     addPanelItem({
       id: (panelIds[panelIds.length - 1] ?? 0) + 1,

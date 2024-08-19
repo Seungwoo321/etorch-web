@@ -19,80 +19,60 @@ import {
   useTooltipOptionStore,
   useDataOptionStore,
   useXAxisOptionStore,
-  useYAxisOptionStore
+  useYAxisOptionStore,
+  useYAxisSecondaryOptionStore
 } from '@/store/editPanel'
 import {
-  selectChartData,
-  selectPanelsData,
-  selectCursorLineStyle,
-  selectTooltipMode,
-  selectTooltipMaxWidth,
-  selectCursorLineStyleWidth,
-  selectCursorLineStyleDasharray,
-  selectLegendVisibility,
-  selectLegendLayout,
-  selectLegendAlign,
-  selectLegendVerticalAlign,
-  selectIsTransparentBackground,
-  selectXAxisAxisLine,
-  selectXAxisColor,
-  selectXAxisDomainMax,
-  selectXAxisDomainMin,
-  selectXAxisTickAngle,
-  selectXAxisTickLine,
-  selectXAxisTickSize,
-  selectXAxisType,
-  selectXAxisTickCount,
-  selectXAxisVisibility,
-  selectXAxisDataKey,
-  selectYAxisDataKey,
-  selectYAxisVisibility,
-  selectYAxisType,
-  selectYAxisTickCount,
-  selectYAxisDomainMin,
-  selectYAxisDomainMax,
-  selectYAxisAxisLine,
-  selectYAxisTickSize,
-  selectYAxisTickLine,
-  selectYAxisColor
+  selectPanelsData
 } from '@/store/editPanel/selector'
 
 function LineChartContainer (): JSX.Element {
-  const isTransparentBackground = usePanelOptionStore(selectIsTransparentBackground)
   const panelsData = useDataOptionStore(selectPanelsData)
-  const chartData = useDataOptionStore(selectChartData)
-  const tooltipMode = useTooltipOptionStore(selectTooltipMode)
-  const cursorLineStyle = useTooltipOptionStore(selectCursorLineStyle)
-  const cursorLineStyleWidth = useTooltipOptionStore(selectCursorLineStyleWidth)
-  const cursorLineStyleDasharray = useTooltipOptionStore(selectCursorLineStyleDasharray)
+  const isTransparentBackground = usePanelOptionStore.use.isTransparentBackground()
+  const chartData = useDataOptionStore.use.chartData()
+  const tooltipMode = useTooltipOptionStore.use.tooltipMode()
+  const cursorLineStyle = useTooltipOptionStore.use.cursorLineStyle()
+  const cursorLineStyleWidth = useTooltipOptionStore.use.cursorLineStyleWidth()
+  const cursorLineStyleDasharray = useTooltipOptionStore.use.cursorLineStyleDasharray()
 
-  const legendVisibility = useLegendOptionStore(selectLegendVisibility)
-  const legendLayout = useLegendOptionStore(selectLegendLayout)
-  const legendAlign = useLegendOptionStore(selectLegendAlign)
-  const legendVerticalAlign = useLegendOptionStore(selectLegendVerticalAlign)
+  const legendVisibility = useLegendOptionStore.use.legendVisibility()
+  const legendLayout = useLegendOptionStore.use.legendLayout()
+  const legendAlign = useLegendOptionStore.use.legendAlign()
+  const legendVerticalAlign = useLegendOptionStore.use.legendVerticalAlign()
 
-  const xAxisDataKey = useXAxisOptionStore(selectXAxisDataKey)
-  const xAxisVisibility = useXAxisOptionStore(selectXAxisVisibility)
-  const xAxisType = useXAxisOptionStore(selectXAxisType)
-  const xAxisTickCount = useXAxisOptionStore(selectXAxisTickCount)
-  const xAxisTickAngle = useXAxisOptionStore(selectXAxisTickAngle)
-  const xAxisDomainMin = useXAxisOptionStore(selectXAxisDomainMin)
-  const xAxisDomainMax = useXAxisOptionStore(selectXAxisDomainMax)
-  const xAxisAxisLine = useXAxisOptionStore(selectXAxisAxisLine)
-  const xAxisTickSize = useXAxisOptionStore(selectXAxisTickSize)
-  const xAxisTickLine = useXAxisOptionStore(selectXAxisTickLine)
-  const xAxisColor = useXAxisOptionStore(selectXAxisColor)
+  const xAxisDataKey = useXAxisOptionStore.use.xAxisDataKey()
+  const xAxisVisibility = useXAxisOptionStore.use.xAxisVisibility()
+  const xAxisType = useXAxisOptionStore.use.xAxisType()
+  const xAxisTickCount = useXAxisOptionStore.use.xAxisTickCount()
+  const xAxisTickAngle = useXAxisOptionStore.use.xAxisTickAngle()
+  const xAxisDomainMin = useXAxisOptionStore.use.xAxisDomainMin()
+  const xAxisDomainMax = useXAxisOptionStore.use.xAxisDomainMax()
+  const xAxisAxisLine = useXAxisOptionStore.use.xAxisAxisLine()
+  const xAxisTickSize = useXAxisOptionStore.use.xAxisTickSize()
+  const xAxisTickLine = useXAxisOptionStore.use.xAxisTickLine()
+  const xAxisColor = useXAxisOptionStore.use.xAxisColor()
 
-  const yAxisDataKey = useYAxisOptionStore(selectYAxisDataKey)
-  const yAxisVisibility = useYAxisOptionStore(selectYAxisVisibility)
-  const yAxisType = useYAxisOptionStore(selectYAxisType)
-  const yAxisTickCount = useYAxisOptionStore(selectYAxisTickCount)
-  const yAxisDomainMin = useYAxisOptionStore(selectYAxisDomainMin)
-  const yAxisDomainMax = useYAxisOptionStore(selectYAxisDomainMax)
-  const yAxisAxisLine = useYAxisOptionStore(selectYAxisAxisLine)
-  const yAxisTickSize = useYAxisOptionStore(selectYAxisTickSize)
-  const yAxisTickLine = useYAxisOptionStore(selectYAxisTickLine)
-  const yAxisColor = useYAxisOptionStore(selectYAxisColor)
+  const yAxisDataKey = useYAxisOptionStore.use.yAxisDataKey()
+  const yAxisVisibility = useYAxisOptionStore.use.yAxisVisibility()
+  const yAxisType = useYAxisOptionStore.use.yAxisType()
+  const yAxisTickCount = useYAxisOptionStore.use.yAxisTickCount()
+  const yAxisDomainMin = useYAxisOptionStore.use.yAxisDomainMin()
+  const yAxisDomainMax = useYAxisOptionStore.use.yAxisDomainMax()
+  const yAxisAxisLine = useYAxisOptionStore.use.yAxisAxisLine()
+  const yAxisTickSize = useYAxisOptionStore.use.yAxisTickSize()
+  const yAxisTickLine = useYAxisOptionStore.use.yAxisTickLine()
+  const yAxisColor = useYAxisOptionStore.use.yAxisColor()
+
+  const yAxisSecondaryDataKey = useYAxisSecondaryOptionStore.use.yAxisSecondaryDataKey()
+  const yAxisSecondaryVisibility = useYAxisSecondaryOptionStore.use.yAxisSecondaryVisibility()
+  const yAxisSecondaryType = useYAxisSecondaryOptionStore.use.yAxisSecondaryType()
+  const yAxisSecondaryTickCount = useYAxisSecondaryOptionStore.use.yAxisSecondaryTickCount()
+  const yAxisSecondaryDomainMin = useYAxisSecondaryOptionStore.use.yAxisSecondaryDomainMin()
+  const yAxisSecondaryDomainMax = useYAxisSecondaryOptionStore.use.yAxisSecondaryDomainMax()
+  const yAxisSecondaryAxisLine = useYAxisSecondaryOptionStore.use.yAxisSecondaryAxisLine()
+  const yAxisSecondaryTickSize = useYAxisSecondaryOptionStore.use.yAxisSecondaryTickSize()
+  const yAxisSecondaryTickLine = useYAxisSecondaryOptionStore.use.yAxisSecondaryTickLine()
+  const yAxisSecondaryColor = useYAxisSecondaryOptionStore.use.yAxisSecondaryColor()
 
   if (panelsData.length === 0) {
     return (
@@ -146,7 +126,22 @@ function LineChartContainer (): JSX.Element {
           minTickGap={5}
           yAxisId={1}
         />
-
+        <YAxis
+          hide={!yAxisSecondaryVisibility}
+          dataKey={yAxisSecondaryDataKey}
+          stroke={yAxisSecondaryColor}
+          type={yAxisSecondaryType}
+          domain={[yAxisSecondaryDomainMin, yAxisSecondaryDomainMax]}
+          tickCount={yAxisSecondaryTickCount}
+          tickSize={yAxisSecondaryTickSize}
+          tickLine={yAxisSecondaryTickLine}
+          axisLine={yAxisSecondaryAxisLine}
+          allowDecimals={true}
+          allowDataOverflow={true}
+          minTickGap={5}
+          yAxisId={2}
+          orientation="right"
+        />
         {panelsData.map((panel) => (
           <Line
             key={`line-${panel.indicatorCode}`}
@@ -227,7 +222,7 @@ interface CustomTooltipProps {
 }
 
 const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload, label }: TooltipProps<string, string>) => {
-  const maxWidth = useTooltipOptionStore(selectTooltipMaxWidth)
+  const maxWidth = useTooltipOptionStore.use.tooltiMaxWidth()
   if (active === true && payload?.length != null) {
     return (
       <div className={`flex flex-col bg-background border-[1px] border-solid border-[rgba(204, 204, 220, 0.2)] w-[${maxWidth}px] overflow-hidden`}>

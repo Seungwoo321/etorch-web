@@ -4,19 +4,14 @@ import {
   CardDescription
 } from '@/components/ui/card'
 import {
-  usePanelOptionStore,
+  usePanelOptionStore
 } from '@/store/editPanel'
-import {
-  selectTitle,
-  selectDescription,
-} from '@/store/editPanel/selector'
 
-function PreviewPanelHeader () {
-  const title = usePanelOptionStore(selectTitle)
-  const description = usePanelOptionStore(selectDescription)
-
+function PreviewPanelHeader (): JSX.Element | null {
+  const title = usePanelOptionStore.use.title()
+  const description = usePanelOptionStore.use.description()
+  if (title !== '') return null
   return (
-    title !== '' &&
     <CardHeader className="flex">
       <CardTitle>
         {title}

@@ -5,18 +5,6 @@ import {
 } from '@/components/ui/toggle-group'
 import { useTooltipOptionStore } from '@/store/editPanel'
 import {
-  selectCursorLineStyle,
-  selectTooltipMode,
-  selectTooltipMaxWidth,
-  selectCursorLineStyleWidth,
-  selectCursorLineStyleDasharray,
-  selectUpdateTolltipMode,
-  selectUpdateTooltipMaxWidth,
-  selectUpdateCursorLineStyle,
-  selectUpdateCursorLineStyleWidth,
-  selectUpdateCursorLineStyleDasharray
-} from '@/store/editPanel/selector'
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -26,16 +14,16 @@ import {
 import FormField from '../shared/FormField'
 
 function SelectionTooltipOption (): JSX.Element {
-  const tooltipMode = useTooltipOptionStore(selectTooltipMode)
-  const maxWidth = useTooltipOptionStore(selectTooltipMaxWidth)
-  const cursorLineStyleWidth = useTooltipOptionStore(selectCursorLineStyleWidth)
-  const cursorLineStyleDasharray = useTooltipOptionStore(selectCursorLineStyleDasharray)
-  const cursorLineStyle = useTooltipOptionStore(selectCursorLineStyle)
-  const updateTooltipMode = useTooltipOptionStore(selectUpdateTolltipMode)
-  const updateMaxWidth = useTooltipOptionStore(selectUpdateTooltipMaxWidth)
-  const updateCursorLineStyle = useTooltipOptionStore(selectUpdateCursorLineStyle)
-  const updateCursorLineStyleWidth = useTooltipOptionStore(selectUpdateCursorLineStyleWidth)
-  const updateCursorLineStyleDasharray = useTooltipOptionStore(selectUpdateCursorLineStyleDasharray)
+  const tooltipMode = useTooltipOptionStore.use.tooltipMode()
+  const tooltiMaxWidth = useTooltipOptionStore.use.tooltiMaxWidth()
+  const cursorLineStyleWidth = useTooltipOptionStore.use.cursorLineStyleWidth()
+  const cursorLineStyleDasharray = useTooltipOptionStore.use.cursorLineStyleDasharray()
+  const cursorLineStyle = useTooltipOptionStore.use.cursorLineStyle()
+  const updateTooltipMode = useTooltipOptionStore.use.updateTooltipMode()
+  const updateTooltipMaxWidth = useTooltipOptionStore.use.updateTooltipMaxWidth()
+  const updateCursorLineStyle = useTooltipOptionStore.use.updateCursorLineStyle()
+  const updateCursorLineStyleWidth = useTooltipOptionStore.use.updateCursorLineStyleWidth()
+  const updateCursorLineStyleDasharray = useTooltipOptionStore.use.updateCursorLineStyleDasharray()
 
   return (
     <div className="space-y-2 pl-2 pr-1">
@@ -67,8 +55,8 @@ function SelectionTooltipOption (): JSX.Element {
               id="tooltip-max-width"
               type="nuumber"
               className="sm"
-              value={maxWidth}
-              onInput={(e) => { updateMaxWidth(+e.currentTarget.value) }}
+              value={tooltiMaxWidth}
+              onInput={(e) => { updateTooltipMaxWidth(+e.currentTarget.value) }}
             />
           </FormField>
           <FormField label="Cursor style">

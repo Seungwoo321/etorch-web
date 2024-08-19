@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import createSelectors from '../createSelectors'
 
 export interface TooltipOptionStore {
   tooltipMode: string
@@ -13,7 +14,7 @@ export interface TooltipOptionStore {
   updateCursorLineStyleDasharray: (cursorLineStyleDasharray: string) => void
 }
 
-export const useTooltipOptionStore = create<TooltipOptionStore>(set => ({
+export const useTooltipOptionStoreBase = create<TooltipOptionStore>(set => ({
   tooltipMode: 'default',
   tooltiMaxWidth: 160,
   cursorLineStyleWidth: 2,
@@ -25,5 +26,7 @@ export const useTooltipOptionStore = create<TooltipOptionStore>(set => ({
   updateCursorLineStyleWidth: cursorLineStyleWidth => { set(() => ({ cursorLineStyleWidth })) },
   updateCursorLineStyleDasharray: cursorLineStyleDasharray => { set(() => ({ cursorLineStyleDasharray })) }
 }))
+
+export const useTooltipOptionStore = createSelectors(useTooltipOptionStoreBase)
 
 export default useTooltipOptionStore

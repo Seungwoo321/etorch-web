@@ -9,52 +9,32 @@ import {
 } from '@/components/ui/select'
 import { useDataOptionStore, useXAxisOptionStore } from '@/store/editPanel'
 import {
-  selectXAxisVisibility,
-  selectXAxisType,
-  selectXAxisTickCount,
-  selectXAxisTickAngle,
-  selectXAxisTickSize,
-  selectXAxisDomainMin,
-  selectXAxisDomainMax,
-  selectXAxisAxisLine,
-  selectXAxisTickLine,
-  selectXAxisDataKey,
-  selectUpdateXAxisVisibility,
-  selectUpdateXAxisType,
-  selectUpdateXAxisTickCount,
-  selectUpdateXAxisTickAngle,
-  selectUpdateXAxisDomainMin,
-  selectUpdateXAxisDomainMax,
-  selectUpdateXAxisAxisLine,
-  selectUpdateXAxisTickLine,
-  selectUpdateXAxisTickSize,
-  selectUpdateXAxisDataKey,
   selectUniqueDataKeys
 } from '@/store/editPanel/selector'
 import FormField from '../shared/FormField'
 
 function SelectionAxisOption (): JSX.Element {
   const uniqueDataKey = useDataOptionStore(selectUniqueDataKeys)
-  const xAxisDataKey = useXAxisOptionStore(selectXAxisDataKey)
-  const xAxisVisibility = useXAxisOptionStore(selectXAxisVisibility)
-  const xAxisType = useXAxisOptionStore(selectXAxisType)
-  const xAxisDomainMin = useXAxisOptionStore(selectXAxisDomainMin)
-  const xAxisDomainMax = useXAxisOptionStore(selectXAxisDomainMax)
-  const xAxisAxisLine = useXAxisOptionStore(selectXAxisAxisLine)
-  const xAxisTickCount = useXAxisOptionStore(selectXAxisTickCount)
-  const xAxisTickAngle = useXAxisOptionStore(selectXAxisTickAngle)
-  const xAxisTickSize = useXAxisOptionStore(selectXAxisTickSize)
-  const xAxisTickLine = useXAxisOptionStore(selectXAxisTickLine)
-  const updateXAxisDataKey = useXAxisOptionStore(selectUpdateXAxisDataKey)
-  const updateXAxisVisibility = useXAxisOptionStore(selectUpdateXAxisVisibility)
-  const updateXAxisType = useXAxisOptionStore(selectUpdateXAxisType)
-  const updateXAxisDomainMin = useXAxisOptionStore(selectUpdateXAxisDomainMin)
-  const updateXAxisDomainMax = useXAxisOptionStore(selectUpdateXAxisDomainMax)
-  const updateXAxisAxisLine = useXAxisOptionStore(selectUpdateXAxisAxisLine)
-  const updateXAxisTickCount = useXAxisOptionStore(selectUpdateXAxisTickCount)
-  const updateXAxisTickAngle = useXAxisOptionStore(selectUpdateXAxisTickAngle)
-  const updateXAxisTickSzie = useXAxisOptionStore(selectUpdateXAxisTickSize)
-  const updateXAxisTickLine = useXAxisOptionStore(selectUpdateXAxisTickLine)
+  const xAxisDataKey = useXAxisOptionStore.use.xAxisDataKey()
+  const xAxisVisibility = useXAxisOptionStore.use.xAxisVisibility()
+  const xAxisType = useXAxisOptionStore.use.xAxisType()
+  const xAxisDomainMin = useXAxisOptionStore.use.xAxisDomainMin()
+  const xAxisDomainMax = useXAxisOptionStore.use.xAxisDomainMax()
+  const xAxisAxisLine = useXAxisOptionStore.use.xAxisAxisLine()
+  const xAxisTickCount = useXAxisOptionStore.use.xAxisTickCount()
+  const xAxisTickAngle = useXAxisOptionStore.use.xAxisTickAngle()
+  const xAxisTickSize = useXAxisOptionStore.use.xAxisTickSize()
+  const xAxisTickLine = useXAxisOptionStore.use.xAxisTickLine()
+  const updateXAxisDataKey = useXAxisOptionStore.use.updateXAxisDataKey()
+  const updateXAxisVisibility = useXAxisOptionStore.use.updateXAxisVisibility()
+  const updateXAxisType = useXAxisOptionStore.use.updateXAxisType()
+  const updateXAxisDomainMin = useXAxisOptionStore.use.updateXAxisDomainMin()
+  const updateXAxisDomainMax = useXAxisOptionStore.use.updateXAxisDomainMax()
+  const updateXAxisAxisLine = useXAxisOptionStore.use.updateXAxisAxisLine()
+  const updateXAxisTickCount = useXAxisOptionStore.use.updateXAxisTickCount()
+  const updateXAxisTickAngle = useXAxisOptionStore.use.updateXAxisTickAngle()
+  const updateXAxisTickSize = useXAxisOptionStore.use.updateXAxisTickSize()
+  const updateXAxisTickLine = useXAxisOptionStore.use.updateXAxisTickLine()
   return (
     <div className="space-y-2 pl-2 pr-1">
       <FormField htmlFor="x-axis-visibility" label="Visibility">
@@ -103,7 +83,7 @@ function SelectionAxisOption (): JSX.Element {
           value={xAxisType}
         >
           <SelectTrigger id="x-axis-type">
-            <SelectValue defaultValue="category"></SelectValue>
+            <SelectValue></SelectValue>
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="category">category</SelectItem>
@@ -205,7 +185,7 @@ function SelectionAxisOption (): JSX.Element {
             value={xAxisTickSize}
             onInput={(e) => {
               if (!isNaN(+e.currentTarget.value) && typeof +e.currentTarget.value === 'number') {
-                updateXAxisTickSzie(+e.currentTarget.value)
+                updateXAxisTickSize(+e.currentTarget.value)
               }
             }}
           />

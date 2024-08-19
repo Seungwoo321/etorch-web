@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import createSelectors from '../createSelectors'
 
 export interface PanelOptionStore {
   // Panel options
@@ -10,7 +11,7 @@ export interface PanelOptionStore {
   updateIsTransparentBackground: (isTransparentBackground: boolean) => void
 }
 
-export const usePanelOptionStore = create<PanelOptionStore>(set => ({
+export const usePanelOptionStoreBase = create<PanelOptionStore>(set => ({
   title: 'Title',
   description: 'description',
   isTransparentBackground: false,
@@ -18,5 +19,7 @@ export const usePanelOptionStore = create<PanelOptionStore>(set => ({
   updateDescription: description => { set(() => ({ description })) },
   updateIsTransparentBackground: isTransparentBackground => { set(() => ({ isTransparentBackground })) }
 }))
+
+export const usePanelOptionStore = createSelectors(usePanelOptionStoreBase)
 
 export default usePanelOptionStore

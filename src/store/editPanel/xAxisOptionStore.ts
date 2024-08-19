@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import createSelectors from '../createSelectors'
 
 export interface XAxisOptionStore {
   xAxisDataKey: string
@@ -25,7 +26,7 @@ export interface XAxisOptionStore {
   updateXAxisColor: (xAxisColor: string) => void
 }
 
-export const useXAxisOptionStore = create<XAxisOptionStore>(set => ({
+export const useXAxisOptionStoreBase = create<XAxisOptionStore>(set => ({
   xAxisDataKey: 'date',
   xAxisVisibility: true,
   xAxisType: 'category',
@@ -49,5 +50,7 @@ export const useXAxisOptionStore = create<XAxisOptionStore>(set => ({
   updateXAxisTickLine: xAxisTickLine => { set(() => ({ xAxisTickLine })) },
   updateXAxisColor: xAxisColor => { set(() => ({ xAxisColor })) }
 }))
+
+export const useXAxisOptionStore = createSelectors(useXAxisOptionStoreBase)
 
 export default useXAxisOptionStore

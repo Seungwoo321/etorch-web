@@ -1,5 +1,6 @@
 import { type Indicator, type DataPanelItem, type DataValue } from '@/models'
 import { create } from 'zustand'
+import createSelectors from '../createSelectors'
 
 type CombineData = Record<string, DataValue>
 const combineDataByFrequency = (panels: DataPanelItem[], frequency: string): DataValue[] => {
@@ -33,7 +34,7 @@ export interface DataOptionStore {
   removePanelItem: (id: number) => void
 }
 
-export const useDataOptionStore = create<DataOptionStore>(set => ({
+export const useDataOptionStoreBase = create<DataOptionStore>(set => ({
   chartData: [],
   frequency: '',
   panels: [],
@@ -68,5 +69,7 @@ export const useDataOptionStore = create<DataOptionStore>(set => ({
   },
   removePanelItem: (id) => { set(state => ({ panels: state.panels.filter(panel => panel.id !== id) })) }
 }))
+
+export const useDataOptionStore = createSelectors(useDataOptionStoreBase)
 
 export default useDataOptionStore

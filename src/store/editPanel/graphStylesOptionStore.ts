@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import createSelectors from '../createSelectors'
 
 export interface GraphStylesOptionStore {
   // Graph styles
@@ -15,7 +16,7 @@ export interface GraphStylesOptionStore {
   // -> Point
 }
 
-export const useGraphStylesOptionStore = create<GraphStylesOptionStore>(set => ({
+export const useGraphStylesOptionStoreBase = create<GraphStylesOptionStore>(set => ({
   graphStyle: 'Line',
   updateGraphStyle: graphStyle => { set(() => ({ graphStyle })) },
 
@@ -24,5 +25,7 @@ export const useGraphStylesOptionStore = create<GraphStylesOptionStore>(set => (
   fillOpacity: 35,
   updateFillOpacity: fillOpacity => { set(() => ({ fillOpacity })) }
 }))
+
+export const useGraphStylesOptionStore = createSelectors(useGraphStylesOptionStoreBase)
 
 export default useGraphStylesOptionStore

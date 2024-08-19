@@ -16,15 +16,6 @@ import { type Indicator } from '@/models/'
 import { useDataOptionStore, useYAxisOptionStore } from '@/store/editPanel'
 import {
   selectPanelById,
-  selectFrequency,
-  selectIndicators,
-  selectSetFrequency,
-  selectUpdatePanelItem,
-  selectRemovePanelItem,
-  selectCreateIndicators,
-  selectSetChartData,
-  selectYAxisDataKey,
-  selectUpdateYAxisDataKey,
   selectUniqueDataKeys
 } from '@/store/editPanel/selector'
 import {
@@ -41,17 +32,17 @@ interface DataPanelOptionsProps {
 function DataPanelOptions ({ id }: DataPanelOptionsProps): JSX.Element | null {
   const uniqueDataKeys = useDataOptionStore(selectUniqueDataKeys)
   const panel = useDataOptionStore(selectPanelById(id))
-  const frequency = useDataOptionStore(selectFrequency)
-  const setChartData = useDataOptionStore(selectSetChartData)
-  const setFrequency = useDataOptionStore(selectSetFrequency)
-  const updatePanelItem = useDataOptionStore(selectUpdatePanelItem)
-  const removePanelItem = useDataOptionStore(selectRemovePanelItem)
-  const createIndicators = useDataOptionStore(selectCreateIndicators)
-  const indicatorList = useDataOptionStore(selectIndicators)
-  const yAxisDataKey = useYAxisOptionStore(selectYAxisDataKey)
-  const updateYAxisDataKey = useYAxisOptionStore(selectUpdateYAxisDataKey)
+  const frequency = useDataOptionStore.use.frequency()
+  const setChartData = useDataOptionStore.use.setChartData()
+  const setFrequency = useDataOptionStore.use.setFrequency()
+  const updatePanelItem = useDataOptionStore.use.updatePanelItem()
+  const removePanelItem = useDataOptionStore.use.removePanelItem()
+  const createIndicators = useDataOptionStore.use.createIndicators()
+  const indicators = useDataOptionStore.use.indicators()
+  const yAxisDataKey = useYAxisOptionStore.use.yAxisDataKey()
+  const updateYAxisDataKey = useYAxisOptionStore.use.updateYAxisDataKey()
   const [loadingStatus, setLoadingStatus] = useState<boolean>(false)
-  const [indicator, setIndicator] = useState<Indicator | undefined>((panel != null && panel?.dataSource !== '') ? indicatorList[panel.dataSource].find(indicator => indicator.code === panel.indicatorCode) : undefined)
+  const [indicator, setIndicator] = useState<Indicator | undefined>((panel != null && panel?.dataSource !== '') ? indicators[panel.dataSource].find(indicator => indicator.code === panel.indicatorCode) : undefined)
 
   const handleCollapsibleChange = useCallback(
     (value: boolean) => {
@@ -79,7 +70,7 @@ function DataPanelOptions ({ id }: DataPanelOptionsProps): JSX.Element | null {
         setChartData()
         updateYAxisDataKey(uniqueDataKeys.filter(key => (key !== 'date' && key !== panel.indicatorCode) || key === yAxisDataKey)[0] ?? '')
         // api call
-        if (indicatorList[value].length === 0) {
+        if (indicators[value].length === 0) {
           setLoadingStatus(true)
           getIndicators(value).then(data => {
             createIndicators(value, data.indicators)
@@ -88,13 +79,13 @@ function DataPanelOptions ({ id }: DataPanelOptionsProps): JSX.Element | null {
         }
       }
     },
-    [createIndicators, id, indicatorList, panel, updatePanelItem]
+    [createIndicators, id, indicators, panel, updatePanelItem]
   )
 
   const handleindicatorCodeChange = useCallback(
     (value: string) => {
       if (panel != null) {
-        const indicator = indicatorList[panel.dataSource].find(indicator => indicator.code === value)
+        const indicator = indicators[panel.dataSource].find(indicator => indicator.code === value)
         updatePanelItem(id, {
           ...panel,
           indicatorCode: value,
@@ -107,7 +98,7 @@ function DataPanelOptions ({ id }: DataPanelOptionsProps): JSX.Element | null {
         updateYAxisDataKey(uniqueDataKeys.filter(key => (key !== 'date' && key !== panel.indicatorCode) || key === yAxisDataKey)[0] ?? '')
       }
     },
-    [id, indicatorList, panel, updatePanelItem]
+    [id, indicators, panel, updatePanelItem]
   )
 
   const handleFrequencyChange = useCallback(
@@ -141,7 +132,7 @@ function DataPanelOptions ({ id }: DataPanelOptionsProps): JSX.Element | null {
           data: data.data
         })
         setChartData()
-        let yKey = panel.indicatorCode
+        const yKey = panel.indicatorCode
         if (yAxisDataKey === '' || frequency !== panel.frequency || !uniqueDataKeys.includes(yAxisDataKey)) {
           updateYAxisDataKey(yKey)
         }
@@ -225,7 +216,7 @@ function DataPanelOptions ({ id }: DataPanelOptionsProps): JSX.Element | null {
                           ? (<span className="ml-2">
                               loading...
                             </span>)
-                          : indicatorList[panel.dataSource]?.map(indicator => (
+                          : indicators[panel.dataSource]?.map(indicator => (
                           <SelectItem
                             key={indicator.code}
                             value={indicator.code}
