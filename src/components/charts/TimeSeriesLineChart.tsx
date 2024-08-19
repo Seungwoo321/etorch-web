@@ -148,7 +148,7 @@ function LineChartContainer (): JSX.Element {
             type="monotone"
             dataKey={panel.indicatorCode}
             stroke={'rgb(115, 191, 105)'}
-            yAxisId={1}
+            yAxisId={panel.indicatorCode === yAxisSecondaryDataKey ? 2 : 1}
           />
         ))}
         {/* {panelsData.map((panel) => (

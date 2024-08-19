@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { useDataOptionStore, useYAxisSecondaryOptionStore } from '@/store/editPanel'
+import { useDataOptionStore, useYAxisOptionStore, useYAxisSecondaryOptionStore } from '@/store/editPanel'
 import {
   selectUniqueDataKeys
 } from '@/store/editPanel/selector'
@@ -15,6 +15,7 @@ import FormField from '../shared/FormField'
 
 function SelectionYAxisSecondaryOption (): JSX.Element {
   const uniqueDataKey = useDataOptionStore(selectUniqueDataKeys)
+  const yAxisDataKey = useYAxisOptionStore.use.yAxisDataKey()
   const yAxisSecondaryDataKey = useYAxisSecondaryOptionStore.use.yAxisSecondaryDataKey()
   const yAxisSecondaryVisibility = useYAxisSecondaryOptionStore.use.yAxisSecondaryVisibility()
   const yAxisSecondaryType = useYAxisSecondaryOptionStore.use.yAxisSecondaryType()
@@ -39,14 +40,23 @@ function SelectionYAxisSecondaryOption (): JSX.Element {
         <Switch
           id="y-axis-secondary-visibility"
           checked={yAxisSecondaryVisibility}
-          onCheckedChange={updateYAxisSecondaryVisibility}
+          onCheckedChange={(value) => {
+            if (!value) {
+              updateYAxisSecondaryDataKey('')
+            }
+
+            updateYAxisSecondaryVisibility(value)
+          }}
         />
       </FormField>
 
       <FormField htmlFor="y-axis-secondary-data-key" label="Data key">
         <div className="flex gap-1.5">
           <Select
-            onValueChange={updateYAxisSecondaryDataKey}
+            onValueChange={(value) => {
+              if (value === yAxisDataKey) return
+              updateYAxisSecondaryDataKey(value)
+            }}
             value={yAxisSecondaryDataKey}
           >
             <SelectTrigger id="y-axis-secondary-data-key">
