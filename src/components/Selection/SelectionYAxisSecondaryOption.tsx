@@ -35,21 +35,21 @@ function SelectionYAxisSecondaryOption (): JSX.Element {
   const updateYAxisSecondaryTickLine = useYAxisSecondaryOptionStore.use.updateYAxisSecondaryTickLine()
   return (
     <div className="space-y-2 pl-2 pr-1">
-      <FormField htmlFor="y-axis-visibility" label="Visibility">
+      <FormField htmlFor="y-axis-secondary-visibility" label="Visibility">
         <Switch
-          id="y-axis-visibility"
+          id="y-axis-secondary-visibility"
           checked={yAxisSecondaryVisibility}
           onCheckedChange={updateYAxisSecondaryVisibility}
         />
       </FormField>
 
-      <FormField htmlFor="y-axis-data-key" label="Data key">
+      <FormField htmlFor="y-axis-secondary-data-key" label="Data key">
         <div className="flex gap-1.5">
           <Select
             onValueChange={updateYAxisSecondaryDataKey}
             value={yAxisSecondaryDataKey}
           >
-            <SelectTrigger id="y-axis-data-key">
+            <SelectTrigger id="y-axis-secondary-data-key">
               <SelectValue>
                 {(uniqueDataKey.length > 0) ? yAxisSecondaryDataKey : 'Not selectable'}
               </SelectValue>
@@ -67,7 +67,7 @@ function SelectionYAxisSecondaryOption (): JSX.Element {
         </div>
       </FormField>
 
-      <FormField htmlFor="y-axis-type" label="Type">
+      <FormField htmlFor="y-axis-secondary-type" label="Type">
         <Select
           onValueChange={(value) => {
             if (value === 'category' || value === 'number') {
@@ -80,7 +80,7 @@ function SelectionYAxisSecondaryOption (): JSX.Element {
           }}
           value={yAxisSecondaryType}
         >
-          <SelectTrigger id="y-axis-type">
+          <SelectTrigger id="y-axis-secondary-type">
             <SelectValue defaultValue="category"></SelectValue>
           </SelectTrigger>
           <SelectContent>
@@ -92,9 +92,9 @@ function SelectionYAxisSecondaryOption (): JSX.Element {
 
       {yAxisSecondaryType === 'number' && (
         <>
-          <FormField htmlFor="y-axis-domain-min" label="Min">
+          <FormField htmlFor="y-axis-secondary-domain-min" label="Min">
             <Input
-              id="y-axis-domain-min"
+              id="y-axis-secondary-domain-min"
               type="text"
               className="sm"
               value={yAxisSecondaryDomainMin}
@@ -108,9 +108,9 @@ function SelectionYAxisSecondaryOption (): JSX.Element {
             />
           </FormField>
 
-          <FormField htmlFor="y-axis-domain-max" label="Max">
+          <FormField htmlFor="y-axis-secondary-domain-max" label="Max">
             <Input
-              id="y-axis-domain-max"
+              id="y-axis-secondary-domain-max"
               type="text"
               className="sm"
               value={yAxisSecondaryDomainMax}
@@ -126,17 +126,17 @@ function SelectionYAxisSecondaryOption (): JSX.Element {
         </>
       )}
 
-      <FormField htmlFor="y-axis-axis-line" label="Show Axis">
+      <FormField htmlFor="y-axis-secondary-axis-line" label="Show Axis">
         <Switch
-          id="y-axis-axis-line"
+          id="y-axis-secondary-axis-line"
           checked={yAxisSecondaryAxisLine}
           onCheckedChange={updateYAxisSecondaryAxisLine}
         />
       </FormField>
       {yAxisSecondaryType === 'number' && (
-        <FormField htmlFor="y-axis-tick-count" label="Tick Count">
+        <FormField htmlFor="y-axis-secondary-tick-count" label="Tick Count">
           <Input
-            id="y-axis-tick-count"
+            id="y-axis-secondary-tick-count"
             type="number"
             min={2}
             className="sm"
@@ -149,17 +149,17 @@ function SelectionYAxisSecondaryOption (): JSX.Element {
           />
         </FormField>
       )}
-      <FormField htmlFor="y-axis-tick-line" label="Show Tick">
+      <FormField htmlFor="y-axis-secondary-tick-line" label="Show Tick">
         <Switch
-          id="y-axis-tick-line"
+          id="y-axis-secondary-tick-line"
           checked={yAxisSecondaryTickLine}
           onCheckedChange={updateYAxisSecondaryTickLine}
         />
       </FormField>
       {yAxisSecondaryTickLine && (
-        <FormField htmlFor="y-axis-tick-size" label="Tick Size">
+        <FormField htmlFor="y-axis-secondary-tick-size" label="Tick Size">
           <Input
-            id="y-axis-tick-size"
+            id="y-axis-secondary-tick-size"
             type="nuumber"
             max={10}
             className="sm"
