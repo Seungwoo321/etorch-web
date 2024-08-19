@@ -72,7 +72,7 @@ function SelectionAxisOption (): JSX.Element {
             value={xAxisDataKey}
           >
             <SelectTrigger id="x-axis-data-key">
-              <SelectValue defaultValue={xAxisDataKey}>
+              <SelectValue>
                 {(uniqueDataKey.length > 0) ? xAxisDataKey : 'Not selectable'}
               </SelectValue>
             </SelectTrigger>

@@ -68,7 +68,7 @@ function SelectionYAxisOption (): JSX.Element {
             value={yAxisDataKey}
           >
             <SelectTrigger id="y-axis-data-key">
-              <SelectValue defaultValue={yAxisDataKey}>
+              <SelectValue>
                 {(uniqueDataKey.length > 0) ? yAxisDataKey : 'Not selectable'}
               </SelectValue>
             </SelectTrigger>
@@ -186,7 +186,6 @@ function SelectionYAxisOption (): JSX.Element {
               if (!isNaN(+e.currentTarget.value) && typeof +e.currentTarget.value === 'number') {
                 updateYAxisTickSzie(+e.currentTarget.value)
               }
-              
             }}
           />
         </FormField>

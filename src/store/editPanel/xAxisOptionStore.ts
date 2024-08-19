@@ -4,7 +4,7 @@ export interface XAxisOptionStore {
   xAxisDataKey: string
   xAxisVisibility: boolean
   xAxisType: 'number' | 'category' | undefined
-  xAxisTickCount: number,
+  xAxisTickCount: number
   xAxisTickSize: number
   xAxisTickAngle: number
   xAxisDomainMin: number | 'auto'
@@ -39,7 +39,7 @@ export const useXAxisOptionStore = create<XAxisOptionStore>(set => ({
   xAxisColor: 'hsl(var(--muted-foreground))',
   updateXAxisDataKey: xAxisDataKey => { set(() => ({ xAxisDataKey })) },
   updateXAxisVisibility: xAxisVisibility => { set(() => ({ xAxisVisibility })) },
-  updateXAxisTickCount: xAxisTickCount => { set(() => ({ xAxisTickCount }))},
+  updateXAxisTickCount: xAxisTickCount => { set(() => ({ xAxisTickCount })) },
   updateXAxisType: xAxisType => { set(() => ({ xAxisType })) },
   updateXAxisTickSize: xAxisTickSize => { set(() => ({ xAxisTickSize })) },
   updateXAxisTickAngle: xAxisTickAngle => { set(() => ({ xAxisTickAngle })) },

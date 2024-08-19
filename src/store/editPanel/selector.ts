@@ -1,4 +1,4 @@
-import { DataValue } from '@/models'
+import { type DataValue } from '@/models'
 import {
   type YAxisOptionStore,
   type XAxisOptionStore,

@@ -1,7 +1,6 @@
 import { create } from 'zustand'
 
 export interface YAxisOptionStore {
-  
   yAxisDataKey: string
   yAxisVisibility: boolean
   yAxisType: 'number' | 'category' | undefined
@@ -38,7 +37,7 @@ export const useYAxisOptionStore = create<YAxisOptionStore>(set => ({
   updateYAxisDataKey: yAxisDataKey => { set(() => ({ yAxisDataKey })) },
   updateYAxisVisibility: yAxisVisibility => { set(() => ({ yAxisVisibility })) },
   updateYAxisType: yAxisType => { set(() => ({ yAxisType })) },
-  updateYAxisTickCount: yAxisTickCount => { set(() => ({ yAxisTickCount }))},
+  updateYAxisTickCount: yAxisTickCount => { set(() => ({ yAxisTickCount })) },
   updateYAxisTickSize: yAxisTickSize => { set(() => ({ yAxisTickSize })) },
   updateYAxisDomainMin: yAxisDomainMin => { set(() => ({ yAxisDomainMin })) },
   updateYAxisDomainMax: yAxisDomainMax => { set(() => ({ yAxisDomainMax })) },
