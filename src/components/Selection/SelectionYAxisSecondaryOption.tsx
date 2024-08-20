@@ -170,7 +170,7 @@ function SelectionYAxisSecondaryOption (): JSX.Element {
         <FormField htmlFor="y-axis-secondary-tick-size" label="Tick Size">
           <Input
             id="y-axis-secondary-tick-size"
-            type="nuumber"
+            type="number"
             max={10}
             className="sm"
             value={yAxisSecondaryTickSize}

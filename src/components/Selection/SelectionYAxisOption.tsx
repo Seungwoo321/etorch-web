@@ -168,7 +168,7 @@ function SelectionYAxisOption (): JSX.Element {
         <FormField htmlFor="y-axis-tick-size" label="Tick Size">
           <Input
             id="y-axis-tick-size"
-            type="nuumber"
+            type="number"
             max={10}
             className="sm"
             value={yAxisTickSize}

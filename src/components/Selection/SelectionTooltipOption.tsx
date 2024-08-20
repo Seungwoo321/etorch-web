@@ -53,7 +53,7 @@ function SelectionTooltipOption (): JSX.Element {
           <FormField htmlFor="tooltip-max-width" label="Max width">
             <Input
               id="tooltip-max-width"
-              type="nuumber"
+              type="number"
               className="sm"
               value={tooltiMaxWidth}
               onInput={(e) => { updateTooltipMaxWidth(+e.currentTarget.value) }}
@@ -99,7 +99,7 @@ function SelectionTooltipOption (): JSX.Element {
           <FormField htmlFor="tooltip-cursor-width" label="Cursor width">
             <Input
               id="tooltip-cursor-width"
-              type="nuumber"
+              type="number"
               max={10}
               className="sm"
               value={cursorLineStyleWidth}
