@@ -6,7 +6,6 @@ import TimeSeriesLineChart from '@/components/charts/TimeSeriesLineChart'
 import PreviewPanelHeader from './PreviewPanelHeader'
 
 function PreviewPanel (): JSX.Element {
-
   return (
     <Card className="flex flex-col h-full">
       <PreviewPanelHeader/>

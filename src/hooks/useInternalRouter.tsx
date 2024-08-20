@@ -1,6 +1,8 @@
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+type RoutePath = `/${string}`
+
 interface InternalRouterType {
   goBack: () => void
   push: (path: RoutePath) => void
@@ -24,5 +26,3 @@ export function useInternalRouter (): InternalRouterType {
     }
   }, [navigate])
 }
-
-type RoutePath = `/${string}`
