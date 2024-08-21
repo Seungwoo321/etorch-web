@@ -27,6 +27,6 @@ export interface DataPanelItem {
   dataSource: string
   indicatorCode: string
   frequency: string
-  unit?: string
+  unit: string
   data: DataValue[]
 }

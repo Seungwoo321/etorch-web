@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import createSelectors from '../createSelectors'
 
 export interface YAxisOptionStore {
+  yAxisUnit: string
   yAxisDataKey: string
   yAxisVisibility: boolean
   yAxisType: 'number' | 'category' | undefined
@@ -12,6 +13,7 @@ export interface YAxisOptionStore {
   yAxisAxisLine: boolean
   yAxisTickLine: boolean
   yAxisColor: string
+  updateYAxisUnit: (yAxisUnit: string) => void
   updateYAxisDataKey: (yAxisDataKey: string) => void
   updateYAxisVisibility: (yAxisVisibility: boolean) => void
   updateYAxisType: (yAxisType: 'number' | 'category' | undefined) => void
@@ -25,6 +27,7 @@ export interface YAxisOptionStore {
 }
 
 export const useYAxisOptionStoreBase = create<YAxisOptionStore>(set => ({
+  yAxisUnit: '',
   yAxisDataKey: '',
   yAxisVisibility: true,
   yAxisType: 'number',
@@ -35,6 +38,7 @@ export const useYAxisOptionStoreBase = create<YAxisOptionStore>(set => ({
   yAxisAxisLine: true,
   yAxisTickLine: true,
   yAxisColor: 'hsl(var(--muted-foreground))',
+  updateYAxisUnit: yAxisUnit => { set(() => ({ yAxisUnit })) },
   updateYAxisDataKey: yAxisDataKey => { set(() => ({ yAxisDataKey })) },
   updateYAxisVisibility: yAxisVisibility => { set(() => ({ yAxisVisibility })) },
   updateYAxisType: yAxisType => { set(() => ({ yAxisType })) },

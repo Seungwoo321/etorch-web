@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/select'
 import { useDataOptionStore, useYAxisOptionStore, useYAxisSecondaryOptionStore } from '@/store/editPanel'
 import {
+  selectPanelDataMapByUnit,
   selectUniqueDataKeys
 } from '@/store/editPanel/selector'
 import FormField from '../shared/FormField'
@@ -16,8 +17,11 @@ import FormField from '../shared/FormField'
 function SelectionYAxisOption (): JSX.Element {
   const yAxisSecondaryDataKey = useYAxisSecondaryOptionStore.use.yAxisSecondaryDataKey()
   const updateYAxisSecondaryDataKey = useYAxisSecondaryOptionStore.use.updateYAxisSecondaryDataKey()
-
+  const panelDataMapByUnit = useDataOptionStore(selectPanelDataMapByUnit)
+  const panelUnits = Object.keys(panelDataMapByUnit)
+  console.log(panelUnits)
   const uniqueDataKey = useDataOptionStore(selectUniqueDataKeys)
+  const yAxisUnit = useYAxisOptionStore.use.yAxisUnit()
   const yAxisDataKey = useYAxisOptionStore.use.yAxisDataKey()
   const yAxisVisibility = useYAxisOptionStore.use.yAxisVisibility()
   const yAxisType = useYAxisOptionStore.use.yAxisType()
@@ -27,6 +31,7 @@ function SelectionYAxisOption (): JSX.Element {
   const yAxisTickCount = useYAxisOptionStore.use.yAxisTickCount()
   const yAxisTickSize = useYAxisOptionStore.use.yAxisTickSize()
   const yAxisTickLine = useYAxisOptionStore.use.yAxisTickLine()
+  const updateYAxisUnit = useYAxisOptionStore.use.updateYAxisUnit()
   const updateYAxisDataKey = useYAxisOptionStore.use.updateYAxisDataKey()
   const updateYAxisVisibility = useYAxisOptionStore.use.updateYAxisVisibility()
   const updateYAxisType = useYAxisOptionStore.use.updateYAxisType()
@@ -46,6 +51,33 @@ function SelectionYAxisOption (): JSX.Element {
         />
       </FormField>
 
+      <FormField htmlFor="y-axis-unit" label="Unit">
+        <div className="flex gap-1.5">
+          <Select
+            onValueChange={(value) => {
+              updateYAxisUnit(value)
+              updateYAxisDataKey(panelDataMapByUnit[value][0].indicatorCode)
+            }}
+            value={yAxisUnit}
+          >
+            <SelectTrigger id="y-axis-unit">
+              <SelectValue>
+                { yAxisUnit === '' ? 'Not selectable' : yAxisUnit}
+              </SelectValue>
+            </SelectTrigger>
+            <SelectContent>
+              {panelUnits.map(unit => (
+                <SelectItem
+                  key={unit}
+                  value={unit}>
+                  {unit}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </FormField>
+
       <FormField htmlFor="y-axis-data-key" label="Data key">
         <div className="flex gap-1.5">
           <Select
@@ -63,11 +95,11 @@ function SelectionYAxisOption (): JSX.Element {
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
-              {uniqueDataKey.map(key => (
+              {yAxisUnit && panelDataMapByUnit[yAxisUnit].map(panel => (
                 <SelectItem
-                  key={key}
-                  value={key}>
-                  {key}
+                  key={panel.id}
+                  value={panel.indicatorCode}>
+                  {panel.indicatorCode}
                 </SelectItem>
               ))}
             </SelectContent>

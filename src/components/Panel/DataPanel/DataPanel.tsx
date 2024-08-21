@@ -30,6 +30,7 @@ function DataPanel (): JSX.Element {
       dataSource: '',
       indicatorCode: '',
       frequency: '',
+      unit: '',
       data: []
     })
   }, [panelIds])

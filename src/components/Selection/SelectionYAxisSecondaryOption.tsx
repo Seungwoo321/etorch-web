@@ -42,10 +42,10 @@ function SelectionYAxisSecondaryOption (): JSX.Element {
           checked={yAxisSecondaryVisibility}
           onCheckedChange={(value) => {
             if (!value) {
-              updateYAxisSecondaryDataKey('')
+              // updateYAxisSecondaryDataKey('')
             }
 
-            updateYAxisSecondaryVisibility(value)
+            // updateYAxisSecondaryVisibility(value)
           }}
         />
       </FormField>
@@ -55,7 +55,7 @@ function SelectionYAxisSecondaryOption (): JSX.Element {
           <Select
             onValueChange={(value) => {
               if (value === yAxisDataKey) return
-              updateYAxisSecondaryDataKey(value)
+              // updateYAxisSecondaryDataKey(value)
             }}
             value={yAxisSecondaryDataKey}
           >

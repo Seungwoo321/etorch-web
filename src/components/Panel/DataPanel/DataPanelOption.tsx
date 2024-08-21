@@ -15,6 +15,7 @@ import { getIndicatorValues, getIndicators } from '@/lib/api'
 import { type Indicator } from '@/models/'
 import { useDataOptionStore, useYAxisOptionStore } from '@/store/editPanel'
 import {
+  selectPanelsDataByUnit,
   selectPanelById,
   selectUniqueDataKeys
 } from '@/store/editPanel/selector'
@@ -40,7 +41,11 @@ function DataPanelOptions ({ id }: DataPanelOptionsProps): JSX.Element | null {
   const createIndicators = useDataOptionStore.use.createIndicators()
   const indicators = useDataOptionStore.use.indicators()
   const yAxisDataKey = useYAxisOptionStore.use.yAxisDataKey()
+  const yAxisUnit = useYAxisOptionStore.use.yAxisUnit()
+  const updateYAxisUnit = useYAxisOptionStore.use.updateYAxisUnit()
   const updateYAxisDataKey = useYAxisOptionStore.use.updateYAxisDataKey()
+  const panelsDataByUnit = useDataOptionStore(selectPanelsDataByUnit(yAxisUnit))
+
   const [loadingStatus, setLoadingStatus] = useState<boolean>(false)
   const [indicator, setIndicator] = useState<Indicator | undefined>((panel != null && panel?.dataSource !== '') ? indicators[panel.dataSource].find(indicator => indicator.code === panel.indicatorCode) : undefined)
 
@@ -68,7 +73,7 @@ function DataPanelOptions ({ id }: DataPanelOptionsProps): JSX.Element | null {
           data: []
         })
         setChartData()
-        updateYAxisDataKey(uniqueDataKeys.filter(key => (key !== 'date' && key !== panel.indicatorCode) || key === yAxisDataKey)[0] ?? '')
+        // updateYAxisDataKey(uniqueDataKeys.filter(key => (key !== 'date' && key !== panel.indicatorCode) || key === yAxisDataKey)[0] ?? '')
         // api call
         if (indicators[value].length === 0) {
           setLoadingStatus(true)
@@ -89,13 +94,13 @@ function DataPanelOptions ({ id }: DataPanelOptionsProps): JSX.Element | null {
         updatePanelItem(id, {
           ...panel,
           indicatorCode: value,
-          unit: indicator?.unit_en,
+          unit: indicator?.unit_en ?? '',
           frequency: '',
           data: []
         })
         setIndicator(indicator)
         setChartData()
-        updateYAxisDataKey(uniqueDataKeys.filter(key => (key !== 'date' && key !== panel.indicatorCode) || key === yAxisDataKey)[0] ?? '')
+        // updateYAxisDataKey(uniqueDataKeys.filter(key => (key !== 'date' && key !== panel.indicatorCode) || key === yAxisDataKey)[0] ?? '')
       }
     },
     [id, indicators, panel, updatePanelItem]
@@ -110,7 +115,7 @@ function DataPanelOptions ({ id }: DataPanelOptionsProps): JSX.Element | null {
           data: []
         })
         setChartData()
-        updateYAxisDataKey(uniqueDataKeys.filter(key => (key !== 'date' && key !== panel.indicatorCode) || key === yAxisDataKey)[0] ?? '')
+        // updateYAxisDataKey(uniqueDataKeys.filter(key => (key !== 'date' && key !== panel.indicatorCode) || key === yAxisDataKey)[0] ?? '')
       }
     },
     [id, panel, updatePanelItem]
@@ -132,9 +137,9 @@ function DataPanelOptions ({ id }: DataPanelOptionsProps): JSX.Element | null {
           data: data.data
         })
         setChartData()
-        const yKey = panel.indicatorCode
-        if (yAxisDataKey === '' || frequency !== panel.frequency || !uniqueDataKeys.includes(yAxisDataKey)) {
-          updateYAxisDataKey(yKey)
+        if (!panelsDataByUnit.length) {
+          updateYAxisUnit(panel.unit)
+          updateYAxisDataKey(panel.indicatorCode)
         }
       }).catch(console.error)
     }
@@ -158,7 +163,7 @@ function DataPanelOptions ({ id }: DataPanelOptionsProps): JSX.Element | null {
               </div>
             </CollapsibleTrigger>
             {panel?.dataSource.length > 0 && indicator?.name != null
-              ? `${indicator?.name} - ${panel?.dataSource.toUpperCase()}:${panel.indicatorCode}:${panel.frequency}:${panel.unit}`
+              ? `${indicator?.name}(${panel.unit}) - ${panel?.dataSource}:${panel.indicatorCode}:${panel.frequency}`
               : null
             }
           </CardTitle>
@@ -168,7 +173,7 @@ function DataPanelOptions ({ id }: DataPanelOptionsProps): JSX.Element | null {
             <Trash2 className="cursor-pointer" style={{ margin: 0 }} size={14} onClick={() => {
               removePanelItem(id)
               setChartData()
-              updateYAxisDataKey(uniqueDataKeys.filter(key => key !== 'date' && key !== panel.indicatorCode)[0] ?? '')
+              // updateYAxisDataKey(uniqueDataKeys.filter(key => key !== 'date' && key !== panel.indicatorCode)[0] ?? '')
             }} />
           </div>
 
