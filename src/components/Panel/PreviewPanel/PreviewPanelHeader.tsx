@@ -10,7 +10,7 @@ import {
 function PreviewPanelHeader (): JSX.Element | null {
   const title = usePanelOptionStore.use.title()
   const description = usePanelOptionStore.use.description()
-  if (title !== '') return null
+  if (title === '') return null
   return (
     <CardHeader className="flex">
       <CardTitle>

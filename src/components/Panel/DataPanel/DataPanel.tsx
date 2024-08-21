@@ -19,6 +19,7 @@ import {
 } from '@/store/editPanel/selector'
 import { useCallback } from 'react'
 import { useShallow } from 'zustand/react/shallow'
+import DataPanelDataMapping from './DataPanelDataMapping'
 function DataPanel (): JSX.Element {
   const panelIds = useDataOptionStore(useShallow(selectPanelIds))
   const addPanelItem = useDataOptionStore.use.addPanelItem()
@@ -44,7 +45,7 @@ function DataPanel (): JSX.Element {
             {panelIds.length}
           </Badge>
         </TabsTrigger>
-        <TabsTrigger value="table">Table</TabsTrigger>
+        <TabsTrigger value="data-mapping">Data mapping</TabsTrigger>
       </TabsList>
       <ScrollArea className="h-min-0 rounded-xl">
         <TabsContent value="query" className="space-y-4">
@@ -64,6 +65,9 @@ function DataPanel (): JSX.Element {
             <Plus className="mr-2"/>
             Add Query
           </Button>
+        </TabsContent>
+        <TabsContent value="data-mapping">
+          <DataPanelDataMapping/>
         </TabsContent>
       </ScrollArea>
     </Tabs>

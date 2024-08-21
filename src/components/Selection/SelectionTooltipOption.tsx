@@ -34,7 +34,7 @@ function SelectionTooltipOption (): JSX.Element {
           variant="outline"
           value={tooltipMode}
           onValueChange={(value: string | undefined) => {
-            if (value != null) updateTooltipMode(value)
+            if (value != null && value !== '') updateTooltipMode(value)
           }}
         >
           <ToggleGroupItem value="default" aria-label="Toggle default">
@@ -67,7 +67,7 @@ function SelectionTooltipOption (): JSX.Element {
                 variant="outline"
                 value={cursorLineStyle}
                 onValueChange={(value: string | undefined) => {
-                  if (value != null) updateCursorLineStyle(value)
+                  if (value != null && value !== '') updateCursorLineStyle(value)
                 }}
               >
                 <ToggleGroupItem value="solid" aria-label="Toggle solid">

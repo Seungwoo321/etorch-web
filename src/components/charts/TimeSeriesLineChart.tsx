@@ -225,7 +225,7 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload, label }:
   const maxWidth = useTooltipOptionStore.use.tooltiMaxWidth()
   if (active === true && payload?.length != null) {
     return (
-      <div className={`flex flex-col bg-background border-[1px] border-solid border-[rgba(204, 204, 220, 0.2)] w-[${maxWidth}px] overflow-hidden`}>
+      <div className="flex flex-col bg-background border-[1px] border-solid border-[rgba(204, 204, 220, 0.2)] overflow-hidden" style={{ width: `${maxWidth}px` }}>
         <div className="flex flex-col flex-1 p-2">
           <div className="flex items-center">
             <div className="text-ellipsis overflow-hidden cursor-pointer">
