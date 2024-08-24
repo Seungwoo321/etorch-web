@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import createSelectors from '../createSelectors'
 
 export interface YAxisSecondaryOptionStore {
+  yAxisSecondaryUnit: string
   yAxisSecondaryDataKey: string
   yAxisSecondaryVisibility: boolean
   yAxisSecondaryType: 'number' | 'category' | undefined
@@ -12,6 +13,7 @@ export interface YAxisSecondaryOptionStore {
   yAxisSecondaryAxisLine: boolean
   yAxisSecondaryTickLine: boolean
   yAxisSecondaryColor: string
+  updateYAxisSecondaryUnit: (yAxisUnit: string) => void
   updateYAxisSecondaryDataKey: (yAxisDataKey: string) => void
   updateYAxisSecondaryVisibility: (yAxisVisibility: boolean) => void
   updateYAxisSecondaryType: (yAxisType: 'number' | 'category' | undefined) => void
@@ -25,6 +27,7 @@ export interface YAxisSecondaryOptionStore {
 }
 
 export const useYAxisSecondaryOptionStoreBase = create<YAxisSecondaryOptionStore>(set => ({
+  yAxisSecondaryUnit: '',
   yAxisSecondaryDataKey: '',
   yAxisSecondaryVisibility: false,
   yAxisSecondaryType: 'number',
@@ -35,6 +38,7 @@ export const useYAxisSecondaryOptionStoreBase = create<YAxisSecondaryOptionStore
   yAxisSecondaryAxisLine: true,
   yAxisSecondaryTickLine: true,
   yAxisSecondaryColor: 'hsl(var(--muted-foreground))',
+  updateYAxisSecondaryUnit: yAxisSecondaryUnit => { set(() => ({ yAxisSecondaryUnit })) },
   updateYAxisSecondaryDataKey: yAxisSecondaryDataKey => { set(() => ({ yAxisSecondaryDataKey })) },
   updateYAxisSecondaryVisibility: yAxisSecondaryVisibility => { set(() => ({ yAxisSecondaryVisibility })) },
   updateYAxisSecondaryType: yAxisSecondaryType => { set(() => ({ yAxisSecondaryType })) },

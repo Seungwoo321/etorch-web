@@ -13,11 +13,13 @@ import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { getIndicatorValues, getIndicators } from '@/lib/api'
 import { type Indicator } from '@/models/'
-import { useDataOptionStore, useYAxisOptionStore } from '@/store/editPanel'
+import {
+  useDataOptionStore,
+  useYAxisOptionStore
+} from '@/store/editPanel'
 import {
   selectPanelsDataByUnit,
-  selectPanelById,
-  selectUniqueDataKeys
+  selectPanelById
 } from '@/store/editPanel/selector'
 import {
   RefreshCcwIcon,
@@ -31,7 +33,6 @@ interface DataPanelOptionsProps {
 }
 
 function DataPanelOptions ({ id }: DataPanelOptionsProps): JSX.Element | null {
-  const uniqueDataKeys = useDataOptionStore(selectUniqueDataKeys)
   const panel = useDataOptionStore(selectPanelById(id))
   const frequency = useDataOptionStore.use.frequency()
   const setChartData = useDataOptionStore.use.setChartData()
@@ -40,7 +41,6 @@ function DataPanelOptions ({ id }: DataPanelOptionsProps): JSX.Element | null {
   const removePanelItem = useDataOptionStore.use.removePanelItem()
   const createIndicators = useDataOptionStore.use.createIndicators()
   const indicators = useDataOptionStore.use.indicators()
-  const yAxisDataKey = useYAxisOptionStore.use.yAxisDataKey()
   const yAxisUnit = useYAxisOptionStore.use.yAxisUnit()
   const updateYAxisUnit = useYAxisOptionStore.use.updateYAxisUnit()
   const updateYAxisDataKey = useYAxisOptionStore.use.updateYAxisDataKey()
@@ -73,7 +73,7 @@ function DataPanelOptions ({ id }: DataPanelOptionsProps): JSX.Element | null {
           data: []
         })
         setChartData()
-        // updateYAxisDataKey(uniqueDataKeys.filter(key => (key !== 'date' && key !== panel.indicatorCode) || key === yAxisDataKey)[0] ?? '')
+
         // api call
         if (indicators[value].length === 0) {
           setLoadingStatus(true)
@@ -100,7 +100,6 @@ function DataPanelOptions ({ id }: DataPanelOptionsProps): JSX.Element | null {
         })
         setIndicator(indicator)
         setChartData()
-        // updateYAxisDataKey(uniqueDataKeys.filter(key => (key !== 'date' && key !== panel.indicatorCode) || key === yAxisDataKey)[0] ?? '')
       }
     },
     [id, indicators, panel, updatePanelItem]
@@ -115,7 +114,6 @@ function DataPanelOptions ({ id }: DataPanelOptionsProps): JSX.Element | null {
           data: []
         })
         setChartData()
-        // updateYAxisDataKey(uniqueDataKeys.filter(key => (key !== 'date' && key !== panel.indicatorCode) || key === yAxisDataKey)[0] ?? '')
       }
     },
     [id, panel, updatePanelItem]
@@ -137,7 +135,7 @@ function DataPanelOptions ({ id }: DataPanelOptionsProps): JSX.Element | null {
           data: data.data
         })
         setChartData()
-        if (!panelsDataByUnit.length) {
+        if (!panelsDataByUnit.length || panel.frequency !== frequency) {
           updateYAxisUnit(panel.unit)
           updateYAxisDataKey(panel.indicatorCode)
         }

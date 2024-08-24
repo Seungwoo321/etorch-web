@@ -29,8 +29,7 @@ const dataMapReducer = (acc: Record<string, DataPanelItem[]>, cur: DataPanelItem
 /** DataOptionStore */
 export const selectUniqueDataKeys = (state: DataOptionStore): string[] => state.chartData.reduce<string[]>(uniqueDataKeyReducer, [])
 export const selectPanelById = (id: number) => (state: DataOptionStore) => state.panels.find(panel => panel.id === id)
-export const selectPanelDataMapByUnit = (state: DataOptionStore) => state.panels.filter(panel => panel.unit).reduce<Record<string, DataPanelItem[]>>(dataMapReducer, {})
-export const selectDataKeysByUnit = (unit: string) => (state: DataOptionStore) => state.panels.filter(panel => panel.unit === unit)
+export const selectPanelDataMapByUnit = (state: DataOptionStore) => state.panels.filter(panel => panel.frequency === state.frequency && panel.unit).reduce<Record<string, DataPanelItem[]>>(dataMapReducer, {})
 export const selectPanelsData = (state: DataOptionStore): DataOptionStore['panels'] => state.panels.filter(panel => (panel.data.length > 0) && panel.frequency === state.frequency)
 export const selectPanelsDataByUnit = (unit: string) => (state: DataOptionStore): DataOptionStore['panels'] => state.panels.filter(panel => (panel.data.length > 0) && panel.frequency === state.frequency && panel.unit === unit)
 export const selectPanelsAllData = (state: DataOptionStore): DataOptionStore['panels'] => state.panels.filter(panel => panel.data.length)

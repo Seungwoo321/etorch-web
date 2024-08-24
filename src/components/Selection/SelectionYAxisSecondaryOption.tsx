@@ -7,15 +7,22 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { useDataOptionStore, useYAxisOptionStore, useYAxisSecondaryOptionStore } from '@/store/editPanel'
+import { 
+  useDataOptionStore,
+  useYAxisOptionStore,
+  useYAxisSecondaryOptionStore
+} from '@/store/editPanel'
 import {
-  selectUniqueDataKeys
+  selectPanelDataMapByUnit
 } from '@/store/editPanel/selector'
 import FormField from '../shared/FormField'
+import { useEffect } from 'react'
 
 function SelectionYAxisSecondaryOption (): JSX.Element {
-  const uniqueDataKey = useDataOptionStore(selectUniqueDataKeys)
-  const yAxisDataKey = useYAxisOptionStore.use.yAxisDataKey()
+  const panelDataMapByUnit = useDataOptionStore(selectPanelDataMapByUnit)
+  const panelUnits = Object.keys(panelDataMapByUnit)
+  const yAxisUnit = useYAxisOptionStore.use.yAxisUnit()
+  const yAxisSecondaryUnit = useYAxisSecondaryOptionStore.use.yAxisSecondaryUnit()
   const yAxisSecondaryDataKey = useYAxisSecondaryOptionStore.use.yAxisSecondaryDataKey()
   const yAxisSecondaryVisibility = useYAxisSecondaryOptionStore.use.yAxisSecondaryVisibility()
   const yAxisSecondaryType = useYAxisSecondaryOptionStore.use.yAxisSecondaryType()
@@ -25,6 +32,7 @@ function SelectionYAxisSecondaryOption (): JSX.Element {
   const yAxisSecondaryTickCount = useYAxisSecondaryOptionStore.use.yAxisSecondaryTickCount()
   const yAxisSecondaryTickSize = useYAxisSecondaryOptionStore.use.yAxisSecondaryTickSize()
   const yAxisSecondaryTickLine = useYAxisSecondaryOptionStore.use.yAxisSecondaryTickLine()
+  const updateYAxisSecondaryUnit = useYAxisSecondaryOptionStore.use.updateYAxisSecondaryUnit()
   const updateYAxisSecondaryDataKey = useYAxisSecondaryOptionStore.use.updateYAxisSecondaryDataKey()
   const updateYAxisSecondaryVisibility = useYAxisSecondaryOptionStore.use.updateYAxisSecondaryVisibility()
   const updateYAxisSecondaryType = useYAxisSecondaryOptionStore.use.updateYAxisSecondaryType()
@@ -34,6 +42,21 @@ function SelectionYAxisSecondaryOption (): JSX.Element {
   const updateYAxisSecondaryTickCount = useYAxisSecondaryOptionStore.use.updateYAxisSecondaryTickCount()
   const updateYAxisSecondaryTickSize = useYAxisSecondaryOptionStore.use.updateYAxisSecondaryTickSize()
   const updateYAxisSecondaryTickLine = useYAxisSecondaryOptionStore.use.updateYAxisSecondaryTickLine()
+
+  useEffect(() => {
+    if (!panelUnits.includes(yAxisSecondaryUnit)) {
+      updateYAxisSecondaryUnit('')
+      updateYAxisSecondaryDataKey('')
+    } else {
+      const panelData = panelDataMapByUnit[yAxisSecondaryUnit] || []
+      if (panelData.length) {
+        updateYAxisSecondaryDataKey(panelData[0].indicatorCode)
+      } else {
+        updateYAxisSecondaryDataKey('')
+      }
+    }
+  }, [panelDataMapByUnit])
+
   return (
     <div className="space-y-2 pl-2 pr-1">
       <FormField htmlFor="y-axis-secondary-visibility" label="Visibility">
@@ -42,146 +65,173 @@ function SelectionYAxisSecondaryOption (): JSX.Element {
           checked={yAxisSecondaryVisibility}
           onCheckedChange={(value) => {
             if (!value) {
-              // updateYAxisSecondaryDataKey('')
+              updateYAxisSecondaryUnit('')
+              updateYAxisSecondaryDataKey('')
             }
-
-            // updateYAxisSecondaryVisibility(value)
+            updateYAxisSecondaryVisibility(value)
           }}
         />
       </FormField>
+      {yAxisSecondaryVisibility && <>
+        <FormField htmlFor="y-secondary-axis-unit" label="Unit">
+          <div className="flex gap-1.5">
+            <Select
+              onValueChange={(value) => {
+                updateYAxisSecondaryUnit(value)
+                // updateYAxisSecondaryDataKey(panelDataMapByUnit[value][0].indicatorCode)
+              }}
+              value={yAxisSecondaryUnit}
+            >
+              <SelectTrigger id="y-secondary-axis-unit">
+                <SelectValue>
+                  {yAxisSecondaryUnit === '' ? 'Not selectable' : yAxisSecondaryUnit}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                {panelUnits.map(unit => (
+                  <SelectItem
+                    disabled={unit === yAxisUnit}
+                    key={unit}
+                    value={unit}>
+                    {unit}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </FormField>
 
-      <FormField htmlFor="y-axis-secondary-data-key" label="Data key">
-        <div className="flex gap-1.5">
+        <FormField htmlFor="y-axis-secondary-data-key" label="Data key">
+          <div className="flex gap-1.5">
+            <Select
+              onValueChange={updateYAxisSecondaryDataKey}
+              value={yAxisSecondaryDataKey}
+            >
+              <SelectTrigger id="y-axis-secondary-data-key">
+                <SelectValue>
+                  {yAxisSecondaryDataKey === '' ? 'Not selectable' : yAxisSecondaryDataKey}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                {yAxisSecondaryUnit && panelDataMapByUnit[yAxisSecondaryUnit]?.map(panel => (
+                  <SelectItem
+                    key={panel.id}
+                    value={panel.indicatorCode}
+                  >
+                    {panel.indicatorCode}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </FormField>
+
+        <FormField htmlFor="y-axis-secondary-type" label="Type">
           <Select
             onValueChange={(value) => {
-              if (value === yAxisDataKey) return
-              // updateYAxisSecondaryDataKey(value)
+              if (value === 'category' || value === 'number') {
+                updateYAxisSecondaryType(value)
+              }
+              if (value === 'category') {
+                updateYAxisSecondaryDomainMin(0)
+                updateYAxisSecondaryDomainMax('auto')
+              }
             }}
-            value={yAxisSecondaryDataKey}
+            value={yAxisSecondaryType}
           >
-            <SelectTrigger id="y-axis-secondary-data-key">
-              <SelectValue>
-                {(uniqueDataKey.length > 0) ? yAxisSecondaryDataKey : 'Not selectable'}
-              </SelectValue>
+            <SelectTrigger id="y-axis-secondary-type">
+              <SelectValue defaultValue="category"></SelectValue>
             </SelectTrigger>
             <SelectContent>
-              {uniqueDataKey.map(key => (
-                <SelectItem
-                  key={key}
-                  value={key}>
-                  {key}
-                </SelectItem>
-              ))}
+              <SelectItem value="category">category</SelectItem>
+              <SelectItem value="number">number</SelectItem>
             </SelectContent>
           </Select>
-        </div>
-      </FormField>
+        </FormField>
 
-      <FormField htmlFor="y-axis-secondary-type" label="Type">
-        <Select
-          onValueChange={(value) => {
-            if (value === 'category' || value === 'number') {
-              updateYAxisSecondaryType(value)
-            }
-            if (value === 'category') {
-              updateYAxisSecondaryDomainMin(0)
-              updateYAxisSecondaryDomainMax('auto')
-            }
-          }}
-          value={yAxisSecondaryType}
-        >
-          <SelectTrigger id="y-axis-secondary-type">
-            <SelectValue defaultValue="category"></SelectValue>
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="category">category</SelectItem>
-            <SelectItem value="number">number</SelectItem>
-          </SelectContent>
-        </Select>
-      </FormField>
+        {yAxisSecondaryType === 'number' && (
+          <>
+            <FormField htmlFor="y-axis-secondary-domain-min" label="Min">
+              <Input
+                id="y-axis-secondary-domain-min"
+                type="text"
+                className="sm"
+                value={yAxisSecondaryDomainMin}
+                onInput={(e) => {
+                  if (e.currentTarget.value === 'auto') {
+                    updateYAxisSecondaryDomainMin(e.currentTarget.value)
+                  } else if (!isNaN(+e.currentTarget.value) && typeof +e.currentTarget.value === 'number') {
+                    updateYAxisSecondaryDomainMin(+e.currentTarget.value)
+                  }
+                }}
+              />
+            </FormField>
 
-      {yAxisSecondaryType === 'number' && (
-        <>
-          <FormField htmlFor="y-axis-secondary-domain-min" label="Min">
+            <FormField htmlFor="y-axis-secondary-domain-max" label="Max">
+              <Input
+                id="y-axis-secondary-domain-max"
+                type="text"
+                className="sm"
+                value={yAxisSecondaryDomainMax}
+                onInput={(e) => {
+                  if (e.currentTarget.value === 'auto') {
+                    updateYAxisSecondaryDomainMax(e.currentTarget.value)
+                  } else if (!isNaN(+e.currentTarget.value) && typeof +e.currentTarget.value === 'number') {
+                    updateYAxisSecondaryDomainMax(+e.currentTarget.value)
+                  }
+                }}
+              />
+            </FormField>
+          </>
+        )}
+
+        <FormField htmlFor="y-axis-secondary-axis-line" label="Show Axis">
+          <Switch
+            id="y-axis-secondary-axis-line"
+            checked={yAxisSecondaryAxisLine}
+            onCheckedChange={updateYAxisSecondaryAxisLine}
+          />
+        </FormField>
+        {yAxisSecondaryType === 'number' && (
+          <FormField htmlFor="y-axis-secondary-tick-count" label="Tick Count">
             <Input
-              id="y-axis-secondary-domain-min"
-              type="text"
+              id="y-axis-secondary-tick-count"
+              type="number"
+              min={2}
               className="sm"
-              value={yAxisSecondaryDomainMin}
+              value={yAxisSecondaryTickCount}
               onInput={(e) => {
-                if (e.currentTarget.value === 'auto') {
-                  updateYAxisSecondaryDomainMin(e.currentTarget.value)
-                } else if (!isNaN(+e.currentTarget.value) && typeof +e.currentTarget.value === 'number') {
-                  updateYAxisSecondaryDomainMin(+e.currentTarget.value)
+                if (!isNaN(+e.currentTarget.value) && typeof +e.currentTarget.value === 'number') {
+                  updateYAxisSecondaryTickCount(+e.currentTarget.value)
                 }
               }}
             />
           </FormField>
-
-          <FormField htmlFor="y-axis-secondary-domain-max" label="Max">
+        )}
+        <FormField htmlFor="y-axis-secondary-tick-line" label="Show Tick">
+          <Switch
+            id="y-axis-secondary-tick-line"
+            checked={yAxisSecondaryTickLine}
+            onCheckedChange={updateYAxisSecondaryTickLine}
+          />
+        </FormField>
+        {yAxisSecondaryTickLine && (
+          <FormField htmlFor="y-axis-secondary-tick-size" label="Tick Size">
             <Input
-              id="y-axis-secondary-domain-max"
-              type="text"
+              id="y-axis-secondary-tick-size"
+              type="number"
+              max={10}
               className="sm"
-              value={yAxisSecondaryDomainMax}
+              value={yAxisSecondaryTickSize}
               onInput={(e) => {
-                if (e.currentTarget.value === 'auto') {
-                  updateYAxisSecondaryDomainMax(e.currentTarget.value)
-                } else if (!isNaN(+e.currentTarget.value) && typeof +e.currentTarget.value === 'number') {
-                  updateYAxisSecondaryDomainMax(+e.currentTarget.value)
+                if (!isNaN(+e.currentTarget.value) && typeof +e.currentTarget.value === 'number') {
+                  updateYAxisSecondaryTickSize(+e.currentTarget.value)
                 }
               }}
             />
           </FormField>
-        </>
-      )}
-
-      <FormField htmlFor="y-axis-secondary-axis-line" label="Show Axis">
-        <Switch
-          id="y-axis-secondary-axis-line"
-          checked={yAxisSecondaryAxisLine}
-          onCheckedChange={updateYAxisSecondaryAxisLine}
-        />
-      </FormField>
-      {yAxisSecondaryType === 'number' && (
-        <FormField htmlFor="y-axis-secondary-tick-count" label="Tick Count">
-          <Input
-            id="y-axis-secondary-tick-count"
-            type="number"
-            min={2}
-            className="sm"
-            value={yAxisSecondaryTickCount}
-            onInput={(e) => {
-              if (!isNaN(+e.currentTarget.value) && typeof +e.currentTarget.value === 'number') {
-                updateYAxisSecondaryTickCount(+e.currentTarget.value)
-              }
-            }}
-          />
-        </FormField>
-      )}
-      <FormField htmlFor="y-axis-secondary-tick-line" label="Show Tick">
-        <Switch
-          id="y-axis-secondary-tick-line"
-          checked={yAxisSecondaryTickLine}
-          onCheckedChange={updateYAxisSecondaryTickLine}
-        />
-      </FormField>
-      {yAxisSecondaryTickLine && (
-        <FormField htmlFor="y-axis-secondary-tick-size" label="Tick Size">
-          <Input
-            id="y-axis-secondary-tick-size"
-            type="number"
-            max={10}
-            className="sm"
-            value={yAxisSecondaryTickSize}
-            onInput={(e) => {
-              if (!isNaN(+e.currentTarget.value) && typeof +e.currentTarget.value === 'number') {
-                updateYAxisSecondaryTickSize(+e.currentTarget.value)
-              }
-            }}
-          />
-        </FormField>
-      )}
+        )}
+      </>}
 
     </div>
   )

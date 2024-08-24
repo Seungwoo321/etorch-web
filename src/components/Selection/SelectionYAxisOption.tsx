@@ -9,18 +9,17 @@ import {
 } from '@/components/ui/select'
 import { useDataOptionStore, useYAxisOptionStore, useYAxisSecondaryOptionStore } from '@/store/editPanel'
 import {
-  selectPanelDataMapByUnit,
-  selectUniqueDataKeys
+  selectPanelDataMapByUnit
 } from '@/store/editPanel/selector'
 import FormField from '../shared/FormField'
+import { useEffect } from 'react'
 
 function SelectionYAxisOption (): JSX.Element {
-  const yAxisSecondaryDataKey = useYAxisSecondaryOptionStore.use.yAxisSecondaryDataKey()
+  const yAxisSecondaryUnit = useYAxisSecondaryOptionStore.use.yAxisSecondaryUnit()
+  const updateYAxisSecondaryUnit = useYAxisSecondaryOptionStore.use.updateYAxisSecondaryUnit()
   const updateYAxisSecondaryDataKey = useYAxisSecondaryOptionStore.use.updateYAxisSecondaryDataKey()
   const panelDataMapByUnit = useDataOptionStore(selectPanelDataMapByUnit)
   const panelUnits = Object.keys(panelDataMapByUnit)
-  console.log(panelUnits)
-  const uniqueDataKey = useDataOptionStore(selectUniqueDataKeys)
   const yAxisUnit = useYAxisOptionStore.use.yAxisUnit()
   const yAxisDataKey = useYAxisOptionStore.use.yAxisDataKey()
   const yAxisVisibility = useYAxisOptionStore.use.yAxisVisibility()
@@ -41,6 +40,21 @@ function SelectionYAxisOption (): JSX.Element {
   const updateYAxisTickCount = useYAxisOptionStore.use.updateYAxisTickCount()
   const updateYAxisTickSize = useYAxisOptionStore.use.updateYAxisTickSize()
   const updateYAxisTickLine = useYAxisOptionStore.use.updateYAxisTickLine()
+
+  useEffect(() => {
+    if (!panelUnits.includes(yAxisUnit)) {
+      updateYAxisUnit('')
+      updateYAxisDataKey('')
+    } else {
+      const panelData = panelDataMapByUnit[yAxisUnit] || []
+      if (panelData.length) {
+        updateYAxisDataKey(panelData[0].indicatorCode)
+      } else {
+        updateYAxisDataKey('')
+      }
+    }
+  }, [panelDataMapByUnit])
+
   return (
     <div className="space-y-2 pl-2 pr-1">
       <FormField htmlFor="y-axis-visibility" label="Visibility">
@@ -50,11 +64,14 @@ function SelectionYAxisOption (): JSX.Element {
           onCheckedChange={updateYAxisVisibility}
         />
       </FormField>
-
       <FormField htmlFor="y-axis-unit" label="Unit">
         <div className="flex gap-1.5">
           <Select
             onValueChange={(value) => {
+              if (value === yAxisSecondaryUnit) {
+                updateYAxisSecondaryUnit('')
+                updateYAxisSecondaryDataKey('')
+              }
               updateYAxisUnit(value)
               updateYAxisDataKey(panelDataMapByUnit[value][0].indicatorCode)
             }}
@@ -62,7 +79,7 @@ function SelectionYAxisOption (): JSX.Element {
           >
             <SelectTrigger id="y-axis-unit">
               <SelectValue>
-                { yAxisUnit === '' ? 'Not selectable' : yAxisUnit}
+                {yAxisUnit === '' ? 'Not selectable' : yAxisUnit}
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
@@ -81,21 +98,16 @@ function SelectionYAxisOption (): JSX.Element {
       <FormField htmlFor="y-axis-data-key" label="Data key">
         <div className="flex gap-1.5">
           <Select
-            onValueChange={(value) => {
-              if (value === yAxisSecondaryDataKey) {
-                updateYAxisSecondaryDataKey('')
-              }
-              updateYAxisDataKey(value)
-            }}
+            onValueChange={updateYAxisDataKey}
             value={yAxisDataKey}
           >
             <SelectTrigger id="y-axis-data-key">
               <SelectValue>
-                {(uniqueDataKey.length > 0) ? yAxisDataKey : 'Not selectable'}
+                {yAxisDataKey === '' ? 'Not selectable' : yAxisDataKey}
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
-              {yAxisUnit && panelDataMapByUnit[yAxisUnit].map(panel => (
+              {yAxisUnit && panelDataMapByUnit[yAxisUnit]?.map(panel => (
                 <SelectItem
                   key={panel.id}
                   value={panel.indicatorCode}>

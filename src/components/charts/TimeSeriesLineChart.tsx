@@ -23,7 +23,7 @@ import {
   useYAxisSecondaryOptionStore
 } from '@/store/editPanel'
 import {
-  selectPanelsDataByUnit
+  selectPanelsData
 } from '@/store/editPanel/selector'
 
 function LineChartContainer (): JSX.Element {
@@ -51,8 +51,8 @@ function LineChartContainer (): JSX.Element {
   const xAxisTickLine = useXAxisOptionStore.use.xAxisTickLine()
   const xAxisColor = useXAxisOptionStore.use.xAxisColor()
 
-  const yAxisDataKey = useYAxisOptionStore.use.yAxisDataKey()
   const yAxisUnit = useYAxisOptionStore.use.yAxisUnit()
+  const yAxisDataKey = useYAxisOptionStore.use.yAxisDataKey()
   const yAxisVisibility = useYAxisOptionStore.use.yAxisVisibility()
   const yAxisType = useYAxisOptionStore.use.yAxisType()
   const yAxisTickCount = useYAxisOptionStore.use.yAxisTickCount()
@@ -63,6 +63,7 @@ function LineChartContainer (): JSX.Element {
   const yAxisTickLine = useYAxisOptionStore.use.yAxisTickLine()
   const yAxisColor = useYAxisOptionStore.use.yAxisColor()
 
+  const yAxisSecondaryUnit = useYAxisSecondaryOptionStore.use.yAxisSecondaryUnit()
   const yAxisSecondaryDataKey = useYAxisSecondaryOptionStore.use.yAxisSecondaryDataKey()
   const yAxisSecondaryVisibility = useYAxisSecondaryOptionStore.use.yAxisSecondaryVisibility()
   const yAxisSecondaryType = useYAxisSecondaryOptionStore.use.yAxisSecondaryType()
@@ -74,9 +75,9 @@ function LineChartContainer (): JSX.Element {
   const yAxisSecondaryTickLine = useYAxisSecondaryOptionStore.use.yAxisSecondaryTickLine()
   const yAxisSecondaryColor = useYAxisSecondaryOptionStore.use.yAxisSecondaryColor()
 
-  const panelsDataByUnit = useDataOptionStore(selectPanelsDataByUnit(yAxisUnit))
+  const panelsData = useDataOptionStore(selectPanelsData)
 
-  if (panelsDataByUnit.length === 0) {
+  if (panelsData.length === 0) {
     return (
       <div className="flex items-center h-full m-auto">No data</div>
     )
@@ -130,7 +131,7 @@ function LineChartContainer (): JSX.Element {
           yAxisId={1}
         />
         <YAxis
-          label={{ value: 'Pages', position: 'insideTopRight', offset: 20, angle: -90 }}
+          label={{ value: yAxisSecondaryUnit, position: 'insideTopRight', offset: 20, angle: -90 }}
           hide={!yAxisSecondaryVisibility}
           dataKey={yAxisSecondaryDataKey}
           stroke={yAxisSecondaryColor}
@@ -146,13 +147,13 @@ function LineChartContainer (): JSX.Element {
           yAxisId={2}
           orientation="right"
         />
-        {panelsDataByUnit.map((panel) => (
+        {panelsData.map((panel) => (
           <Line
             key={`line-${panel.indicatorCode}`}
             type="monotone"
             dataKey={panel.indicatorCode}
             stroke={'rgb(115, 191, 105)'}
-            yAxisId={panel.indicatorCode === yAxisSecondaryDataKey ? 2 : 1}
+            yAxisId={panel.unit === yAxisSecondaryUnit ? 2 : 1}
           />
         ))}
         {/* {panelsData.map((panel) => (

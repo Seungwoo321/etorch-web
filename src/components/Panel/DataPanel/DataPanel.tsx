@@ -40,7 +40,8 @@ function DataPanel (): JSX.Element {
       defaultValue="query"
     >
       <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="query"><Database className="mr-2"/>
+        <TabsTrigger value="query">
+          <Database className="mr-2" size={18} />
           Query
           <Badge variant="default" className="ml-1">
             {panelIds.length}

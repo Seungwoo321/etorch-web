@@ -1,4 +1,8 @@
-import { useDataOptionStore } from '@/store/editPanel'
+import {
+  useDataOptionStore,
+  useYAxisOptionStore,
+  useYAxisSecondaryOptionStore
+} from '@/store/editPanel'
 import {
   Table,
   TableBody,
@@ -13,7 +17,8 @@ import {
 } from '@/store/editPanel/selector'
 function DataPanelDataMapping () {
   const panelsData = useDataOptionStore(selectPanelsData)
-  console.log(panelsData)
+  const yAxisUnit = useYAxisOptionStore.use.yAxisUnit()
+  const yAxisSecondaryUnit = useYAxisSecondaryOptionStore.use.yAxisSecondaryUnit()
   return (
     <Table>
       <TableCaption>A list of data series you selected.</TableCaption>
@@ -30,8 +35,11 @@ function DataPanelDataMapping () {
             <TableCell className="font-medium">
               {panel.dataSource.toUpperCase()}:{panel.indicatorCode}:{panel.unit}
             </TableCell>
-            <TableCell>{JSON.stringify(panel)}</TableCell>
-            <TableCell >$250.00</TableCell>
+            <TableCell>
+              {panel.unit === yAxisUnit ? 'left' : ''}
+              {panel.unit === yAxisSecondaryUnit ? 'right' : ''}
+            </TableCell>
+            <TableCell >{JSON.stringify(panel)}</TableCell>
           </TableRow>
         ))}
 
