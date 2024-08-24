@@ -43,7 +43,7 @@ function DataPanel (): JSX.Element {
         <TabsTrigger value="query">
           <Database className="mr-2" size={18} />
           Query
-          <Badge variant="default" className="ml-1">
+          <Badge variant="default" className="ml-1 py-0">
             {panelIds.length}
           </Badge>
         </TabsTrigger>
