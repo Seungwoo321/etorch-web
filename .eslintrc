@@ -6,8 +6,8 @@
   "extends": [
     "standard",
     "plugin:@typescript-eslint/recommended",
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended"
+    "plugin:react/recommended"
+    // "plugin:react-hooks/recommended"
   ],
   "ignorePatterns": ["/bak/**/*", "/src/components/ui/*", "vite.config.ts"],
   "overrides": [
