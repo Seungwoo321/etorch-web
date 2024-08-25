@@ -79,7 +79,9 @@ function LineChartContainer (): JSX.Element {
 
   if (panelsData.length === 0) {
     return (
-      <div className="flex items-center h-full m-auto">No data</div>
+      <div className="flex items-center h-full m-auto">
+        No data
+      </div>
     )
   }
 

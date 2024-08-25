@@ -78,7 +78,7 @@ function SelectionYAxisSecondaryOption (): JSX.Element {
             <Select
               onValueChange={(value) => {
                 updateYAxisSecondaryUnit(value)
-                // updateYAxisSecondaryDataKey(panelDataMapByUnit[value][0].indicatorCode)
+                updateYAxisSecondaryDataKey(panelDataMapByUnit[value][0].indicatorCode)
               }}
               value={yAxisSecondaryUnit}
             >

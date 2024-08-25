@@ -161,7 +161,7 @@ function DataPanelOptions ({ id }: DataPanelOptionsProps): JSX.Element | null {
               </div>
             </CollapsibleTrigger>
             {panel?.dataSource.length > 0 && indicator?.name != null
-              ? `${indicator?.name}(${panel.unit}) - ${panel?.dataSource}:${panel.indicatorCode}:${panel.frequency}`
+              ? `${indicator?.name} - ${panel?.dataSource}:${panel.indicatorCode}:${panel.unit}:${panel.frequency}`
               : null
             }
           </CardTitle>

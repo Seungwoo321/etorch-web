@@ -33,7 +33,7 @@ function DataPanelDataMapping () {
         {panelsData.map(panel => (
           <TableRow key={panel.id}>
             <TableCell className="font-medium">
-              {panel.dataSource.toUpperCase()}:{panel.indicatorCode}:{panel.unit}
+              {panel.dataSource}:{panel.indicatorCode}:{panel.unit}:{panel.frequency}
             </TableCell>
             <TableCell>
               {panel.unit === yAxisUnit ? 'left' : ''}
